@@ -2,8 +2,12 @@ package me.killje.xpstorage;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.logging.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -41,13 +45,20 @@ public class XPStorage extends JavaPlugin implements Listener {
         boolean dirty = false;
         for (Iterator<SignSaver> it = signsList.iterator(); it.hasNext();) {
             SignSaver signSaver = it.next();
-            Block block = signSaver.getLocation().getBlock();
-            if (!isSign(block.getType())) {
-                it.remove();
-                dirty = true;
-                continue;
+            Location location = signSaver.getLocation();
+            if (location != null) {
+                Block block = location.getBlock();
+                if (block == null || !isSign(block.getType())) {
+                    this.getLogger().log(Level.WARNING, "Sign does not exsist anymore at: x={0}, y={1}, z={2}", new Object[]{location.getX(), location.getY(), location.getZ()});
+                    it.remove();
+                    dirty = true;
+                    continue;
+                }
+                block.setMetadata("OwnerUUID", new FixedMetadataValue(this, signSaver.getOwnerUuid()));
+            } else {
+                Map<String, Object> sign = signSaver.serialize();
+                this.getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) sign.get("world"), (int) sign.get("x"), (int) sign.get("y"), (int) sign.get("z")});
             }
-            block.setMetadata("OwnerUUID", new FixedMetadataValue(this, signSaver.getOwnerUuid()));
         }
         if (dirty) {
             signs.GetConfig().set("Signs", signsList);
