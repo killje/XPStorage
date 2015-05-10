@@ -97,12 +97,12 @@ public class XPStorage extends JavaPlugin implements Listener {
                         signs.GetConfig().set("Signs", signsList);
                         signs.SaveConfig();
                     } else {
-                        event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are not authorized to acces someone else his/her xp Storage");
+                        event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are not authorized to access someone else's xp Storage");
                         return;
                     }
                 }
                 if (!player.getUniqueId().toString().equals(sign.getMetadata("OwnerUUID").get(0).asString())) {
-                    event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are not authorized to acces someone else his/her xp Storage");
+                    event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are not authorized to access someone else's xp Storage");
                     return;
                 }
                 SignUtil su = new SignUtil(sign, player);
