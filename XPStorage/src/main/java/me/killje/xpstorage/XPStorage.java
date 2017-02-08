@@ -1,9 +1,9 @@
 package me.killje.xpstorage;
 
-import me.killje.xpstorage.EventListeners.OnBlockBreak;
-import me.killje.xpstorage.EventListeners.OnBlockBurn;
-import me.killje.xpstorage.EventListeners.OnPlayerInteract;
-import me.killje.xpstorage.EventListeners.OnSignChange;
+import me.killje.xpstorage.eventListeners.OnBlockBreak;
+import me.killje.xpstorage.eventListeners.OnBlockBurn;
+import me.killje.xpstorage.eventListeners.OnPlayerInteract;
+import me.killje.xpstorage.eventListeners.OnSignChange;
 import me.killje.xpstorage.commandExecuters.CreateGroup;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;

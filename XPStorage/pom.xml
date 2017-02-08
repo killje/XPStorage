@@ -19,21 +19,21 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-             <version>1.11-R0.1-20161206.110903-91</version>
+             <version>1.11.2-R0.1-20170206.010102-50</version>
             <scope>provided</scope>
         </dependency>
         
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.11-R0.1-SNAPSHOT</version>
+            <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>       
 
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.11-R0.1-SNAPSHOT</version>
+            <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         
@@ -129,7 +129,7 @@
                             <goal>regex-property</goal>
                         </goals>
                         <configuration>
-                            <name>tag.version</name>
+                            <name>major.version</name>
                             <value>${project.version}</value>
                             <regex>^(.*)-SNAPSHOT$</regex>
                             <replacement>$1</replacement>

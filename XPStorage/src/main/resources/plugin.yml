@@ -1,6 +1,6 @@
 name: ${project.artifactId}
 authors: ${project.authors}
-version: ${tag.version}.b${buildNumber}
+version: ${major.version.version}.b${buildNumber}
 main: ${project.main}
 commands:
    createXpGroup:
