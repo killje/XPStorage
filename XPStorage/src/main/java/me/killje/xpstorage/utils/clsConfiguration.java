@@ -1,4 +1,4 @@
-package me.killje.xpstorage;
+package me.killje.xpstorage.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,9 @@ public class clsConfiguration {
         if (file == null) {
             file = new File(plugin.getDataFolder(), fname);
         }
+        System.out.println("Bevore Load");
         conf = YamlConfiguration.loadConfiguration(file);
+        System.out.println("After Load");
 
         //Look for defaults in the jar
         InputStream isDefaults = plugin.getResource(fname);
