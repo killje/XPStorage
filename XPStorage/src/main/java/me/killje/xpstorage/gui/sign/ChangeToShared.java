@@ -2,11 +2,11 @@ package me.killje.xpstorage.gui.sign;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.SharedSign;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -36,9 +36,9 @@ public class ChangeToShared implements GuiElement{
         lore.add("With this the XP will be");
         lore.add("available to you and people you share it with.");
         if (isSelected) {
-            return createSimpleItemStack(Material.STAINED_GLASS_PANE, ChatColor.YELLOW + "Currently selected:" + ChatColor.WHITE + " Shared sign", lore);
+            return ItemStackFromFile.getItemStack("selected.shared", ChatColor.YELLOW + "Currently selected:" + ChatColor.WHITE + " Shared sign", lore);
         }
-        return createSimpleItemStack(Material.BEACON, ChatColor.WHITE + "Shared sign", lore);
+        return ItemStackFromFile.getItemStack("changeToShared", ChatColor.WHITE + "Shared sign", lore);
         
     }
 
@@ -51,7 +51,7 @@ public class ChangeToShared implements GuiElement{
         if (!(entity instanceof Player)){
             return;
         }
-        if (xpSign.destroySign()) {
+        if (!xpSign.destroySign()) {
             return;
         }
         xpSign = new SharedSign(xpSign.getSign(), entity.getUniqueId());

@@ -1,6 +1,7 @@
 package me.killje.xpstorage.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +11,7 @@ import net.minecraft.server.v1_11_R1.NBTTagList;
 import net.minecraft.server.v1_11_R1.NBTTagString;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
@@ -18,15 +20,6 @@ import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 public class HeadUtils {
     
     private final static HashMap<String, String> TEXTURES = new HashMap<>();
-    
-    public static ItemStack getPlayerHead(String player) {
-        
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        meta.setOwner(player);
-        head.setItemMeta(meta);
-        return CraftItemStack.asBukkitCopy(CraftItemStack.asNMSCopy(head));
-    }
     
     public static ItemStack getPlayerHead(OfflinePlayer player) {
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
@@ -48,7 +41,11 @@ public class HeadUtils {
         return head;
     }
     
-    public static ItemStack getTexturedHead(String texture) {
+    public static ItemStack getTexturedHead(String texture, String displayName) {
+        return getTexturedHead(texture, displayName, null);
+    }
+    
+    public static ItemStack getTexturedHead(String texture, String displayName, List<String> lore) {
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         net.minecraft.server.v1_11_R1.ItemStack itemstack = CraftItemStack.asNMSCopy(head);
         NBTTagCompound comp = itemstack.getTag();
@@ -75,6 +72,14 @@ public class HeadUtils {
         
         itemstack.setTag(comp);
         head = CraftItemStack.asBukkitCopy(itemstack);
+        
+        ItemMeta itemMeta = head.getItemMeta();
+        itemMeta.setDisplayName(displayName);
+        if (lore != null) {
+            itemMeta.setLore(lore);
+        }
+        head.setItemMeta(itemMeta);
+        
         return head;
     }
 }

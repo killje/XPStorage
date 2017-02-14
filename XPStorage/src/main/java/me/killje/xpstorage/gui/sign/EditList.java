@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.sign;
 import java.util.ArrayList;
 import java.util.List;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.editplayer.CurrentList;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
@@ -45,15 +45,13 @@ public class EditList implements GuiElement {
 
     @Override
     public void onGuiElementClickEvent(InventoryClickEvent event) {
-        //event.getView().close();
-        Inventory inventory = new CurrentList(sign).getInventory();
-        event.getWhoClicked().openInventory(inventory);
-        inventory.setItem(0, inventory.getItem(0));
-        //event.getWhoClicked().getInventory().setContents(event.getWhoClicked().getInventory().getContents());
+        Player player = (Player) event.getWhoClicked();
         if (!(event.getWhoClicked() instanceof Player)){
             return;
         }
-        Player player = (Player) event.getWhoClicked();
+        Inventory inventory = new CurrentList(player, sign).getInventory();
+        event.getWhoClicked().openInventory(inventory);
+        
         Bukkit.getScheduler().runTask(XPStorage.getInstance(), new Runnable() {
             @Override
             public void run() {

@@ -11,6 +11,6 @@ public class OnBlockBreak extends OnBlockDestory{
     
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        event.setCancelled(destroyEvent(event));
+        event.setCancelled(!isDestroyable(event.getBlock()));
     }
 }

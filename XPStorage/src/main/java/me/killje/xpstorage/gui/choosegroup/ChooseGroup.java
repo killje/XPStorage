@@ -2,11 +2,10 @@ package me.killje.xpstorage.gui.choosegroup;
 
 import java.util.UUID;
 import me.killje.xpstorage.group.Group;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
-import me.killje.xpstorage.xpsign.SharedSign;
-import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -29,7 +28,7 @@ public class ChooseGroup implements GuiElement{
     @Override
     public ItemStack getItemStack() {
         
-        return createSimpleItemStack(Material.EMPTY_MAP, Group.getGroupFromUUID(groupId).getGroupName());
+        return ItemStackFromFile.getItemStack("chooseGroup", Group.getGroupFromUUID(groupId).getGroupName());
     }
 
     @Override
@@ -39,7 +38,7 @@ public class ChooseGroup implements GuiElement{
         if (!(entity instanceof Player)){
             return;
         }
-        if (xpSign.destroySign()) {
+        if (!xpSign.destroySign()) {
             return;
         }
         xpSign = new GroupSign(xpSign.getSign(), groupId);

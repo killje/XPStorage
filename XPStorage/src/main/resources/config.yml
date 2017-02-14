@@ -2,7 +2,7 @@ interactMaterial: TORCH
 # Player heads courtesy of http://heads.freshcoal.com/
 # If you want your own heads added here, search or upload it on head.freshcoal and copy the give command value
 GUIElements: 
-    leftArrow: 
+    prevPage: 
         type: head
         # Wood depth:
         value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzM3NjQ4YWU3YTU2NGE1Mjg3NzkyYjA1ZmFjNzljNmI2YmQ0N2Y2MTZhNTU5Y2U4YjU0M2U2OTQ3MjM1YmNlIn19fQ==
@@ -16,7 +16,7 @@ GUIElements:
         # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2JkOTQ2YTI1NzAzNWM5YmViMWJhNzQzYTQzNWI0NGY3MzJmNTY1ZDRiZjFkN2ZhOGQ0MmMzYThkZCJ9fX0=
         # Present depth:
         # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA2ODk1YWE1MGRjMzY5YjIzNDFjN2Y1ODE4NmJiNGMzOWFlOWEyMzJlNTM2ZmRlYTY2M2M2MjhhNmQxMyJ9fX0=
-    rightArrow: 
+    nextPage: 
         type: head
         # Wood depth:
         value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE0ZjY4YzhmYjI3OWU1MGFiNzg2ZjlmYTU0Yzg4Y2E0ZWNmZTFlYjVmZDVmMGMzOGM1NGM5YjFjNzIwM2Q3YSJ9fX0=
@@ -31,6 +31,7 @@ GUIElements:
         # Present depth:
         # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzM2NDFhNzA2YWJkZDMxYTkzODZjYWRlODg3Nzc2NDBlOTljYmVhNGU1ZTE0NjEzZWU2MjhmNWY3NjE5In19fQ==
     upArrow: 
+        # not used yet, for future reference
         type: head
         # Wood depth:
         value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzNjZjE2NmE4MjZkODU1NDU0ZWQ0ZDRlYTVmZTMzZjNkZWVhYTQ0Y2NhYTk5YTM0OGQzOTY4NWJhNzFlMWE0ZiJ9fX0=
@@ -45,6 +46,7 @@ GUIElements:
         # Present depth:
         # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI2ZjUyNmI4NDlkODI0Mzg1MDM3MmE5MmNmZTE4ODFmNjUxYjZkYWFkMzBhMzFjM2UwMTA2NDM3NmNkMCJ9fX0=
     downArrow: 
+        # not used yet, for future reference
         type: head
         # Wood depth:
         value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzhjYTc2MTVjYjgzN2Y2OTRlNDk2ZmY4YTk4NTNjZDdkYjVmZDg1NTI5ZGNhZDk4Yzc4YmEyNmMzZTRmNjg3In19fQ==
@@ -64,9 +66,63 @@ GUIElements:
     allPlayerList: 
         type: dye
         value: MAGENTA
+    allPlayerFiller: 
+        type: glassPane
+        value: MAGENTA
     exit: 
         type: item
         value: BARRIER
-    exit: 
+    diffrentGroup:
         type: item
-        value: BARRIER
+        value: EMPTY_MAP
+    addPlayerEditRights:
+        type: item
+        value: NAME_TAG
+    removePlayerEditRights:
+        type: item
+        value: REDSTONE_TORCH_ON
+    addPlayerCreateRights:
+        type: item
+        value: MAP
+    removePlayerCreateRights:
+        type: item
+        value: EMPTY_MAP
+    removePlayer:
+        type: item
+        value: FIREBALL
+    chooseGroup:
+        type: item
+        value: EMPTY_MAP
+    changeToGroup:
+        type: item
+        value: END_CRYSTAL
+    newGroup:
+        type: item
+        value: PAPER
+    setNewOwner:
+        type: item
+        value: REDSTONE
+    changeToShared:
+        type: item
+        value: BEACON
+    changeToNormal:
+        type: item
+        value: CHEST
+    changeToEnder:
+        type: item
+        value: ENDER_CHEST
+    selected: 
+        type: glassPane
+        value: WHITE
+    selected.group:
+        use: selected
+    selected.shared:
+        use: selected
+    selected.ender:
+        use: selected
+    selected.normal:
+        use: selected
+    selected.owner:
+        use: selected
+    selected.yourself:
+        use: selected

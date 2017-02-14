@@ -2,10 +2,14 @@ package me.killje.xpstorage.gui.sign;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.GuiElement;
-import me.killje.xpstorage.gui.addplayer.PlayerList;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.addplayer.AddPlayer;
+import me.killje.xpstorage.gui.list.PlayerList;
+import me.killje.xpstorage.gui.list.PlayerListGuiElement;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,7 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  *
  * @author Zolder
  */
-public class FromList implements GuiElement {
+public class FromList implements GuiElement, PlayerListGuiElement {
     
     private final AbstractSharedSign sign;
 
@@ -49,14 +53,13 @@ public class FromList implements GuiElement {
     @Override
     public void onGuiElementClickEvent(InventoryClickEvent event) {
         //event.getView().close();
-        Inventory inventory = new PlayerList(sign).getInventory();
-        event.getWhoClicked().openInventory(inventory);
-        inventory.setItem(0, inventory.getItem(0));
-        //event.getWhoClicked().getInventory().setContents(event.getWhoClicked().getInventory().getContents());
         if (!(event.getWhoClicked() instanceof Player)){
             return;
         }
         Player player = (Player) event.getWhoClicked();
+        Inventory inventory = new PlayerList(player, sign, this).getInventory();
+        event.getWhoClicked().openInventory(inventory);
+        
         Bukkit.getScheduler().runTask(XPStorage.getInstance(), new Runnable() {
             @Override
             public void run() {
@@ -64,6 +67,11 @@ public class FromList implements GuiElement {
             }
         });
         
+    }
+
+    @Override
+    public GuiElement getGuiElement(UUID offlinePlayer, AbstractXpSign sign) {
+        return new AddPlayer(offlinePlayer, sign);
     }
     
 }

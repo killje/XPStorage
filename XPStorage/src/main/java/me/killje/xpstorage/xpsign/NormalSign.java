@@ -16,6 +16,7 @@ public class NormalSign extends AbstractXpSign {
     private int xpInStorage;
     private UUID owner;
     
+    
     public NormalSign(Sign sign, UUID player) {
         super(sign);
         this.owner = player;
@@ -23,6 +24,8 @@ public class NormalSign extends AbstractXpSign {
         if (player == null) {
             loadError = LoadError.NO_PLAYER;
         }
+        this.xpInStorage = 0;
+        updateSign();
     }
     
     public NormalSign(Map<String, Object> sign) {
@@ -35,16 +38,19 @@ public class NormalSign extends AbstractXpSign {
         if (getError() != LoadError.NONE) {
             return;
         }
-        getXpFromSign();
-    }
-    
-    public void getXpFromSign () {
-        xpInStorage = Integer.parseInt(getSign().getLine(1));
+        if (sign.containsKey("xpStored")) {
+            this.xpInStorage = (int) sign.get("xpStored");
+        }
+        else {
+            this.xpInStorage = 0;
+        }
+        updateSign();
     }
     
     @Override
     protected void setNewXp(int xpInStorage) {
         this.xpInStorage = xpInStorage;
+        //AbstractXpSign.saveSigns();
     }
 
     @Override
@@ -53,19 +59,12 @@ public class NormalSign extends AbstractXpSign {
     }
     
     public void onSignWrite () {
-        Sign sign = getSign();
-        sign.setLine(0, ChatColor.BLUE + "[XP Storage]");
-        sign.setLine(1, "0");
-        sign.setLine(2, "[5] 20 100 500");
-        String playername = getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName());
-        sign.setLine(3, playername);
         updateSign();
     }
     
     @Override
-    protected void changeToSign() {
-        setNewXp(0);
-        getSign().setLine(3, getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName()));
+    protected String getSignText() {
+        return getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName());
     }
 
     @Override
@@ -82,7 +81,7 @@ public class NormalSign extends AbstractXpSign {
     public boolean destroySign() {
         Player player = Bukkit.getPlayer(getOwner());
         if (player == null) {
-            return true;
+            return false;
         }
         if (getCurrentXp() == 0) {
             return super.destroySign();
@@ -91,6 +90,15 @@ public class NormalSign extends AbstractXpSign {
         return super.destroySign();
     }
 
+    @Override
+    public boolean canDestroySign() {
+        Player player = Bukkit.getPlayer(getOwner());
+        if (player == null) {
+            return false;
+        }
+        return super.canDestroySign();
+    }
+    
     @Override
     public UUID getOwner() {
         return owner;
@@ -101,4 +109,18 @@ public class NormalSign extends AbstractXpSign {
         this.owner = newOwner;
     }
 
+    
+    /**
+     * Function to save this class to YAML
+     * 
+     * @return 
+     */
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> saveMap = super.serialize();
+        
+        saveMap.put("xpStored", this.xpInStorage);
+        return saveMap;
+    }
+    
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import me.killje.xpstorage.group.Group;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptionsGroup;
 import me.killje.xpstorage.gui.sign.ChangeToGroup;
@@ -27,8 +27,17 @@ public class GroupSign extends AbstractSharedSign {
     }
 
     @Override
-    protected void changeToSign() {
-        this.getSign().setLine(3, ChatColor.GREEN + "Group");
+    protected String getSignText() {
+        return ChatColor.GREEN + "Group";
+    }
+    
+    @Override
+    public void updateSign() {
+        getSign().setLine(0, ChatColor.BLUE + "[XP Storage]");
+        getSign().setLine(1, ChatColor.AQUA + getSaveName(getGroup().getGroupName()));
+        getSign().setLine(2, getCurrentXp() + "");
+        getSign().setLine(3, getSignText() + "");
+        getSign().update();
     }
 
     @Override

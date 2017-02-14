@@ -1,7 +1,8 @@
 package me.killje.xpstorage.gui;
 
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +14,7 @@ public class Exit implements GuiElement {
 
     @Override
     public ItemStack getItemStack() {
-        return createSimpleItemStack(Material.BARRIER, ChatColor.WHITE + "Exit");
+        return ItemStackFromFile.getItemStack("exit", ChatColor.WHITE + "Exit");
     }
 
     @Override

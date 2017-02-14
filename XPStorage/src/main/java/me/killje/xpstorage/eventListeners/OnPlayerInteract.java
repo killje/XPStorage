@@ -2,8 +2,8 @@ package me.killje.xpstorage.eventListeners;
 
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
+import me.killje.xpstorage.permission.Permissions;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import me.killje.xpstorage.xpsign.NormalSign;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -33,40 +33,39 @@ public class OnPlayerInteract implements Listener {
         Sign sign = xpSign.getSign();
         final Player player = event.getPlayer();
         if (sign.getMetadata("XP_STORAGE_XPSIGN").isEmpty()) {
-            if (AbstractXpSign.getSaveName(player).equals(sign.getLine(3))) {
-                NormalSign normalSign = new NormalSign(sign, player.getUniqueId());
-                normalSign.getXpFromSign();
-            } else {
-                event.setCancelled(true);
-                event.getPlayer().sendMessage(ChatColor.RED + "You are not authorized to access someone else's xp Storage");
-                return;
-            }
-        }
-        if (!xpSign.hasAccess(player.getUniqueId())) {
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.RED + "You are not authorized to access someone else's xp Storage");
             return;
         }
+        
+        boolean openGuiOther = player.hasPermission(Permissions.OPEN_GUI_OTHERS.getPermission());
+        boolean someoneElse = false;
+        
+        if (!xpSign.hasAccess(player.getUniqueId())) {
+            someoneElse = true;
+        }
 
-        if (event.getItem() != null && event.getItem().getType().equals(Material.getMaterial(XPStorage.getInstance().getConfig().getString("interactMaterial")))) {
+        if ((!someoneElse || openGuiOther) && event.getItem() != null && event.getItem().getType().equals(Material.getMaterial(XPStorage.getInstance().getConfig().getString("interactMaterial")))) {
             player.openInventory(new SignInventory(player, xpSign).getInventory());
             event.setCancelled(true);
             player.updateInventory();
+            return;
+        }
+        if (someoneElse) {
+            event.getPlayer().sendMessage(ChatColor.RED + "You are not authorized to access someone else's xp Storage");
             return;
         }
         
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             event.setCancelled(true);
             if (player.isSneaking()) {
-                xpSign.decreaseXp(player);
+                xpSign.increaseXp(player, 10);
             } else {
                 xpSign.increaseXp(player);
             }
         } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
             if (player.isSneaking()) {
-                xpSign.prevItem();
+                xpSign.decreaseXp(player, 10);
             } else {
-                xpSign.nextItem();
+                xpSign.decreaseXp(player);
             }
         }
 

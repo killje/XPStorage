@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui;
 
 import java.util.ArrayList;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  *
@@ -35,6 +34,7 @@ public abstract class InventoryUtils implements Listener {
     protected abstract void initInventory();
     
     public Inventory getInventory() {
+        guiElements.clear();
         initInventory();
         int realRows = guiElements.size() / 9;
         

@@ -63,8 +63,8 @@ public class PlayerSign extends AbstractXpSign {
     }
 
     @Override
-    protected void changeToSign() {
-        this.getSign().setLine(3, ChatColor.DARK_PURPLE + getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName()));
+    protected String getSignText() {
+        return ChatColor.DARK_PURPLE + getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName());
     }
 
     @Override

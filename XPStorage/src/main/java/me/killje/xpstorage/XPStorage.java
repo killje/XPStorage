@@ -5,6 +5,13 @@ import me.killje.xpstorage.eventListeners.OnBlockBurn;
 import me.killje.xpstorage.eventListeners.OnPlayerInteract;
 import me.killje.xpstorage.eventListeners.OnSignChange;
 import me.killje.xpstorage.commandExecuters.CreateGroup;
+import me.killje.xpstorage.eventListeners.OnBlockExplode;
+import me.killje.xpstorage.eventListeners.OnBlockIgnite;
+import me.killje.xpstorage.eventListeners.OnEntityChangeBlock;
+import me.killje.xpstorage.eventListeners.OnBlockPistonExtend;
+import me.killje.xpstorage.eventListeners.OnBlockPistonRetract;
+import me.killje.xpstorage.eventListeners.OnEntityBreakDoor;
+import me.killje.xpstorage.eventListeners.OnLeavesDecay;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.utils.clsConfiguration;
@@ -50,6 +57,13 @@ public class XPStorage extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new OnBlockBreak(), this);
         getServer().getPluginManager().registerEvents(new OnBlockBurn(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockExplode(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockIgnite(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockPistonExtend(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockPistonRetract(), this);
+        getServer().getPluginManager().registerEvents(new OnLeavesDecay(), this);
+        getServer().getPluginManager().registerEvents(new OnEntityBreakDoor(), this);
+        getServer().getPluginManager().registerEvents(new OnEntityChangeBlock(), this);
         
         ConfigurationSerialization.registerClass(PlayerInformation.class);
         ConfigurationSerialization.registerClass(GroupRights.class);
@@ -74,6 +88,10 @@ public class XPStorage extends JavaPlugin {
     public void onDisable() {
         PlayerInformation.savePlayerInformation();
         Group.saveGroups();
+        AbstractXpSign.saveSigns(true);
+        AbstractXpSign.destroyMetaDatas();
     }
+    
+    
     
 }

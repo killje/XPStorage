@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.UUID;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.gui.Exit;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.InventoryUtils;
-import me.killje.xpstorage.gui.SimpleGuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
+import me.killje.xpstorage.gui.guiElement.SimpleGuiElement;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -34,12 +33,10 @@ public class EditPlayerOptions extends InventoryUtils {
         ArrayList<GuiElement> guiElements = new ArrayList<>();
         
         if (playerToEdit.equals(sign.getOwner())) {
-            ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
-            this.addGuiElement(new SimpleGuiElement(itemStack.getData(), "You can't edit the owner"));
+            this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("selected.owner", "You can't edit the owner")));
         }
         else if (playerToEdit.equals(playerEditing)) {
-            ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
-            this.addGuiElement(new SimpleGuiElement(itemStack.getData(), "You can't edit yourself"));
+            this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("selected.yourself",  "You can't edit yourself")));
         }
         else {
             PlayerInformation playerInformationPlayerEditing = PlayerInformation.getPlayerInformation(playerEditing);

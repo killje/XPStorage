@@ -23,8 +23,7 @@ public class OnSignChange implements Listener {
         Bukkit.getScheduler().runTask(XPStorage.getInstance(), new Runnable() {
             @Override
             public void run() {
-                NormalSign normalSign = new NormalSign((Sign) event.getBlock().getState(), event.getPlayer().getUniqueId());
-                normalSign.onSignWrite();
+                new NormalSign((Sign) event.getBlock().getState(), event.getPlayer().getUniqueId());
             }
         });
     }

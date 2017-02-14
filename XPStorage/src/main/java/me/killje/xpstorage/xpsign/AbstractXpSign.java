@@ -11,13 +11,14 @@ import java.util.logging.Level;
 import me.desht.dhutils.ExperienceManager;
 import me.killje.xpstorage.Update;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.utils.clsConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
@@ -53,7 +54,6 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
          */
         @Override
         public void run() {
-            System.out.println("SAVING");
             XP_SIGN_CONFIG.GetConfig().set("xpSigns", signsList);
             XP_SIGN_CONFIG.SaveConfig();
         }
@@ -87,6 +87,11 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     private final Sign sign;
 
     /**
+     * Current sign
+     */
+    private final XpSignFacingBlock signFacingBlock;
+
+    /**
      * Sign config
      */
     private static final clsConfiguration XP_SIGN_CONFIG = new clsConfiguration(XPStorage.getInstance(), "xpSigns.yml");
@@ -114,8 +119,12 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         // Check if the sign is real
         if (sign == null) {
             loadError = LoadError.NO_SIGN;
+            this.signFacingBlock = null;
             return;
         }
+        BlockFace facingDirection = ((org.bukkit.material.Sign) sign.getData()).getAttachedFace();
+        this.signFacingBlock = new XpSignFacingBlock(sign.getBlock().getRelative(facingDirection), this);
+        
         loadError = LoadError.NONE;
         // Dubble check if the block has not already initiated a XPSign that has not been removed properly
         if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
@@ -123,6 +132,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
         // Set metadata of the sign
         sign.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(XPStorage.getInstance(), this));
+        
         // Add sign to list of signs
         addSign(this);
     }
@@ -141,6 +151,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         if (world == null) {
             this.loadError = LoadError.BAD_LOCATION;
             this.sign = null;
+            this.signFacingBlock = null;
             return;
         }
         // Try to get location
@@ -152,10 +163,14 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             this.loadError = LoadError.NO_SIGN;
             this.sign = null;
             this.location = location;
+            this.signFacingBlock = null;
             return;
         }
         // Try to get player and sign
         Sign signBlock = (Sign) location.getBlock().getState();
+        
+        BlockFace facingDirection = ((org.bukkit.material.Sign) signBlock.getData()).getAttachedFace();
+        this.signFacingBlock = new XpSignFacingBlock(signBlock.getBlock().getRelative(facingDirection), this);
         
         this.sign = signBlock;
         this.loadError = LoadError.NONE;
@@ -206,7 +221,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param overrideInitCheck When initializing the signs are saved once, 
      * this boolean allows that, should not be used in normal saving
      */
-    private static void saveSigns(boolean overrideInitCheck) {
+    public static void saveSigns(boolean overrideInitCheck) {
         if (!overrideInitCheck && XPStorage.getInstance().isInit()) {
             return;
         }
@@ -265,7 +280,6 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             }
             // Get the error
             LoadError failed = xpSign.getError();
-            System.out.println(failed);
             // Check the errors and print out relevent information
             switch (failed) {
                 default:
@@ -342,6 +356,17 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             || material == Material.SIGN_POST
             || material == Material.SIGN;
     }
+    
+    public static void destroyMetaDatas() {
+        for (AbstractXpSign abstractXpSign : signsList) {
+            if (abstractXpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
+                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getInstance());
+            }
+            if (abstractXpSign.getSignFacingBlock().getFacingBlock().hasMetadata("XP_STORAGE_XPSIGNFACEBLOCK")) {
+                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGNFACEBLOCK", XPStorage.getInstance());
+            }
+        }
+    }
 
     /**
      * Function to save this class to YAML
@@ -378,7 +403,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * 
      * Does not have to update the sign
      */
-    protected abstract void changeToSign();
+    protected abstract String getSignText();
 
     /**
      * A human readable name for the sign.
@@ -421,60 +446,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * Updates a destroyed XP sign to this sign.
      */
     public void changeSign() {
-        changeToSign();
         updateSign();
-    }
-
-    /**
-     * Set text for when changing amounth of xp drained per click
-     */
-    public void nextItem() {
-        sign.setLine(2, nItem(getXpPerTime()));
-        updateSign();
-    }
-
-    /**
-     * Set text for when changing amounth of xp drained per click
-     */
-    public void prevItem() {
-        sign.setLine(2, pItem(getXpPerTime()));
-        updateSign();
-    }
-
-    /**
-     * Set text for when changing amounth of xp drained per click
-     */
-    private String nItem(int currentSetting) {
-        switch (currentSetting) {
-            case 5:
-                return "5 [20] 100 500";
-            case 20:
-                return "5 20 [100] 500";
-            case 100:
-                return "5 20 100 [500]";
-            case 500:
-                return "[5] 20 100 500";
-            default:
-                return "[5] 20 100 500";
-        }
-    }
-
-    /**
-     * Set text for when changing amounth of xp drained per click
-     */
-    private String pItem(int currentSetting) {
-        switch (currentSetting) {
-            case 5:
-                return "5 20 100 [500]";
-            case 20:
-                return "[5] 20 100 500";
-            case 100:
-                return "5 [20] 100 500";
-            case 500:
-                return "5 20 [100] 500";
-            default:
-                return "[5] 20 100 500";
-        }
     }
 
     /**
@@ -483,16 +455,42 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param player The current player increasing the XP of the sign
      */
     public void increaseXp(Player player) {
-        increaseXp(player, getXpPerTime());
+        increaseXp(player, 1);
     }
     
     /**
      * Increases the XP on the sign with the current selected amount
      * 
      * @param player The current player increasing the XP of the sign
-     * @param xpToIncrease The amount to increase the sign with
+     * @param levelsToIncrease The amount of levels to increase
      */
-    private void increaseXp(Player player, int xpToIncrease) {
+    public void increaseXp(Player player, int levelsToIncrease) {
+        ExperienceManager experienceManager = new ExperienceManager(player);
+        boolean levelCheck = experienceManager.getCurrentExp() == experienceManager.getXpForLevel(player.getLevel());
+        
+        int levelToCompare = player.getLevel();
+        if (levelCheck && levelToCompare > 0) {
+            levelToCompare--;
+        }
+        
+        levelToCompare -= levelsToIncrease - 1;
+        
+        if (levelToCompare < 0) {
+            levelToCompare = 0;
+        }
+        
+        int xpToIncrease = experienceManager.getCurrentExp() - experienceManager.getXpForLevel(levelToCompare);
+        
+        increaseXpSign(player, xpToIncrease);
+    }
+    
+    /**
+     * Increases the XP on the sign with the current selected amount
+     * 
+     * @param player The current player increasing the XP of the sign
+     * @param xpToIncrease The amount of player levels to increase the sign with
+     */
+    private void increaseXpSign(Player player, int xpToIncrease) {
         // Use the experience manager to accuratly update the amounth of XP
         ExperienceManager experienceManager = new ExperienceManager(player);
         int currentXp = getCurrentXp();
@@ -516,7 +514,21 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param player The current player decreasing the XP of the sign
      */
     public void decreaseXp(Player player) {
-        decreaseXp(player, getXpPerTime());
+        decreaseXp(player, 1);
+    }
+    
+    /**
+     * Decreases the XP on the sign with the current selected amount
+     * 
+     * @param player The current player decreasing the XP of the sign
+     * @param levelsToDecrease The amount of player levels to decrease the sign with
+     */
+    public void decreaseXp(Player player, int levelsToDecrease) {
+        
+        ExperienceManager experienceManager = new ExperienceManager(player);
+        int xpToDecrease = experienceManager.getXpForLevel(player.getLevel() + levelsToDecrease) - experienceManager.getCurrentExp();
+        
+        decreaseXpSign(player, xpToDecrease);
     }
     
     /**
@@ -525,7 +537,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param player The current player decreasing the XP of the sign
      * @param xpToDecrease The amount of xp to decrease
      */
-    private void decreaseXp(Player player, int xpToDecrease) {
+    private void decreaseXpSign(Player player, int xpToDecrease) {
         // Use the experience manager to accuratly update the amounth of XP
         ExperienceManager experienceManager = new ExperienceManager(player);
         int currentXp = getCurrentXp();
@@ -546,7 +558,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param player
      */
     public void allXpOut(Player player) {
-        decreaseXp(player, getCurrentXp());
+        decreaseXpSign(player, getCurrentXp());
     }
 
     /**
@@ -556,7 +568,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      */
     public void allXpIn(Player player) {
         ExperienceManager experienceManager = new ExperienceManager(player);
-        increaseXp(player, experienceManager.getCurrentExp());
+        increaseXpSign(player, experienceManager.getCurrentExp());
     }
 
     /**
@@ -567,30 +579,25 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     public Sign getSign() {
         return sign;
     }
+    
+    /**
+     * Get the sign block
+     * 
+     * @return The sign block
+     */
+    public XpSignFacingBlock getSignFacingBlock() {
+        return signFacingBlock;
+    }
 
     /**
      * Update the amount of XP displayed
      */
     public void updateSign() {
-        sign.setLine(1, getCurrentXp() + "");
+        sign.setLine(0, ChatColor.BLUE + "[XP Storage]");
+        sign.setLine(1, "");
+        sign.setLine(2, getCurrentXp() + "");
+        sign.setLine(3, getSignText() + "");
         sign.update();
-    }
-
-    /**
-     * Get the current setting for the amount of xp to add/remove on the sign
-     * 
-     * @return The amount to increase/decrease
-     */
-    private int getXpPerTime() {
-        String amountLine = sign.getLine(2);
-        if (amountLine.equals("")) {
-            amountLine = nItem(0);
-            sign.setLine(0, amountLine);
-            sign.update();
-        }
-        int startline = amountLine.indexOf("[");
-        int endline = amountLine.indexOf("]");
-        return Integer.parseInt(amountLine.substring(startline + 1, endline));
     }
 
     /**
@@ -609,7 +616,20 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      */
     public boolean destroySign() {
         removeSign(this);
-        return false;
+        if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
+            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getInstance());
+        }
+        XpSignFacingBlock.removeFacingBlock(signFacingBlock);
+        return true;
+    }
+
+    /**
+     * Check if can be removed form the list
+     * 
+     * @return 
+     */
+    public boolean canDestroySign() {
+        return true;
     }
 
     /**

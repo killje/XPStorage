@@ -1,10 +1,10 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.UUID;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,7 +24,7 @@ public class RemovePlayer implements GuiElement {
     
     @Override
     public ItemStack getItemStack() {
-        return createSimpleItemStack(Material.FIREBALL, ChatColor.RED + "Remove player");
+        return ItemStackFromFile.getItemStack("removePlayer", ChatColor.RED + "Remove player");
     }
     
     @Override

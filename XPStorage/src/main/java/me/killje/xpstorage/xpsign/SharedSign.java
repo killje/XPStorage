@@ -22,8 +22,8 @@ public class SharedSign extends AbstractSharedSign {
     }
     
     @Override
-    protected void changeToSign() {
-        this.getSign().setLine(3, ChatColor.DARK_PURPLE + "Shared");
+    protected String getSignText() {
+        return ChatColor.DARK_PURPLE + "Shared";
     }
 
     @Override
@@ -33,7 +33,10 @@ public class SharedSign extends AbstractSharedSign {
 
     @Override
     public boolean destroySign() {
-        getGroup().destoryGroup();
+        Group group = getGroup();
+        if (group != null) {
+            group.destoryGroup();
+        }
         return super.destroySign();
     }
 

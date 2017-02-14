@@ -1,18 +1,12 @@
 package me.killje.xpstorage.gui.sign;
 
 import java.util.ArrayList;
-import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.gui.Exit;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.InventoryUtils;
 import me.killje.xpstorage.gui.Owner;
-import me.killje.xpstorage.gui.SimpleGuiElement;
-import me.killje.xpstorage.utils.PlayerInformation;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 
 /**
@@ -37,7 +31,7 @@ public class SignInventory extends InventoryUtils {
             .setInventoryName("XP Storage settings")
             .addGuiElement(new GetAllXp(this.xpSign))
             .addGuiElement(new PutAllXp(this.xpSign))
-            .addGuiElement(new Owner(this.xpSign), 7)
+            .addGuiElement(new Owner(this.xpSign, player), 7)
             .addGuiElement(new Exit());
         if (this.xpSign.getOwner().equals(this.player.getUniqueId())) {
             this.addGuiElement(new ChangeToNormal(this.xpSign))

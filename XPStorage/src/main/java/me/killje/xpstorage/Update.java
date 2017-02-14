@@ -31,7 +31,7 @@ public class Update {
                 }
                 Sign sign = (Sign) block.getState();
                 NormalSign normalSign = new NormalSign(sign, UUID.fromString(signSaver.getOwnerUuid()));
-                normalSign.getXpFromSign();
+                
                 
             } else {
                 Map<String, Object> sign = signSaver.serialize();

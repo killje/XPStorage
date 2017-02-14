@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.sign;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

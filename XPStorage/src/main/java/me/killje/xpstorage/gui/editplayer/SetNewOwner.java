@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,7 +31,7 @@ public class SetNewOwner implements GuiElement{
     public ItemStack getItemStack() {
         List<String> lore = new ArrayList<>();
         lore.add("Sets the player as the new owner");
-        return createSimpleItemStack(Material.REDSTONE, ChatColor.GOLD + "Set owner", lore);
+        return ItemStackFromFile.getItemStack("setNewOwner", ChatColor.GOLD + "Set owner", lore);
     }
     
     @Override

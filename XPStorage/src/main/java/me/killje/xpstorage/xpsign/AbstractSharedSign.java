@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
 import me.killje.xpstorage.gui.sign.EditList;
 import me.killje.xpstorage.gui.sign.FromList;

@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.editplayer;
 
 import java.util.UUID;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
 import me.killje.xpstorage.utils.HeadUtils;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;

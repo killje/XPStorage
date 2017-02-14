@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,7 +32,7 @@ public class RemovePlayerGroupCreateRights implements GuiElement{
         lore.add("Removes the right from the player");
         lore.add("to create and destroy sign");
         lore.add("for this group");
-        return createSimpleItemStack(Material.EMPTY_MAP, ChatColor.BLUE + "Remove right to create/destroy rights", lore);
+        return ItemStackFromFile.getItemStack("removePlayerCreateRights", ChatColor.BLUE + "Remove right to create/destroy rights", lore);
     }
     
     @Override

@@ -1,6 +1,6 @@
 name: ${project.artifactId}
 authors: ${project.authors}
-version: ${major.version.version}.b${buildNumber}
+version: ${major.version}.b${buildNumber}
 main: ${project.main}
 commands:
    createXpGroup:
@@ -8,3 +8,13 @@ commands:
       usage: /<command> [Group name]
       permission: xpStorage.createXpGroup
       permission-message: You don't have permission to create a XpGroup
+permissions:
+    xpStorage.createXpGroup:
+        description: Gives the ability to create groups
+        default: op
+    xpStorage.openGuiOthers:
+        description: Gives a player to open the gui of a sign from other players. Owner specific items and abilities are still hidden.
+        default: false
+    xpStorage.changeOwner:
+        description: Intended for moderators. This to change a sign from one owner to another. For groups and shared signs this is an default option in the edit player list.
+        default: op

@@ -19,7 +19,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-             <version>1.11.2-R0.1-20170206.010102-50</version>
+             <version>1.11.2-R0.1-20170210.091903-53</version>
             <scope>provided</scope>
         </dependency>
         

@@ -2,14 +2,17 @@ package me.killje.xpstorage.gui.sign;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.GuiElement;
-import me.killje.xpstorage.gui.choosegroup.GroupList;
+import me.killje.xpstorage.gui.choosegroup.ChooseGroup;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
+import me.killje.xpstorage.gui.list.GroupList;
+import me.killje.xpstorage.gui.list.GroupListGuiElement;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -19,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Zolder
  */
-public class ChangeToGroup implements GuiElement{
+public class ChangeToGroup implements GuiElement, GroupListGuiElement {
     
     private AbstractXpSign xpSign;
     private final boolean isSelected;
@@ -41,15 +44,15 @@ public class ChangeToGroup implements GuiElement{
         List<String> lore = new ArrayList<>();
         if (fromGroup) {
             lore.add("Change this group sign to a diffrent group");
-            return createSimpleItemStack(Material.EMPTY_MAP, "Choose diffrent group", lore);
+            return ItemStackFromFile.getItemStack("diffrentGroup", "Choose diffrent group", lore);
         }
         lore.add("Change the sign to a group sign.");
         lore.add("With this the XP will be available");
         lore.add("Within a selected group.");
         if (isSelected) {
-            return createSimpleItemStack(Material.STAINED_GLASS_PANE, ChatColor.YELLOW + "Currently selected:" + ChatColor.WHITE + " Group sign", lore);
+            return ItemStackFromFile.getItemStack("selected.group", ChatColor.YELLOW + "Currently selected:" + ChatColor.WHITE + " Group sign", lore);
         }
-        return createSimpleItemStack(Material.END_CRYSTAL, ChatColor.WHITE + "Group sign", lore);
+        return ItemStackFromFile.getItemStack("changeToGroup", ChatColor.WHITE + "Group sign", lore);
     }
 
     @Override
@@ -63,7 +66,7 @@ public class ChangeToGroup implements GuiElement{
         }
         
         Player player = (Player) event.getWhoClicked();
-        Inventory inventory = new GroupList(player, xpSign).getInventory();
+        Inventory inventory = new GroupList(player, this, xpSign).getInventory();
         
         event.getWhoClicked().openInventory(inventory);
         inventory.setItem(0, inventory.getItem(0));
@@ -74,6 +77,11 @@ public class ChangeToGroup implements GuiElement{
                 player.updateInventory();
             }
         });
+    }
+    
+    @Override
+    public GuiElement getGuiElement(UUID groupUUID, AbstractXpSign sign) {
+        return new ChooseGroup(groupUUID, sign);
     }
     
 }

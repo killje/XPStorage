@@ -1,9 +1,9 @@
 package me.killje.xpstorage.gui.choosegroup;
 
-import me.killje.xpstorage.gui.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +15,7 @@ public class CreateNewGroup implements GuiElement {
     
     @Override
     public ItemStack getItemStack() {
-        return createSimpleItemStack(Material.PAPER, "Create new group");
+        return ItemStackFromFile.getItemStack("newGroup", "Create new group");
     }
 
     @Override
