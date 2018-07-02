@@ -1,20 +1,24 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.xpstorage.gui.Exit;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
-import me.killje.xpstorage.gui.InventoryUtils;
-import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
-import me.killje.xpstorage.gui.guiElement.SimpleGuiElement;
+import me.killje.gui.Exit;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.gui.InventoryUtils;
+import me.killje.util.GuiSettingsFromFile;
+import me.killje.gui.guiElement.SimpleGuiElement;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class EditPlayerOptions extends InventoryUtils {
     
@@ -33,10 +37,10 @@ public class EditPlayerOptions extends InventoryUtils {
         ArrayList<GuiElement> guiElements = new ArrayList<>();
         
         if (playerToEdit.equals(sign.getOwner())) {
-            this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("selected.owner", "You can't edit the owner")));
+            this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("selected.owner")));
         }
         else if (playerToEdit.equals(playerEditing)) {
-            this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("selected.yourself",  "You can't edit yourself")));
+            this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("selected.yourself")));
         }
         else {
             PlayerInformation playerInformationPlayerEditing = PlayerInformation.getPlayerInformation(playerEditing);
@@ -76,8 +80,17 @@ public class EditPlayerOptions extends InventoryUtils {
         
         this.addGuiElement(new Exit(), 8);
         
-        this.setInventoryName("Edit player | " + Bukkit.getOfflinePlayer(playerToEdit).getName());
+        Map<String, String> replaceList = new HashMap<>();
         
+        replaceList.put("PLAYER_NAME", Bukkit.getOfflinePlayer(playerToEdit).getName());
+        
+        this.setInventoryName(GuiSettingsFromFile.getText("editPlayer", replaceList));
+        
+    }
+
+    @Override
+    protected Plugin getInstance() {
+        return XPStorage.getInstance();
     }
     
 }

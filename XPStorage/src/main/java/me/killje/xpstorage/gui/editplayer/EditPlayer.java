@@ -1,22 +1,21 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.UUID;
-import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
-import me.killje.xpstorage.utils.HeadUtils;
+import me.killje.gui.InventoryUtils;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.util.HeadUtils;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class EditPlayer implements GuiElement {
     
@@ -43,19 +42,15 @@ public class EditPlayer implements GuiElement {
 
     
     @Override
-    public void onGuiElementClickEvent(InventoryClickEvent event) {
-        //event.getView().close();
+    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)){
             return;
         }
-        Player player = (Player) event.getWhoClicked();
+        Player playerWhoClicked = (Player) event.getWhoClicked();
         
-        Inventory inventory = sign.getEditList(this.player, player.getUniqueId()).getInventory();
-        event.getWhoClicked().openInventory(inventory);
-        inventory.setItem(0, inventory.getItem(0));
-        //event.getWhoClicked().getInventory().setContents(event.getWhoClicked().getInventory().getContents());
+        EditPlayerOptions editList = sign.getEditList(this.player, playerWhoClicked.getUniqueId());
         
-        Bukkit.getScheduler().runTask(XPStorage.getInstance(), player::updateInventory);
+        currentInventoryUtils.openNewInventory(playerWhoClicked, editList);
         
     }
     

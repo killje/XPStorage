@@ -1,0 +1,776 @@
+# Player heads courtesy of http://heads.freshcoal.com/ and http://minecraft-heads.com/
+# If you want your own heads added here, search or upload it on http://heads.freshcoal.com/ or http://minecraft-heads.com/ and copy the give command "value" part
+GUIElements: 
+    
+    arrow.left:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzM3NjQ4YWU3YTU2NGE1Mjg3NzkyYjA1ZmFjNzljNmI2YmQ0N2Y2MTZhNTU5Y2U4YjU0M2U2OTQ3MjM1YmNlIn19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTFmMDU5Yzk5ZThlOTIyZjhjYjdmYThlNjA0YTcwMTQ3ZmExMTg0OWIzYjNkYmJmZjIyNjU3OTEyMTRlMjM5MSJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzZhOGQyOTIxOWUyYzljODQ5NTQ2OTNiODdmMzdhZWNlM2MyNzFkNTdmYjZhMmQ3MWZhZmUzOWYwYjgwNDAifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmIwZjZlOGFmNDZhYzZmYWY4ODkxNDE5MWFiNjZmMjYxZDY3MjZhNzk5OWM2MzdjZjJlNDE1OWZlMWZjNDc3In19fQ==
+
+    arrow.right:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE0ZjY4YzhmYjI3OWU1MGFiNzg2ZjlmYTU0Yzg4Y2E0ZWNmZTFlYjVmZDVmMGMzOGM1NGM5YjFjNzIwM2Q3YSJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTFjMmUyOTE5MWNiYmZhZWM0OWYyYzY0MWE0MGFhODA4ZDQ5ODQ2YjcwNWRmM2M5ZjAyYjIzOTZkYThlMTE2In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODFhNGI1ZTg4MDVhYmZhY2VjMzIwNjU0ODllZjExZmNjZWUzZjUxYmVmZGRkMzE3MTQ3NzNmNzE0ZTdiMjczIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjJmM2EyZGZjZTBjM2RhYjdlZTEwZGIzODVlNTIyOWYxYTM5NTM0YThiYTI2NDYxNzhlMzdjNGZhOTNiIn19fQ==
+
+    arrow.down:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzhjYTc2MTVjYjgzN2Y2OTRlNDk2ZmY4YTk4NTNjZDdkYjVmZDg1NTI5ZGNhZDk4Yzc4YmEyNmMzZTRmNjg3In19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWQ3ZjgxNDFhNjgzZTlhMjk2YzNkNmJlMzgyMTgyMmFmN2ExYTZjOTYxYTYzNjBmYzlkYmZhOWY2MzI0ZCJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDJmN2U1MWZlMDNlN2VmNGM1OTJhYWVhMThhMTk2Y2UzNGU0MzJiNDc4ZWY3MTNiOGIxOGRiNzRkNjhhZWQwIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWI3Y2U2ODNkMDg2OGFhNDM3OGFlYjYwY2FhNWVhODA1OTZiY2ZmZGFiNmI1YWYyZDEyNTk1ODM3YTg0ODUzIn19fQ==
+
+    arrow.up:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzNjZjE2NmE4MjZkODU1NDU0ZWQ0ZDRlYTVmZTMzZjNkZWVhYTQ0Y2NhYTk5YTM0OGQzOTY4NWJhNzFlMWE0ZiJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTAzMzkwM2U0MWM5YWI2Mjk1MTY5ZWVlZjU5MDEzNjE3ODYwZWE2MGMwZTdlZDI4YjM0ZGFiNGRmMjkwOTNiYSJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjFmYzgyMTRiN2NiOTEwODczZjM4NDJkNTdhMWEzM2ViYjU4MzliNTQ4ZGNiNWRhMzdkODcyYzVlYzM1ZjMwIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNThmZTI1MWE0MGU0MTY3ZDM1ZDA4MWMyNzg2OWFjMTUxYWY5NmI2YmQxNmRkMjgzNGQ1ZGM3MjM1ZjQ3NzkxZCJ9fX0=
+
+    alphaNum.0:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMGViZTdlNTIxNTE2OWE2OTlhY2M2Y2VmYTdiNzNmZGIxMDhkYjg3YmI2ZGFlMjg0OWZiZTI0NzE0YjI3In19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDlmZDk5ZDIxMWY0ZDM0MTE1Y2ZhZTc4OGJlYjc3MTZkMTI2NmY4ODliM2Q0MWY1OGU5YWJkNTI2YzVlNiJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2Q2ZmU5ZDZhM2VhZDgxMGZkNmMwYTg1NmZmOTc4NzgzYjA5YWEwYjQzOGFlZWFlN2RmODIxNWQyZCJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhMjI0ODA3NjkzOTc4ZWQ4MzQzNTVmOWU1MTQ1ZjljNTZlZjY4Y2Y2ZjJjOWUxNzM0YTQ2ZTI0NmFhZTEifX19
+        displayName: '&WHITE0'
+
+    alphaNum.1:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzFiYzJiY2ZiMmJkMzc1OWU2YjFlODZmYzdhNzk1ODVlMTEyN2RkMzU3ZmMyMDI4OTNmOWRlMjQxYmM5ZTUzMCJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTZhYmI5Y2Y0MjUzMTBlOWRkZjFiNGE4OWExZjQ1ZjMwZGQzY2RiYzAyYzljMzdkN2Y2YzhmMWQ2NjA2ZCJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmExMTg4MzgzNTRkYmFiYTZiMmU1YmFjYmViODQzYTkxNzZmYmNlYmZhNGRlYmI0NDE4YzIxMTdkODhkZDhhIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzFhOTQ2M2ZkM2M0MzNkNWUxZDlmZWM2ZDVkNGIwOWE4M2E5NzBiMGI3NGRkNTQ2Y2U2N2E3MzM0OGNhYWIifX19
+        displayName: '&WHITE1'
+
+    alphaNum.2:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNkOWVlZWU4ODM0Njg4ODFkODM4NDhhNDZiZjMwMTI0ODVjMjNmNzU3NTNiOGZiZTg0ODczNDE0MTk4NDcifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2YyOWViYTZjY2YyOTc3Y2E5N2U0OWI1YjE1Mjc2OGM1NTA4Zjc0M2Q5OTQwZTgzM2JiZjA1YzkwMTFkYzg2In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMThmNDczZWQxZWFhMWI2MWNkYjU1MjMyY2QyYmMxZDE0MDFiN2M4MGViODdlZDVjZGRjNWFmOWIxMzYzY2Y2In19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWNiNDE5ZDk4NGQ4Nzk2MzczYzk2NDYyMzNjN2EwMjY2NGJkMmNlM2ExZDM0NzZkZDliMWM1NDYzYjE0ZWJlIn19fQ==
+        displayName: '&WHITE2'
+
+    alphaNum.3:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWQ0ZWFlMTM5MzM4NjBhNmRmNWU4ZTk1NTY5M2I5NWE4YzNiMTVjMzZiOGI1ODc1MzJhYzA5OTZiYzM3ZTUifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjQ3N2QzY2UzMTczZTgzOWNmZjhjZTZlNzIwNTZlNDE3MTg1MzQ1NzczNmMzMTEyOGJlYTc5ZGU4NDk4MTY3In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmI0YmFkZmZmNzg3YTFjZjljZjNjNmUyNzIwY2EyN2YxZWVhZjQ0YjI3Njg1MjBlZGM5NGYyMGM0ZjMzMDgifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjhlYmFiNTdiNzYxNGJiMjJhMTE3YmU0M2U4NDhiY2QxNGRhZWNiNTBlOGY1ZDA5MjZlNDg2NGRmZjQ3MCJ9fX0=
+        displayName: '&WHITE3'
+
+    alphaNum.4:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDJlNzhmYjIyNDI0MjMyZGMyN2I4MWZiY2I0N2ZkMjRjMWFjZjc2MDk4NzUzZjJkOWMyODU5ODI4N2RiNSJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2ZhZDJkOGRmYTQ0YTRjNDVhMmQ2M2ViZDc1MzM4ZjJjZjZjNTI4OTUxZTE1ZjdhZGZiM2UzODE1ZDk3ZmU5In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjBiNTEyOTY0OTRlY2Q3YzI2ZGI3YmI2YTU0YzkyYjlhYzUzNGFjYTIzODljZGQ1NDM4ZGE2YTcxNGEyZGEifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjJiZmNmYjQ4OWRhODY3ZGNlOTZlM2MzYzE3YTNkYjdjNzljYWU4YWMxZjlhNWE4YzhhYzk1ZTRiYTMifX19
+        displayName: '&WHITE4'
+
+    alphaNum.5:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQ1N2UzYmM4OGE2NTczMGUzMWExNGUzZjQxZTAzOGE1ZWNmMDg5MWE2YzI0MzY0M2I4ZTU0NzZhZTIifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQxZmVkNmEzZTIzYzYxZTZhMzZmYzdjOTJhMzU5MWNmODY3ZDk4OWUzYTA3ZjIxNTNmMGNkZjUwMmVjZiJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjE3ZWM5MzkyOTYxNmYxMjM0N2MxMzkzNjkzNDM3ZjE3NDk4YmRlYWU2NGNlNzk1Zjg5NWJhMzJmIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWY0ZWNmMTEwYjBhY2VlNGFmMWRhMzQzZmIxMzZmMWYyYzIxNjg1N2RmZGE2OTYxZGVmZGJlZTdiOTUyOCJ9fX0=
+        displayName: '&WHITE5'
+
+    alphaNum.6:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzM0YjM2ZGU3ZDY3OWI4YmJjNzI1NDk5YWRhZWYyNGRjNTE4ZjVhZTIzZTcxNjk4MWUxZGNjNmIyNzIwYWIifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWU3NjU1YTc2NWU0NmQ1YzI0OTI2OTQ2M2ZmZjg2ZDhlMGY2OGRlZDM1MzgzNzc2OWMyNjQ1YTdlZDA4ZiJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2U4YTA4ZWU4NmQ4NTM1N2FlZWVmZDVkMzU4MmNjMmIzNGMyMTU3ZDQ3ZjMzZWMzMTgyY2JkZGVlZWE2In19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjMzMWE2YTZmY2Q2OTk1YjYyMDg4ZDM1M2JmYjY4ZDliODlhZTI1ODMyNWNhZjNmMjg4NjQ2NGY1NGE3MzI5In19fQ==
+        displayName: '&WHITE6'
+
+    alphaNum.7:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmRiNmViMjVkMWZhYWJlMzBjZjQ0NGRjNjMzYjU4MzI0NzVlMzgwOTZiN2UyNDAyYTNlYzQ3NmRkN2I5In19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDZjNjI0MzNiNzUxMTE0OTNlZjUzMmJkOTBhMjVhMWNmYTQ3ZGJkZTg1NDQyMDRkODU1ZjQxZjBmZTNlZTYifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmMyNGJhOThlMmM5ZjZjYTJjZjI4NDZlMTk2ODU2OWUxODU3ZmY0YWI3ZGJlZjhmZjQ2OGUxNzkyZTc5MTMifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDRiYTZhYzA3ZDQyMjM3N2E4NTU3OTNmMzZkZWEyZWQyNDAyMjNmNTJmZDE2NDgxODE2MTJlY2QxYTBjZmQ1In19fQ==
+        displayName: '&WHITE7'
+
+    alphaNum.8:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTkxOTQ5NzNhM2YxN2JkYTk5NzhlZDYyNzMzODM5OTcyMjI3NzRiNDU0Mzg2YzgzMTljMDRmMWY0Zjc0YzJiNSJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWM2ODk3NWRhMmE2ZTZlYWEzZGI0NDc3YzM0YjdkNWU2OGExNWQyYzE5NGEwN2FlOTQwNjA4NjNhOTY3OGM2In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjdjNDE3M2JmZDBjNzMxZTg3ZDJmZjc5M2I4YTJhM2VlODQzNDM3ODk1YTg4N2FjOGM0MzczMDhjNmEifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzYxYThhNjQxNDM3YmU5YWVhMjA3MjUzZGQzZjI1NDQwZDk1NGVhMmI1ODY2YzU1MmYzODZiMjlhYzRkMDQ5In19fQ==
+        displayName: '&WHITE8'
+
+    alphaNum.9:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTY3Y2FmNzU5MWIzOGUxMjVhODAxN2Q1OGNmYzY0MzNiZmFmODRjZDQ5OWQ3OTRmNDFkMTBiZmYyZTViODQwIn19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWQyYjgyNGFlOGEwNTI5M2QyNDgzZmVmMjJiYTZmYjFkMzUyMTlkMTI1MjU2MGY0YWRkMWRhNzc0ODkyNyJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE4OTJjZTVlN2I0M2M5N2I4Y2U2M2Q1NGUyOWIwZjRiODI5MDY1NmZiNGNiNmU1NGNlNDU4NDljOCJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE5MjhlMWJmZDg2YTliNzkzOTdjNGNiNGI2NWVmOTlhZjQ5YjdkNWY3OTU3YWQ2MmMwYzY5OWE2MjJjZmJlIn19fQ==
+        displayName: '&WHITE9'
+
+    alphaNum.A:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTY3ZDgxM2FlN2ZmZTViZTk1MWE0ZjQxZjJhYTYxOWE1ZTM4OTRlODVlYTVkNDk4NmY4NDk0OWM2M2Q3NjcyZSJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWU4OWZlMGY2ZGZkY2FlYjQ1N2IzNDVlYmRmOWQ1MjUxODlkZDE0NGM0NjhkYThmOTI0OWU2NTY4ODI0MjIifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE1ZDU0ZTQ2MjlmOWJjOTU5YzEyYTk3NGFjZGU2MTkxMjVhNDZiZThmOGI0ZDEyZmI2OGU0ZjIyNmM3ZDVkMyJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmFjNThiMWEzYjUzYjk0ODFlMzE3YTFlYTRmYzVlZWQ2YmFmY2E3YTI1ZTc0MWEzMmU0ZTNjMjg0MTI3OGMifX19
+        displayName: '&WHITEA'
+
+    alphaNum.B:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTBjMWI1ODRmMTM5ODdiNDY2MTM5Mjg1YjJmM2YyOGRmNjc4NzEyM2QwYjMyMjgzZDg3OTRlMzM3NGUyMyJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTE1YTQyNjNlODQ3ZGY5NDRkZmNjZDgzNWVmY2JmZmQ3NzlhODgxYTM5OTM3NzFlZWUwZDRjMjcwZjZhNSJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjNjYTgyMjE0MjNlZmNiOGIzNzNhNDgzNDA2MjdiMTk5YjkwZTBhZjU3NTRhODEzZTUxYzM4NWE5MjlhYTQyMiJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDRjNzExNTcxZTdlMjE0ZWU3OGRmZTRlZTBlMTI2M2I5MjUxNmU0MThkZThmYzhmMzI1N2FlMDkwMTQzMSJ9fX0=
+        displayName: '&WHITEB'
+
+    alphaNum.C:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJlOTgzZWM0NzgwMjRlYzZmZDA0NmZjZGZhNDg0MjY3NjkzOTU1MWI0NzM1MDQ0N2M3N2MxM2FmMThlNmYifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmU4MjlhZDA2YWUxZTc4ZDZlYjRjZmVjMTNiNGNjOGEwZTBkMTYwYzAyZWY5MTZhZmI2ZmRlMzkyMzhmYzZhIn19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzE2YjcxNzk0YzJjNzk1ZTYxMmUxMTFkYmY5NzU0MTY4NDlhMGIyZjg4OWZhZWM3ZjY2YWRhMjhiNmM0ZjMifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZmNWFhYmVhZDZmZWFmYWFlY2Y0NDIyY2RkNzgzN2NiYjM2YjAzYzk4NDFkZDFiMWQyZDNlZGI3ODI1ZTg1MSJ9fX0=
+        displayName: '&WHITEC'
+
+    alphaNum.D:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5M2RjMGQ0YzVlODBmZjlhOGEwNWQyZmNmZTI2OTUzOWNiMzkyNzE5MGJhYzE5ZGEyZmNlNjFkNzEifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0OTQyNTYzMWJjMTIzMWRmN2UxODI1YjMxMjdkMzc2MWUyOGMwYTVjMDYwYmIxMDcxYjk1YjdjZTZkNzI5In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjljMWM2YzFmYzcyOWZlNTljZTgyZmY5YjIyNjExMDk0ZTEwOWRlZmEwNDI2N2I1MWJhYjg0N2VkNzQwIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODkzZTYyMmI1ODE5NzU3OTJmN2MxMTllYzZmNDBhNGYxNmU1NTJiYjk4Nzc2YjBjN2FlMmJkZmQ0MTU0ZmU3In19fQ==
+        displayName: '&WHITED'
+
+    alphaNum.E:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGJiMjczN2VjYmY5MTBlZmUzYjI2N2RiN2Q0YjMyN2YzNjBhYmM3MzJjNzdiZDBlNGVmZjFkNTEwY2RlZiJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGE4N2FlODBiOWU0MmRkZTU5MDU2MDc3NGIzZmExMjkwZGQxMzg4MmU4NThiNzJjZmIyYzk0ZmI2YTI4In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGUwN2VjNjU5YTI5MzliOWJlMTY2YjExNzcxN2M3NzJhNDViZjdiODM5MGE1ZmY0ZmY1ZWYzNmQyZGJiODYifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE1N2Q2NWIxOTkyMWM3NjBmZjQ5MTBiMzQwNDQ1NWI5YzJlZTM2YWZjMjAyZDg1MzhiYWVmZWM2NzY5NTMifX19
+        displayName: '&WHITEE'
+
+    alphaNum.F:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjE4M2JhYjUwYTMyMjQwMjQ4ODZmMjUyNTFkMjRiNmRiOTNkNzNjMjQzMjU1OWZmNDllNDU5YjRjZDZhIn19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjRkZDJhM2ViZmI0MjYxZmFhOGFhMWNjYWViZWI4MjQzN2E5NTk4NjczY2FhMmFiYTI2YTc1NTMyNTQ1MTUifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZlYmMwZmYxMWU1MmUyMzk3M2Y0NTVlOTQwNWYyMDUwZGVmYTM5ODE5MjYyODhhNzE4NzQ4NzFiOGU0In19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzU0Y2YyNjFiMmNkNmFiNTRiMGM2MjRmOGY2ZmY1NjVhN2I2M2UyOGUzYjUwYzZkYmZiNTJiNWYwZDdjZjlmIn19fQ==
+        displayName: '&WHITEF'
+
+    alphaNum.G:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWNhM2YzMjRiZWVlZmI2YTBlMmM1YjNjNDZhYmM5MWNhOTFjMTRlYmE0MTlmYTQ3NjhhYzMwMjNkYmI0YjIifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE0Y2QyZWFhYmMwZmFlNTExOTA1YmIxNGQzOGZiNmVhZGQxN2JiM2ViY2Y2ODczZGEyNzY5NDBiMjQ2In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZhMGIxM2U5MTQxNzZiOTI5Yzc2ZGRlNTVhOTdjYzRlYThlYjEzZWNlZDBhMGYxM2U0MTc0NjFkZjg1YiJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDNjOWY4YTc0Y2EwMWJhOGM1NGRlMWVkYzgyZTFmYzA3YTgzOTIzZTY2NTc0YjZmZmU2MDY5MTkyNDBjNiJ9fX0=
+        displayName: '&WHITEG'
+
+    alphaNum.H:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzFmMzQ2MmE0NzM1NDlmMTQ2OWY4OTdmODRhOGQ0MTE5YmM3MWQ0YTVkODUyZTg1YzI2YjU4OGE1YzBjNzJmIn19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmNiMzEyOTM0ZmIxM2ZiODA5MDhhOGYyZGE1M2E3Mzk2OTFlYTJmNGYxOGU5ODA4ZmM3NDdkMDEzMTRjMyJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU1ODNjZjVlZjNjMDQyM2Q5OTRhNGNkMWYzZTRmZWYwNjhjOGM0ZmMyOTc5MjZjMWNhNWE2ZDE2MWQyZCJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjhjNThjNTA5MDM0NjE3YmY4MWVlMGRiOWJlMGJhM2U4NWNhMTU1NjgxNjM5MTRjODc2NjllZGIyZmQ3In19fQ==
+        displayName: '&WHITEH'
+
+    alphaNum.I:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDYxNzhhZDUxZmQ1MmIxOWQwYTM4ODg3MTBiZDkyMDY4ZTkzMzI1MmFhYzZiMTNjNzZlN2U2ZWE1ZDMyMjYifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMyM2Y4ZDc3MzNmOTkzZDI3NWZhNTU2ZDMyMWFiMzRiYmRkMzhiMGNlNTJiYWQ3NTE0YmRjOTA5YTczYzQifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQ4YmZjYjdiY2NkZjY1YTI2MTI3NGM0NDQ1ZTdlNWZkNWJmNzA4YTgxOWIyZWM1ZTZlNGM0ZWYyMzJlZWUzIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDI0NjMyM2M5ZmIzMTkzMjZlZTJiZjNmNWI2M2VjM2Q5OWRmNzZhMTI0MzliZjBiNGMzYWIzMmQxM2ZkOSJ9fX0=
+        displayName: '&WHITEI'
+
+    alphaNum.J:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2E3OWRiOTkyMzg2N2U2OWMxZGJmMTcxNTFlNmY0YWQ5MmNlNjgxYmNlZGQzOTc3ZWViYmM0NGMyMDZmNDkifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDVmYjg3MTNhNGM5MzE5ODU2NzEzZjgzYTE4YmM5MGI4YTAzYmY1NTI2MmIyNzY4OGZhNzg3MTVlOTBiOCJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ2YTQ3ZWIyOTkyNDliZDlmZmZlYmYyYWRmNjgzZmM1N2QyZDE2YTE1MTRkZDE4ZTM0YzZjODFmNTg2In19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzU4NDU2Y2Q5YmI4YTdlOTc4NTkxYWUwY2IyNmFmMWFhZGFkNGZhN2ExNjcyNWIyOTUxNDVlMDliZWQ4MDY0In19fQ==
+        displayName: '&WHITEJ'
+
+    alphaNum.K:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTQ2MWIzOGM4ZTQ1NzgyYWRhNTlkMTYxMzJhNDIyMmMxOTM3NzhlN2Q3MGM0NTQyYzk1MzYzNzZmMzdiZTQyIn19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDUyYjY0YWVmNDhkNzU0N2U3ZDM0YmJjODkxNTZiNTgzODgwZWY4YTRlNjc5ZjY1MDY4OGE1Y2JmZDRkYjZlIn19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjg1ZDRjNjI2ZmY2Y2U4NWIzMzhiZmM5Njk5NGE5YmFlODk2YzAyNTEyYjE4ZGRhNWZjMmI2MTcyNTJmY2ZkNiJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWY0OWZiNzA4MzY5ZTdiYzI5NDRhZDcwNjk2M2ZiNmFjNmNlNmQ0YzY3MDgxZGRhZGVjZmU1ZGE1MSJ9fX0=
+        displayName: '&WHITEK'
+
+    alphaNum.L:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzE5ZjUwYjQzMmQ4NjhhZTM1OGUxNmY2MmVjMjZmMzU0MzdhZWI5NDkyYmNlMTM1NmM5YWE2YmIxOWEzODYifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWVjYjJiNDhlYjE2OTE4NmRkZjkxODhmNmQxN2Q5YmVlYWQ1MjNlMWIwM2NjZDhhMThhZmYxZGFjOWQ2ZWYifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjY1NTgxY2RjOWZhMzVlZmExYmMxMzk4Mzk2NWY5ZWZiNjY1NGJkZmVmZWE1OWUxNGNmYjUxNmVlMzI0NTk4In19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM4NGY3NTQxNmU4NTNhNzRmNmM3MGZjN2UxMDkzZDUzOTYxODc5OTU1YjQzM2JkOGM3YzZkNWE2ZGYifX19
+        displayName: '&WHITEL'
+
+    alphaNum.M:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljNDVhMjRhYWFiZjQ5ZTIxN2MxNTQ4MzIwNDg0OGE3MzU4MmFiYTdmYWUxMGVlMmM1N2JkYjc2NDgyZiJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjEzNTE1MWY0NzA3MzkwYTZjMmEyNjRiM2EwZjgyNGYxYWZkMGZlNTljMTQ3ZjYxZTYzYzhjODRlMDlmNjgifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmI0YWU4Y2FlYjhkZmQzNzY1OWMwYTVlNjIwZjM0MzMwOGE4NGFiNDc4M2EyOGY3NGRkNDc1N2Y5ODdhIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzFmZGU5MWIxOWI5MzA5OTEzNzI0ZmVhOWU4NTMxMTI3MWM2N2JjYjc4NTc4ZDQ2MWJmNjVkOTYxMzA3NCJ9fX0=
+        displayName: '&WHITEM'
+
+    alphaNum.N:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzViOGIzZDhjNzdkZmI4ZmJkMjQ5NWM4NDJlYWM5NGZmZmE2ZjU5M2JmMTVhMjU3NGQ4NTRkZmYzOTI4In19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjZhNmJhOTE2NjQ1ZGNkYzIxNzYxOWM0NDdhMmJiZDUxYWU0M2YzMjJiNTJjZGNiNjI0YmJjMzY2ZTQ3YTlkIn19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ3ODRhZThkZGNhYjkzNjM2OTA0NmZhZTdmMTM4NmNlMWNiNmQ0MGE4ODFmYmNhYzc0ZTUwYzZlZjc4YjQ5In19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWM3Yzk3MmU2Nzg1ZDZiMGFjZWI3NzlhYmRkNzcwMmQ5ODM0MWMyNGMyYTcxZTcwMjkzMGVjYTU4MDU1In19fQ==
+        displayName: '&WHITEN'
+
+    alphaNum.O:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDExZGUxY2FkYjJhZGU2MTE0OWU1ZGVkMWJkODg1ZWRmMGRmNjI1OTI1NWIzM2I1ODdhOTZmOTgzYjJhMSJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDhjMjFmNzdlOTRkOTFiNmVhMTdkYTkzNzFlOGIyMWRhOWVhZjdlMzZmZThjMDMzM2VmNmI2OWYzNDE2In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODA4ODYyOTYyZmI5ZmVkOTNhY2VlNTQzYTc2MjRhNGI1MzZkZTYyMWM3MzQ2MDY4NDBlMjM0MmVlMjYwNGQifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODA3M2JiNDRmOTM0NWY5YmIzMWE2NzkwMjdlNzkzOWU0NjE4NDJhOGMyNzQ4NmQ3YTZiODQyYzM5ZWIzOGM0ZSJ9fX0=
+        displayName: '&WHITEO'
+
+    alphaNum.P:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTBhNzk4OWI1ZDZlNjIxYTEyMWVlZGFlNmY0NzZkMzUxOTNjOTdjMWE3Y2I4ZWNkNDM2MjJhNDg1ZGMyZTkxMiJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2EyMDIzOGEyZTFlOThlYzFjMzM0NDE2NDk3ZjY3ZjEyM2Q5YTkxZDA1ZWU1OGEyYjBhNTNkNTlhODUwOGYifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjI5NzU2YzVlMjE5MTUxYzJlNmFiYjk1MzRmYmUwYzc5ZTBjZjdkMDhkYjljZGY2OGZlYTRkNjdmOGY5NCJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjRiMjMxYThkNTU4NzBjZmI1YTlmNGU2NWRiMDZkZDdmOGUzNDI4MmYxNDE2Zjk1ODc4YjE5YWNjMzRhYzk1In19fQ==
+        displayName: '&WHITEP'
+
+    alphaNum.Q:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM2MDlmMWZhZjgxZWQ0OWM1ODk0YWMxNGM5NGJhNTI5ODlmZGE0ZTFkMmE1MmZkOTQ1YTU1ZWQ3MTllZDQifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTU0NzkwMjAzNDg2Y2VjOTdkMWVjYjg0NWM4Y2YyNTc1NmExZDkwOGM2YjMwMzU3YzJmZGFlMmFmM2Q4NjM4In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhhZTU2YzgzNDU0N2I1NmNmZDIzN2QxMzU1MjZhNmRhZDI1ZGYzNDI0ZDlhODhlYTQ0OGIxMmM4ZmQ2YmZlIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZlZGQ2ZjllZmRiMTU2Yjg2OTM1Njk5YjJiNDgzNGRmMGY1ZDIxNDUxM2MwMWQzOGFmM2JkMDMxY2JjYzkyIn19fQ==
+        displayName: '&WHITEQ'
+
+    alphaNum.R:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVjZWQ5OTMxYWNlMjNhZmMzNTEzNzEzNzliZjA1YzYzNWFkMTg2OTQzYmMxMzY0NzRlNGU1MTU2YzRjMzcifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmI5NTg5ZDc2ZWNjYWNlNzE2ZWVjNDNjNmFhNzMyZjY5ZmNhMTQ2OWM3YTUwODQzNTcyNzhkNjlhYTc3N2VmIn19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzQyNDJjYmVlYzhlODU0ZGM0N2YyYmExYTNhOTJiNDhkOWEzNDY1NWNjZGRhODM0YzZiZDJkNjZjMmQzNzMzYSJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzAzYTFjZDU4M2NiYmZmZGUwOGY5NDNlNTZhYzNlM2FmYWZlY2FlZGU4MzQyMjFhODFlNmRiNmM2NDY2N2Y3ZCJ9fX0=
+        displayName: '&WHITER'
+
+    alphaNum.S:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2U0MWM2MDU3MmM1MzNlOTNjYTQyMTIyODkyOWU1NGQ2Yzg1NjUyOTQ1OTI0OWMyNWMzMmJhMzNhMWIxNTE3In19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODVkYzFhOWJhNjA0ODI2NDcxOGRkNTYwNzkyMzFhMmRiOGU0MzBlZjgxODk2MDY4OTQzMTU2ODc0NDRkNzQifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjY3Mzk0Yjk2NmJmOTAzYWY0ZmQ1NTc5ZjlhNGE0ZTQ2MjNiNWQ0ZmU4N2RlODZlZjE4YjFkNmFiOTZjODQifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjY1NzJlNjU1NzI1ZDc4Mzc1YTk4MTdlYjllZThiMzc4MjljYTFmZWE5M2I2MDk1Y2M3YWExOWU1ZWFjIn19fQ==
+        displayName: '&WHITES'
+
+    alphaNum.T:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTU2MmU4YzFkNjZiMjFlNDU5YmU5YTI0ZTVjMDI3YTM0ZDI2OWJkY2U0ZmJlZTJmNzY3OGQyZDNlZTQ3MTgifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjRhMmZkYzFiZTNlNzA0ODUzZWI5NzliNWFjZjQ1NjI5YjdhOWQ2OTQyNDkzOGMyNDc3ODIzNDY0ZDg1MjUifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlNzMwZjYxOWVhZWFjM2M1NjFmMmNkZmJjYmJlNThhMjkxZTE1ODZhYjhkNTAxYmE3Y2Q0NGI1MmVlYTVmIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzA4YzllZjNhMzc1MWUyNTRlMmFmMWFkOGI1ZDY2OGNjZjVjNmVjM2VhMjY0MTg3N2NiYTU3NTgwN2QzOSJ9fX0=
+        displayName: '&WHITET'
+
+    alphaNum.U:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjA3ZmJjMzM5ZmYyNDFhYzNkNjYxOWJjYjY4MjUzZGZjM2M5ODc4MmJhZjNmMWY0ZWZkYjk1NGY5YzI2In19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODg2OWZjMmRmNzI5OWNmYjZmMWFlODdjZWNlYWIyMTY2NzYzZjgzY2FlYmYyZWI5ZDlhMTcwOTQ2ZDRlZDkifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjIxN2E4MjQ1ZWZkOTQ5MWI2OTg5ZTRiOTYxMzkzMjNjYmI1OTA2MjQyNjUzMjdiMWNkZGI0MWU3Y2Q3MTI3MCJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVhNmUzYWU1YWU2MjU5MjM1MjQ4MzhmYWM5ZmVmNWI0MjUyN2Y1MDI3YzljYTE0OWU2YzIwNzc5MmViIn19fQ==
+        displayName: '&WHITEU'
+
+    alphaNum.V:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2M5YTEzODYzOGZlZGI1MzRkNzk5Mjg4NzZiYWJhMjYxYzdhNjRiYTc5YzQyNGRjYmFmY2M5YmFjNzAxMGI4In19fQ==
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmNlYWY0ODliZDc2Y2U1ZjZiYmUzMTI2Yjk3MzE2YTA4OTZjNjdmYmRjYTNiMTk3YmU3NmQ2ZGFhMmRkZGI5In19fQ==
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDQ3MjEzZDQ1Nzk1NTgxNjEwODkyZGVkMTY1ZGZkNWRiYzUyYTg0YmU3MzVmOWZiOGY5YzY4OTQ0ZGY4OWZiIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTc1MTIxZjdkOWM2OGRhMGU1YjZhOTZhYzYxNTI5OGIxMmIyZWU1YmQxOTk4OTQzNmVlNjQ3ODc5ZGE1YiJ9fX0=
+        displayName: '&WHITEV'
+
+    alphaNum.W:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY5YWQxYTg4ZWQyYjA3NGUxMzAzYTEyOWY5NGU0YjcxMGNmM2U1YjRkOTk1MTYzNTY3ZjY4NzE5YzNkOTc5MiJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZDk5N2M5YzM3NDI3OTFhYjgyMzY4NjZlNjBhNzE2Yjc1YzRmMmY2N2E5YWZjZGU3YzFjOWQ3YmEyMCJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmIyNzliNjZlM2E3NmE3NzM3OTc0ZGI2ODllMDFkNTU3YjkxNmMwZGZjYjZkM2Y1MjU1NWRmZGExODdiM2JkIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjdlMTY1YzNlZGM1NTQxZDQ2NTRjNDcyODg3MWU2OTA4ZjYxM2ZjMGVjNDZlODIzYzk2ZWFjODJhYzYyZTYyIn19fQ==
+        displayName: '&WHITEW'
+
+    alphaNum.X:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE2Nzg3YmEzMjU2NGU3YzJmM2EwY2U2NDQ5OGVjYmIyM2I4OTg0NWU1YTY2YjVjZWM3NzM2ZjcyOWVkMzcifX19
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUyNDJjOGIzYmVlZjE4YWM1MjllMDRiOTgxZmEzMzc3ZGUwY2QxMzFjOTUzYzIwNzY1YzFlMWQ1MzVkMjQzZiJ9fX0=
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjc1ODZlM2E0NGU4NTA3NjhiMzkyMzRjZjdkZTliYzNmYzExN2JjN2U1NDRiMWUwYTliYzFkOWJjYTU5ZjM5ZSJ9fX0=
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTkxOWQxNTk0YmY4MDlkYjdiNDRiMzc4MmJmOTBhNjlmNDQ5YTg3Y2U1ZDE4Y2I0MGViNjUzZmRlYzI3MjIifX19
+        displayName: '&WHITEX'
+
+    alphaNum.Y:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUyZmIzODhlMzMyMTJhMjQ3OGI1ZTE1YTk2ZjI3YWNhNmM2MmFjNzE5ZTFlNWY4N2ExY2YwZGU3YjE1ZTkxOCJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxYjcwM2E0YTk3NzIzZTFmMzljOWY4M2JlODgwOTFkOTc3Mzg0NWZmYjZlYmY4NDYwNGMzZWQ3YTM1ZmIifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2M5ODYzMzJkMmE5YmZjNDIxZTE0ZWRlYmI5OTlhNDg4N2FhMzU3YWJhOGZlYzc0MmI5MmYzNjE3YjZkNDdmIn19fQ==
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTM1NDI0YmI4NjMwNWQ3NzQ3NjA0YjEzZTkyNGQ3NGYxZWZlMzg5MDZlNGU0NThkZDE4ZGNjNjdiNmNhNDgifX19
+        displayName: '&WHITEY'
+
+    alphaNum.Z:
+        type: head
+        # Wooden:
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTA1ODJiOWI1ZDk3OTc0YjExNDYxZDYzZWNlZDg1ZjQzOGEzZWVmNWRjMzI3OWY5YzQ3ZTFlMzhlYTU0YWU4ZCJ9fX0=
+        # Wooden Spruce:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDg0NjljODIyY2I1NjA5ZTc0MWY3ZjIxODI4MjI2MjNjMWEzNjc1ZTc4ZmNmMzJlMWNiYTE0MTJjZjBiNzIifX19
+        # Wooden Birch:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGVmMmJhMWRhYTg5OGM2NWQzNzRhY2Y3N2ViYjViOWI4ZGYzODAxNzZkM2VkNWFiM2QzYTRmMTQ4NzIxMzYifX19
+        # Stone:
+        # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU5MTIwMGRmMWNhZTUxYWNjMDcxZjg1YzdmN2Y1Yjg0NDlkMzliYjMyZjM2M2IwYWE1MWRiYzg1ZDEzM2UifX19
+        displayName: '&WHITEZ'
+
+    page.prev: 
+        use: arrow.left
+        displayName: '&WHITEPrevious page'
+    page.next: 
+        use: arrow.right
+        displayName: '&WHITENext page'
+    getLevels: 
+        type: item
+        value: DYE
+        color: LIME
+        displayName: 'Set your levels'
+    undo: 
+        type: item
+        value: DYE
+        color: RED
+        displayName: '&WHITEUndo'
+    undo.character: 
+        use: undo
+    undo.number: 
+        use: undo
+    confirm:
+        type: item
+        value: DYE
+        color: LIME
+    confirm.blank:
+        type: item
+        value: DYE
+        color: GRAY
+    confirmCharacter: 
+        use: confirm
+        displayName: '&WHITESet xp levels'
+    confirmCharacterNotAvailable: 
+        use: confirm.blank
+        displayName: '&WHITESet xp levels'
+        lore:
+            - 'There is not enough XP to set that level'
+    setName:
+        type: item
+        value: NAME_TAG
+        displayName: '&WHITEChange group name'
+    setIcon:
+        type: item
+        value: REDSTONE
+        displayName: '&WHITESet the icon for this group'
+    setName.confirm:
+        use: confirm
+        displayName: '&WHITESet new group name'
+    setName.noNameYet:
+        use: confirm.blank
+        displayName: '&WHITESet new group name'
+        lore:
+            - 'Enter at least a single character'
+    newGroupName.confirm:
+        use: confirm
+        displayName: '&WHITESet group name'
+    newGroupName.noNameYet:
+        use: confirm.blank
+        displayName: '&WHITESet group name'
+        lore:
+            - 'Enter at least a single character'
+    putAllXP:
+        type: item
+        value: BUCKET
+        displayName: '&WHITEPut all XP in sign'
+        lore:
+            - 'Gives all the XP from you to the sign'
+    getAllXP:
+        type: item
+        value: MILK_BUCKET
+        displayName: '&WHITEGet all XP from sign'
+        lore:
+            - 'Gives all the XP from the sign to you'
+    customAmountXP:
+        type: item
+        value: WATCH
+        displayName: '&WHITESet your level'
+        lore:
+            - 'Sets the specific amount of XP levels you want'
+    onlinePlayerList: 
+        type: item
+        value: DYE
+        color: LIME
+        displayName: 'Online players'
+    allPlayerList: 
+        type: item
+        value: DYE
+        color: MAGENTA
+        displayName: 'All players'
+    allPlayerFiller: 
+        type: item
+        value: STAINED_GLASS_PANE
+        color: MAGENTA
+        displayName: 'All players'
+    exit: 
+        type: item
+        value: BARRIER
+        displayName: '&WHITEExit'
+    diffrentGroup:
+        type: item
+        value: EMPTY_MAP
+        displayName: 'Choose diffrent group'
+        lore: 
+            - 'Change this group sign to a diffrent group'
+    addPlayerEditRights:
+        type: item
+        value: NAME_TAG
+        displayName: '&GREENGive add/remove rights'
+        lore: 
+            - 'Gives this player, the right'
+            - 'to add and remove other players'
+            - 'to this shared sign'
+    removePlayerEditRights:
+        type: item
+        value: REDSTONE_TORCH_ON
+        displayName: '&BLUERemove add/remove rights'
+        lore: 
+            - 'Removes the right from this player'
+            - 'to add and remove other players'
+            - 'to this shared sign'
+    addPlayerCreateRights:
+        type: item
+        value: MAP
+        displayName: '&GREENGive rights to create/destroy signs'
+        lore: 
+            - 'Gives the player, the right'
+            - 'to create and destroy signs'
+            - 'for this group'
+    removePlayerCreateRights:
+        type: item
+        value: EMPTY_MAP
+        displayName: '&BLUERemove right to create/destroy rights'
+        lore: 
+            - 'Removes the right from this player'
+            - 'to create and destroy signs'
+            - 'for this group'
+    removePlayer:
+        type: item
+        value: FIREBALL
+        displayName: '&REDRemove player'
+    groupDefault:
+        type: item
+        value: EMPTY_MAP
+        displayName: '%GROUP_NAME'
+    newGroup:
+        type: item
+        value: PAPER
+        displayName: 'Create new group'
+    setNewOwner:
+        type: item
+        value: REDSTONE
+        displayName: '&GOLDSet owner'
+        lore: 
+            - 'Sets the player as the new owner'
+    editList:
+        type: item
+        value: BOOK_AND_QUILL
+        displayName: '&WHITEEdit person from shared list'
+        lore: 
+            - 'Opens a list of all shared players.'
+            - 'You can edit the players here.'
+    fromList:
+        type: item
+        value: BOOK
+        displayName: '&WHITEAdd person from player list'
+        lore: 
+            - 'Opens a list of all players.'
+            - 'You can select here the player you want to add.'
+    message.add:
+        type: item
+        value: NAME_TAG
+        displayName: '&GREENShows occasionally information messages'
+    message.remove:
+        type: item
+        value: REDSTONE_TORCH_ON
+        displayName: '&BLusetops the occasional information message'
+    defaultSign:
+        type: item
+        value: HOPPER
+        displayName: '&WHITESet the default sign when you create a new sign'
+    settings: 
+        type: item
+        value: DIODE
+        displayName: '&WHITESettings'
+    deleteGroup:
+        type: item
+        value: TNT
+        displayName: '&REDDelete group'
+    changeOwner: 
+        type: item
+        value: SKULL_ITEM
+        displayName: '&WHITEChange owner'
+    changeTo.normal:
+        type: item
+        value: CHEST
+        displayName: '&WHITELocation sign'
+        lore: 
+            - 'Change the sign to a location bound sign.'
+            - 'The XP on this sign will only'
+            - 'be available on this location for you.'
+    changeTo.shared:
+        type: item
+        value: BEACON
+        displayName: '&WHITEShared sign'
+        lore: 
+            - 'Change the sign to a shared sign.'
+            - 'With this the XP will be'
+            - 'available to you and people you share it with.'
+    changeTo.ender:
+        type: item
+        value: ENDER_CHEST
+        displayName: '&WHITEPlayer sign'
+        lore: 
+            - 'Change the sign to a player bound sign.'
+            - 'With this the XP will be'
+            - 'available on other signs for you.'
+    changeTo.group:
+        type: item
+        value: END_CRYSTAL
+        displayName: '&WHITEGroup sign'
+        lore: 
+            - 'Change the sign to a group sign.'
+            - 'With this the XP will be available'
+            - 'Within a selected group.'
+    selected: 
+        type: item
+        value: STAINED_GLASS_PANE
+        color: WHITE
+    selected.group:
+        use: 
+            - selected
+            - changeTo.group
+        displayName: '&YELLOWCurrently selected &WHITE Group sign'
+    selected.shared:
+        use: 
+            - selected
+            - changeTo.shared
+        displayName: '&YELLOWCurrently selected &WHITE Shared sign'
+    selected.ender:
+        use: 
+            - selected
+            - changeTo.ender
+        displayName: '&YELLOWCurrently selected &WHITE Player sign'
+    selected.normal:
+        use: 
+            - selected
+            - changeTo.normal
+        displayName: '&YELLOWCurrently selected &WHITE Location sign'
+    selected.owner:
+        use: selected
+        displayName: 'You can''t edit the owner'
+    selected.yourself:
+        use: selected
+        displayName: 'You can''t edit yourself'
+        
+texts: 
+    xpStorageTag: '&BLUE[XP Storage]'
+    groupName: '&AQUA%GROUP_NAME'
+    signInventory: 'XP Storage settings'
+    list: '%INVENTORY_NAME | PAGE %CURRENT_PAGE/%LAST_PAGE'
+    editPlayer: 'Edit player | %PLAYER_NAME'
+    customAmount: 'Set level: %CURRENT_LEVEL | Max: %MAX_LEVEL'
+    editPlayers: 'Edit players'
+    choseGroup: 'Choose group'
+    addPlayer: 'Add player'
+    normalSignType: 'Location sign'
+    normalSignText: '%PLAYER_NAME'
+    playerSignType: 'Player sign'
+    playerSignText: '&DARK_PURPLE%PLAYER_NAME'
+    sharedSignType: 'Shared sign'
+    sharedSignText: '&DARK_PURPLEShared'
+    groupSignType: 'Group sign'
+    groupSignText: '&GREENGroup'
+    amounthNotAvaialable: 'That amount is not available'
+    maximumStorageMessage: '&DARK_REDMaximum of storage reached'
+    information: '&WHITEInformation'
+    player: 'Player: %PLAYER_NAME'
+    signType: 'Sign type: %SIGN_TYPE'
+    groupUUID: 'Group UUID: %GROUP_UUID'
+    ownerUUID: 'Owner UUID: %OWNER_UUID'
+    clickHere: 'Click here'
+    enterNameGroup: ' and enter the name of your group'
+    notAuthorized: '&REDYou are not authorized to access someone else''s xp Storage'
+    groupCreated: 'The group has been created'
+    message.add: 'You have now set to recive information messages'
+    message.remove: 'You have now set to not recive information messages'
+    defaultSignSet: 'Your default sign has been set'
+    pickDefaultSign: 'Pick your default sign'
+    nameSet: 'Group name has been set'
+    setIcon: 'Set icon for this group'
+    iconInMiddle: 'Set the icon you want to use in the middle'
+    iconSet: 'The icon for the group has been set'
+    chooseGroup: '%GROUP_NAME'
+    settings: 'Sign settings'
+    setName.empty: 'Please specify a new group name'
+    newGroupName.empty: 'Please specify a group name'
+    signCreated: 'XP sign has been created, you can edit sign settings with %SIGN_INTERACT_MATERIAL. There you can also disable this message.'

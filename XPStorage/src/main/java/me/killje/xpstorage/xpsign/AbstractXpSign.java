@@ -1,5 +1,7 @@
 package me.killje.xpstorage.xpsign;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,10 +13,10 @@ import java.util.logging.Level;
 import me.desht.dhutils.ExperienceManager;
 import me.killje.xpstorage.Update;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
-import me.killje.xpstorage.utils.clsConfiguration;
+import me.killje.util.GuiSettingsFromFile;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.util.clsConfiguration;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -27,7 +29,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 /**
  *
- * @author Patrick Beuks (killje)
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public abstract class AbstractXpSign implements ConfigurationSerializable {
 
@@ -58,6 +60,23 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             XP_SIGN_CONFIG.SaveConfig();
         }
 
+    }
+    
+    
+    
+    public static AbstractXpSign createSign(Class<? extends AbstractXpSign> signClass, Sign sign, UUID player) {
+        try {
+            Constructor<? extends AbstractXpSign> constructor = signClass.getConstructor(Sign.class, UUID.class);
+            return constructor.newInstance(sign, player);
+        } catch (NoSuchMethodException
+                | SecurityException
+                | InstantiationException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException ex) {
+            XPStorage.getInstance().getLogger().log(Level.SEVERE, null, ex);
+        }
+        return new NormalSign(sign, player);
     }
 
     /**
@@ -200,7 +219,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * 
      * @param xpSign 
      */
-    private static void removeSign(AbstractXpSign xpSign) {
+    public static void removeSign(AbstractXpSign xpSign) {
         signsList.remove(xpSign);
         // Save config
         saveSigns();
@@ -300,7 +319,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                     dirty = true;
                     break;
                 case BAD_LOCATION:
-                    // The location could not be foun (is the proper world loaded?
+                    // The location could not be found (is the proper world loaded?)
                     Map<String, Object> loadInformation = xpSign.getLoadInformation();
                     XPStorage.getInstance().getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) loadInformation.get("world"), (int) loadInformation.get("x"), (int) loadInformation.get("y"), (int) loadInformation.get("z")});
                     it.remove();
@@ -344,7 +363,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             return name;
         }
     }
-
+    
     /**
      * Returns if a material is a sign
      * 
@@ -396,12 +415,22 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * 
      * @return The amount of XP
      */
-    protected abstract int getCurrentXp();
+    public abstract int getCurrentXp();
+    
+    
+    /**
+     * Retrieves the text second line of text for the sign
+     * 
+     * @return The text to display on the sign
+     */
+    protected String getSecondLine(){
+        return "";
+    };
 
     /**
-     * Function to convert a destroyed sign to the new sign type.
+     * Retrieves the text for the sign
      * 
-     * Does not have to update the sign
+     * @return The text to display on the sign
      */
     protected abstract String getSignText();
 
@@ -458,6 +487,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         increaseXp(player, 1);
     }
     
+    
     /**
      * Increases the XP on the sign with the current selected amount
      * 
@@ -491,14 +521,14 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param xpToIncrease The amount of player levels to increase the sign with
      */
     private void increaseXpSign(Player player, int xpToIncrease) {
-        // Use the experience manager to accuratly update the amounth of XP
+        // Use the experience manager to accuratly update the amount of XP
         ExperienceManager experienceManager = new ExperienceManager(player);
         int currentXp = getCurrentXp();
         if (experienceManager.getCurrentExp() < xpToIncrease) {
             setNewXp(currentXp + experienceManager.getCurrentExp());
             experienceManager.setExp(0);
         } else if (currentXp + xpToIncrease > 210000000) {
-            player.sendMessage(ChatColor.DARK_RED + "Maximum of storage reached");
+            player.sendMessage(GuiSettingsFromFile.getText("maximumStorageMessage"));
             return;
         } else {
             setNewXp(currentXp + xpToIncrease);
@@ -538,7 +568,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param xpToDecrease The amount of xp to decrease
      */
     private void decreaseXpSign(Player player, int xpToDecrease) {
-        // Use the experience manager to accuratly update the amounth of XP
+        // Use the experience manager to accuratly update the amount of XP
         ExperienceManager experienceManager = new ExperienceManager(player);
         int currentXp = getCurrentXp();
         if (currentXp < xpToDecrease) {
@@ -592,11 +622,11 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     /**
      * Update the amount of XP displayed
      */
-    public void updateSign() {
-        sign.setLine(0, ChatColor.BLUE + "[XP Storage]");
-        sign.setLine(1, "");
+    public final void updateSign() {
+        sign.setLine(0, GuiSettingsFromFile.getText("xpStorageTag"));
+        sign.setLine(1, getSecondLine());
         sign.setLine(2, getCurrentXp() + "");
-        sign.setLine(3, getSignText() + "");
+        sign.setLine(3, getSignText());
         sign.update();
     }
 
@@ -605,16 +635,20 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * 
      * @return 
      */
-    public LoadError getError() {
+    public final LoadError getError() {
         return loadError;
     }
 
     /**
      * Remove the sign form the list
      * 
+     * @param playerWhoDestroys The player destroying the sign
      * @return 
      */
-    public boolean destroySign() {
+    public boolean destroySign(Player playerWhoDestroys) {
+        if (!canDestroySign(playerWhoDestroys)) {
+            return false;
+        }
         removeSign(this);
         if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
             sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getInstance());
@@ -626,10 +660,14 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     /**
      * Check if can be removed form the list
      * 
+     * @param playerWhoDestroys The player who is destroying the sign
      * @return 
      */
-    public boolean canDestroySign() {
-        return true;
+    public boolean canDestroySign(Player playerWhoDestroys) {
+        if (playerWhoDestroys == null) {
+            return false;
+        }
+        return playerWhoDestroys.getUniqueId().equals(getOwner());
     }
 
     /**

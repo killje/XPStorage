@@ -1,11 +1,10 @@
 package me.killje.xpstorage.eventListeners;
 
-import me.killje.xpstorage.XPStorage;
+import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.gui.sign.SignInventory;
 import me.killje.xpstorage.permission.Permissions;
+import me.killje.xpstorage.utils.InteractTimeout;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,16 +12,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class OnPlayerInteract implements Listener {
     
     
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
+        
         if (!event.getClickedBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
             return;
         }
@@ -31,26 +32,41 @@ public class OnPlayerInteract implements Listener {
         AbstractXpSign xpSign = (AbstractXpSign) signObject;
         
         Sign sign = xpSign.getSign();
+        
         final Player player = event.getPlayer();
+        
+        if (InteractTimeout.hasInteractTimeout(player.getUniqueId(), sign)) {
+            return;
+        }
+        InteractTimeout.addInteractTimeout(player.getUniqueId(), sign);
+        
         if (sign.getMetadata("XP_STORAGE_XPSIGN").isEmpty()) {
             return;
         }
         
-        boolean openGuiOther = player.hasPermission(Permissions.OPEN_GUI_OTHERS.getPermission());
-        boolean someoneElse = false;
+        xpSign.updateSign();
         
-        if (!xpSign.hasAccess(player.getUniqueId())) {
-            someoneElse = true;
+        boolean openGuiOther = player.hasPermission(Permissions.OPEN_GUI_OTHERS.getPermission());
+        boolean hasAccess = xpSign.hasAccess(player.getUniqueId());
+        
+        if (!hasAccess && !openGuiOther) {
+            event.getPlayer().sendMessage(GuiSettingsFromFile.getText("notAuthorized"));
+            return;
         }
-
-        if ((!someoneElse || openGuiOther) && event.getItem() != null && event.getItem().getType().equals(Material.getMaterial(XPStorage.getInstance().getConfig().getString("interactMaterial")))) {
-            player.openInventory(new SignInventory(player, xpSign).getInventory());
+        
+        ItemStack interactItem = event.getItem();
+        
+        if (interactItem != null && interactItem.getType().equals(SignInventory.INTERACT_MATERIAL)) {
+            SignInventory signInventory = new SignInventory(player, xpSign);
+            signInventory.attachListener();
+            player.openInventory(signInventory.getInventory());
             event.setCancelled(true);
             player.updateInventory();
             return;
         }
-        if (someoneElse) {
-            event.getPlayer().sendMessage(ChatColor.RED + "You are not authorized to access someone else's xp Storage");
+        
+        if (!hasAccess) {
+            event.getPlayer().sendMessage(GuiSettingsFromFile.getText("notAuthorized"));
             return;
         }
         
@@ -68,7 +84,6 @@ public class OnPlayerInteract implements Listener {
                 xpSign.decreaseXp(player);
             }
         }
-
         
     }
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
 import me.killje.xpstorage.gui.sign.EditList;
 import me.killje.xpstorage.gui.sign.FromList;
@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public abstract class AbstractSharedSign extends AbstractXpSign {
     
@@ -53,7 +53,7 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
     
 
     @Override
-    protected int getCurrentXp() {
+    public int getCurrentXp() {
         return group.getXp();
     }
 
@@ -80,9 +80,28 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
     }
     
     @Override
-    public boolean destroySign() {
+    public boolean destroySign(Player playerWhoDestroys) {
+        if (!super.destroySign(playerWhoDestroys)) {
+            return false;
+        }
+        allXpOut(playerWhoDestroys);
         group.removeSignFromGroup(this);
-        return super.destroySign();
+        return true;
+    }
+    
+    @Override
+    public boolean canDestroySign(Player playerWhoDestroys) {
+        if (playerWhoDestroys == null) {
+            return false;
+        }
+        if (getOwner().equals(playerWhoDestroys.getUniqueId())) {
+            return true;
+        }
+        PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(playerWhoDestroys.getUniqueId());
+        if (!group.getPlayers().contains(playerInformation)) {
+            return false;
+        }
+        return playerInformation.getGroupRights(group.getGroupUuid()).hasRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
     }
     
     public Group getGroup() {

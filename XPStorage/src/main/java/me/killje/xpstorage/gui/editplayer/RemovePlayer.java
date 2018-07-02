@@ -1,16 +1,16 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.UUID;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
-import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
+import me.killje.gui.InventoryUtils;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
-import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class RemovePlayer implements GuiElement {
 
@@ -24,12 +24,12 @@ public class RemovePlayer implements GuiElement {
     
     @Override
     public ItemStack getItemStack() {
-        return ItemStackFromFile.getItemStack("removePlayer", ChatColor.RED + "Remove player");
+        return GuiSettingsFromFile.getItemStack("removePlayer");
     }
     
     @Override
-    public void onGuiElementClickEvent(InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
         sign.getGroup().removePlayerFromGroup(player);
-        event.getView().close();
+        currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
 }

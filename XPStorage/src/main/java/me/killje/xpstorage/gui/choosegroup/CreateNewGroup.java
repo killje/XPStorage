@@ -1,30 +1,41 @@
 package me.killje.xpstorage.gui.choosegroup;
 
-import me.killje.xpstorage.gui.guiElement.GuiElement;
-import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
-import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
+import me.killje.gui.InventoryUtils;
+import me.killje.xpstorage.gui.characters.KeyBoard;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.util.GuiSettingsFromFile;
+import me.killje.xpstorage.xpsign.AbstractXpSign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class CreateNewGroup implements GuiElement {
+public class CreateNewGroup extends KeyBoard implements GuiElement {
+
+    private final Player player;
+    
+    public CreateNewGroup(Player player, AbstractXpSign xpSign) {
+        super(player, new SetNewGroupNameButton(player, xpSign));
+        this.player = player;
+    }
     
     @Override
     public ItemStack getItemStack() {
-        return ItemStackFromFile.getItemStack("newGroup", "Create new group");
+        return GuiSettingsFromFile.getItemStack("newGroup");
     }
 
     @Override
-    public void onGuiElementClickEvent(InventoryClickEvent event) {
-        FancyMessage fancyMessage = new FancyMessage("Click here").color(ChatColor.RED).style(ChatColor.UNDERLINE).suggest("/createXpGroup ").
-            then(" and enter the name of your group");
-        fancyMessage.send(event.getWhoClicked());
-        event.getWhoClicked().closeInventory();
+    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+        currentInventoryUtils.openNewInventory(player, this);
         
+    }
+
+    @Override
+    protected String getInventoryName() {
+        return getKeyBoardStringStorage().getCurrent();
     }
     
 }

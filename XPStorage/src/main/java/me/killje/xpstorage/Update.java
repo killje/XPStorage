@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class Update {
     

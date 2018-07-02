@@ -11,6 +11,6 @@ public class OnBlockIgnite extends OnBlockDestory {
     
     @EventHandler
     public void onBlockIgnite(BlockIgniteEvent event) {
-        event.setCancelled(!isDestroyable(event.getBlock()));
+        event.setCancelled(!isDestroyable(event.getBlock(), event.getPlayer()));
     }
 }

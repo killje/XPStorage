@@ -1,87 +1,63 @@
 package me.killje.xpstorage.gui;
 
-import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.gui.InventoryUtils;
+import me.killje.gui.guiElement.GuiElement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.gui.list.PlayerList;
-import me.killje.xpstorage.gui.list.PlayerListGuiElement;
-import me.killje.xpstorage.permission.Permissions;
-import me.killje.xpstorage.utils.HeadUtils;
+import java.util.Map;
+import me.killje.util.GuiSettingsFromFile;
+import me.killje.util.HeadUtils;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class Owner implements GuiElement, PlayerListGuiElement {
+public class Owner implements GuiElement {
 
     private final AbstractXpSign xpSign;
-    private final Player playerWhoClicked;
 
-    public Owner(AbstractXpSign xpSign, Player playerWhoClicked) {
+    public Owner(AbstractXpSign xpSign) {
         this.xpSign = xpSign;
-        this.playerWhoClicked = playerWhoClicked;
     }
     
     @Override
     public ItemStack getItemStack() {
         OfflinePlayer player = Bukkit.getOfflinePlayer(xpSign.getOwner());
+        
+        Map<String, String> replacement = new HashMap<>();
+        replacement.put("PLAYER_NAME", player.getName());
+        replacement.put("SIGN_TYPE", xpSign.signType());
+        replacement.put("OWNER_UUID", xpSign.getOwner().toString());
+        
         ItemStack itemStack = HeadUtils.getPlayerHead(player);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.WHITE + "Information");
+        itemMeta.setDisplayName(GuiSettingsFromFile.getText("information"));
         List<String> lore = new ArrayList<>();
-        lore.add("Player: " + player.getName());
-        lore.add("Sign type: " + xpSign.signType());
+        lore.add(GuiSettingsFromFile.getText("player", replacement));
+        lore.add(GuiSettingsFromFile.getText("signType", replacement));
+        
         if (xpSign instanceof AbstractSharedSign) {
             AbstractSharedSign sign = (AbstractSharedSign) xpSign;
-            lore.add("Group UUID: " + sign.getGroup().getGroupUuid().toString());
+            replacement.put("GROUP_UUID", sign.getGroup().getGroupUuid().toString());
+            
+            lore.add(GuiSettingsFromFile.getText("groupUUID", replacement));
         }
-        lore.add("Owner UUID: " + xpSign.getOwner().toString());
-        if (!playerWhoClicked.hasPermission(Permissions.CHANGE_OWNER.getPermission())) {
-            lore.add("Click here to change the owner.");
-        }
+        
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
     @Override
-    public void onGuiElementClickEvent(InventoryClickEvent event) {
-        
-        Player player = (Player) event.getWhoClicked();
-        if (!player.hasPermission(Permissions.CHANGE_OWNER.getPermission())) {
-            return;
-        }
-        //event.getView().close();
-        Inventory inventory = new PlayerList(player, xpSign, this).getInventory();
-        event.getWhoClicked().openInventory(inventory);
-        
-        if (!(event.getWhoClicked() instanceof Player)){
-            return;
-        }
-        Bukkit.getScheduler().runTask(XPStorage.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                player.updateInventory();
-            }
-        });
-        
-    }
-
-    @Override
-    public GuiElement getGuiElement(UUID offlinePlayer, AbstractXpSign sign) {
-        return new ChangeOwner(offlinePlayer, sign);
+    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
     }
     
     

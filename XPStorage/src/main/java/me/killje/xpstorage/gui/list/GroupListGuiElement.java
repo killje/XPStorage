@@ -1,7 +1,7 @@
 package me.killje.xpstorage.gui.list;
 
 import java.util.UUID;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.gui.guiElement.GuiElement;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 
 /**

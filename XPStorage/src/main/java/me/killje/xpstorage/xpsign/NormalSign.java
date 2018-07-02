@@ -1,15 +1,17 @@
 package me.killje.xpstorage.xpsign;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import me.killje.util.GuiSettingsFromFile;
+import static me.killje.xpstorage.xpsign.AbstractXpSign.getSaveName;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class NormalSign extends AbstractXpSign {
 
@@ -25,7 +27,6 @@ public class NormalSign extends AbstractXpSign {
             loadError = LoadError.NO_PLAYER;
         }
         this.xpInStorage = 0;
-        updateSign();
     }
     
     public NormalSign(Map<String, Object> sign) {
@@ -44,17 +45,15 @@ public class NormalSign extends AbstractXpSign {
         else {
             this.xpInStorage = 0;
         }
-        updateSign();
     }
     
     @Override
     protected void setNewXp(int xpInStorage) {
         this.xpInStorage = xpInStorage;
-        //AbstractXpSign.saveSigns();
     }
 
     @Override
-    protected int getCurrentXp() {
+    public int getCurrentXp() {
         return xpInStorage;
     }
     
@@ -64,12 +63,14 @@ public class NormalSign extends AbstractXpSign {
     
     @Override
     protected String getSignText() {
-        return getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName());
+        Map<String, String> replacement = new HashMap<>();
+        replacement.put("PLAYER_NAME", getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName()));
+        return GuiSettingsFromFile.getText("normalSignText", replacement);
     }
 
     @Override
     public String signType() {
-        return "Location sign";
+        return GuiSettingsFromFile.getText("normalSignType");
     }
 
     @Override
@@ -78,27 +79,14 @@ public class NormalSign extends AbstractXpSign {
     }
     
     @Override
-    public boolean destroySign() {
-        Player player = Bukkit.getPlayer(getOwner());
-        if (player == null) {
+    public boolean destroySign(Player playerWhoDestroys) {
+        if (!super.destroySign(playerWhoDestroys)) {
             return false;
         }
-        if (getCurrentXp() == 0) {
-            return super.destroySign();
-        }
-        allXpOut(player);
-        return super.destroySign();
+        allXpOut(playerWhoDestroys);
+        return true;
     }
 
-    @Override
-    public boolean canDestroySign() {
-        Player player = Bukkit.getPlayer(getOwner());
-        if (player == null) {
-            return false;
-        }
-        return super.canDestroySign();
-    }
-    
     @Override
     public UUID getOwner() {
         return owner;

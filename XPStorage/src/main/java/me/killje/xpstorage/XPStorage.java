@@ -4,7 +4,6 @@ import me.killje.xpstorage.eventListeners.OnBlockBreak;
 import me.killje.xpstorage.eventListeners.OnBlockBurn;
 import me.killje.xpstorage.eventListeners.OnPlayerInteract;
 import me.killje.xpstorage.eventListeners.OnSignChange;
-import me.killje.xpstorage.commandExecuters.CreateGroup;
 import me.killje.xpstorage.eventListeners.OnBlockExplode;
 import me.killje.xpstorage.eventListeners.OnBlockIgnite;
 import me.killje.xpstorage.eventListeners.OnEntityChangeBlock;
@@ -14,7 +13,7 @@ import me.killje.xpstorage.eventListeners.OnEntityBreakDoor;
 import me.killje.xpstorage.eventListeners.OnLeavesDecay;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.xpstorage.utils.clsConfiguration;
+import me.killje.util.clsConfiguration;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
@@ -26,7 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  *
- * @author Patrick Beuks (killje)
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class XPStorage extends JavaPlugin {
 
@@ -48,6 +47,7 @@ public class XPStorage extends JavaPlugin {
     
     @Override
     public void onEnable() {
+        
         saveDefaultConfig();
         
         signs = new clsConfiguration(this, "Signs.yml");
@@ -74,12 +74,8 @@ public class XPStorage extends JavaPlugin {
         ConfigurationSerialization.registerClass(SharedSign.class);
         ConfigurationSerialization.registerClass(GroupSign.class);
         
-        this.getCommand("createXpGroup").setExecutor(new CreateGroup());
-        System.out.println("loadPlayer");
         PlayerInformation.loadPlayerInformation();
-        System.out.println("LoadGroups");
         Group.loadGroups();
-        System.out.println("LoadSigns");
         AbstractXpSign.loadSigns();
         init = false;
     }

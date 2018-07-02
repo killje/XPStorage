@@ -11,6 +11,6 @@ public class OnBlockBurn extends OnBlockDestory{
     
     @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
-        event.setCancelled(!isDestroyable(event.getBlock()));
+        event.setCancelled(!isDestroyable(event.getBlock(), null));
     }
 }

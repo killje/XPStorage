@@ -1,48 +1,57 @@
 package me.killje.xpstorage.xpsign;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import me.killje.xpstorage.group.Group;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptionsGroup;
+import me.killje.xpstorage.gui.groupsettings.DeleteGroup;
+import me.killje.xpstorage.gui.groupsettings.SetIcon;
+import me.killje.xpstorage.gui.groupsettings.SetName;
+import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.gui.sign.ChangeToGroup;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class GroupSign extends AbstractSharedSign {
-    
-    public GroupSign(Sign sign, UUID groupId){
+
+    public GroupSign(Sign sign, UUID groupId) {
         super(sign, Group.getGroupFromUUID(groupId));
     }
-    
+
     public GroupSign(Map<String, Object> sign) {
         super(sign);
     }
 
     @Override
     protected String getSignText() {
-        return ChatColor.GREEN + "Group";
+        return GuiSettingsFromFile.getText("groupSignText");
     }
-    
+
     @Override
-    public void updateSign() {
-        getSign().setLine(0, ChatColor.BLUE + "[XP Storage]");
-        getSign().setLine(1, ChatColor.AQUA + getSaveName(getGroup().getGroupName()));
-        getSign().setLine(2, getCurrentXp() + "");
-        getSign().setLine(3, getSignText() + "");
-        getSign().update();
+    protected String getSecondLine() {
+        Map<String, String> replacement = new HashMap<>();
+        
+        String groupName = "";
+        if (getGroup() != null) {
+            groupName = getGroup().getGroupName();
+        }
+        
+        String saveName = getSaveName(groupName);
+        replacement.put("GROUP_NAME", saveName);
+        return GuiSettingsFromFile.getText("groupName", replacement);
     }
 
     @Override
     public String signType() {
-        return "Group sign";
+        return GuiSettingsFromFile.getText("groupSignType");
     }
 
     @Override
@@ -54,7 +63,10 @@ public class GroupSign extends AbstractSharedSign {
     public ArrayList<GuiElement> getAdditionalGuiElements(Player player) {
         ArrayList<GuiElement> guiElements = super.getAdditionalGuiElements(player);
         if (getOwner().equals(player.getUniqueId())) {
-            guiElements.add(new ChangeToGroup(this, true));
+            guiElements.add(new ChangeToGroup(player, this, true));
+            guiElements.add(new SetIcon(getGroup().getGroupUuid()));
+            guiElements.add(new SetName(player, this));
+            guiElements.add(new DeleteGroup(this, player));
         }
         return guiElements;
     }

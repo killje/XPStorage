@@ -1,20 +1,17 @@
 package me.killje.xpstorage.gui.sign;
 
-import java.util.ArrayList;
-import java.util.List;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.gui.InventoryUtils;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class PutAllXp implements GuiElement {
 
@@ -27,24 +24,17 @@ public class PutAllXp implements GuiElement {
 
     @Override
     public ItemStack getItemStack() {
-        ItemStack itemStack = new ItemStack(Material.BUCKET);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.WHITE + "Put all XP in sign");
-        List<String> lore = new ArrayList<>();
-        lore.add("Gives all the XP from you to the sign");
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
+        return GuiSettingsFromFile.getItemStack("putAllXP");
     }
 
     @Override
-    public void onGuiElementClickEvent(InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)){
             return;
         }
         xpSign.allXpIn((Player) entity);
-        event.getView().close();
+        currentInventoryUtils.closeInventory(entity);
     }
     
 }

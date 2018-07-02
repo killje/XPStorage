@@ -1,18 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package me.killje.xpstorage.gui.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
-import me.killje.xpstorage.gui.guiElement.SimpleGuiElement;
+import me.killje.util.GuiSettingsFromFile;
+import me.killje.gui.guiElement.SimpleGuiElement;
+import me.killje.gui.list.List;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -29,24 +27,13 @@ public class PlayerList extends List {
         this.sign = sign;
     }
     
-    
-    
     @Override
     protected int initInventory(int startIndex, int stopIndex, int maxItemsOnPage) {
         
         ArrayList<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
         
-        
-        for (int i = 0; i < 60; i++) {
-            onlinePlayers.add(onlinePlayers.get(0));
-        }
-        
         ArrayList<OfflinePlayer> offlinePlayers = new ArrayList<>(Arrays.asList(Bukkit.getOfflinePlayers()));
 
-        for (int i = 0; i < 59; i++) {
-            offlinePlayers.add(offlinePlayers.get(0));
-        }
-        
         int onlineInventorySize = onlinePlayers.isEmpty() ? 0 : onlinePlayers.size() + 9 + (8 - (onlinePlayers.size() - 1) % 9);
         
         int totalSize = offlinePlayers.size() + onlineInventorySize;
@@ -65,7 +52,7 @@ public class PlayerList extends List {
         }
         
         if (onlinePlayers.size() < startIndex) {
-            this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerList", "All players")), 4);
+            this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerList")), 4);
             this.nextRow();
             
             for (OfflinePlayer offlinePlayer : offlinePlayers.subList(offlineStartLocation, offlineStopLocation)) {
@@ -73,7 +60,7 @@ public class PlayerList extends List {
             }
         }
         else {
-            this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("onlinePlayerList", "Online players")), 4);
+            this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("onlinePlayerList")), 4);
             this.nextRow();
             
             int toIndex = stopIndex;
@@ -86,15 +73,15 @@ public class PlayerList extends List {
             }
             
             if (stopIndex - onlineInventorySize > 9) {
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage));
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage) + 1);
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage) + 2);
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage) + 3);
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerList", "All players")), (onlineInventorySize % maxItemsOnPage) + 4);
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage) + 5);
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage) + 6);
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage) + 7);
-                this.addGuiElement(new SimpleGuiElement(ItemStackFromFile.getItemStack("allPlayerFiller", "All players")), (onlineInventorySize % maxItemsOnPage) + 8);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage));
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage) + 1);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage) + 2);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage) + 3);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerList")), (onlineInventorySize % maxItemsOnPage) + 4);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage) + 5);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage) + 6);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage) + 7);
+                this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("allPlayerFiller")), (onlineInventorySize % maxItemsOnPage) + 8);
                 
                 
                 for (OfflinePlayer offlinePlayer : offlinePlayers.subList(offlineStartLocation, offlineStopLocation - offlineStartLocation)) {
@@ -110,7 +97,12 @@ public class PlayerList extends List {
 
     @Override
     protected String getInventoryName() {
-        return "Add player";
+        return GuiSettingsFromFile.getText("addPlayer");
+    }
+    
+    @Override
+    protected Plugin getInstance() {
+        return XPStorage.getInstance();
     }
     
 }

@@ -1,23 +1,21 @@
 package me.killje.xpstorage.gui.editplayer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
-import me.killje.xpstorage.gui.guiElement.ItemStackFromFile;
+import me.killje.gui.InventoryUtils;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.GroupSign;
-import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class SetNewOwner implements GuiElement{
+public class SetNewOwner implements GuiElement {
 
     private final UUID player;
     private final AbstractSharedSign sign;
@@ -26,24 +24,22 @@ public class SetNewOwner implements GuiElement{
         this.player = player;
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack() {
-        List<String> lore = new ArrayList<>();
-        lore.add("Sets the player as the new owner");
-        return ItemStackFromFile.getItemStack("setNewOwner", ChatColor.GOLD + "Set owner", lore);
+        return GuiSettingsFromFile.getItemStack("setNewOwner");
     }
-    
+
     @Override
-    public void onGuiElementClickEvent(InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
         PlayerInformation.getPlayerInformation(sign.getOwner()).getGroupRights(sign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_EDIT_PLAYERS);
         PlayerInformation.getPlayerInformation(player).getGroupRights(sign.getGroup().getGroupUuid()).removeRight(GroupRights.Right.CAN_EDIT_PLAYERS);
         if (sign instanceof GroupSign) {
-        PlayerInformation.getPlayerInformation(player).getGroupRights(sign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
+            PlayerInformation.getPlayerInformation(player).getGroupRights(sign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
         }
         sign.setOwner(player);
-            
-        event.getView().close();
+
+        currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
-    
+
 }

@@ -1,56 +1,49 @@
 package me.killje.xpstorage.gui.list;
 
 import java.util.ArrayList;
+import java.util.UUID;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.gui.list.GuiElementList;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.gui.choosegroup.CreateNewGroup;
+import me.killje.util.GuiSettingsFromFile;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class GroupList extends List {
+public class GroupList extends GuiElementList {
     
-    private final AbstractXpSign xpSign;
     private final Player player;
-    private final GroupListGuiElement groupListGuiElement;
+    private final AbstractXpSign xpSign;
     
     public GroupList(Player player, GroupListGuiElement groupListGuiElement, AbstractXpSign xpSign) {
-        super(player);
-        this.xpSign = xpSign;
+        super(player, getGuiElements(player.getUniqueId(), groupListGuiElement, xpSign), GuiSettingsFromFile.getText("choseGroup"), XPStorage.getInstance());
         this.player = player;
-        this.groupListGuiElement = groupListGuiElement;
+        this.xpSign = xpSign;
+    }
+    
+    private static ArrayList<GuiElement> getGuiElements (UUID playerId, GroupListGuiElement groupListGuiElement, AbstractXpSign xpSign) {
+        ArrayList<Group> groups = PlayerInformation.getPlayerInformation(playerId).getGroups(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
+        ArrayList<GuiElement> guiElements = new ArrayList<>();
+        for (Group group : groups) {
+            guiElements.add(groupListGuiElement.getGuiElement(group.getGroupUuid(), xpSign));
+        }
+        return guiElements;
     }
     
     @Override
     protected int initInventory(int startIndex, int stopIndex, int maxItemsOnPage) {
         
-        this.addGuiElement(new CreateNewGroup());
+        this.addGuiElement(new CreateNewGroup(player, xpSign));
         
-        this.nextRow();
+        return super.initInventory(startIndex, stopIndex, maxItemsOnPage);
         
-        ArrayList<Group> groups = PlayerInformation.getPlayerInformation(player.getUniqueId()).getGroups(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
-
-        int toIndex = stopIndex;
-        if (toIndex > groups.size()) {
-            toIndex = groups.size();
-        }
-        ArrayList<Group> subArray = new ArrayList<>(groups.subList(startIndex, toIndex));
-
-        for (Group group : subArray) {
-            this.addGuiElement(this.groupListGuiElement.getGuiElement(group.getGroupUuid(), xpSign));
-        }
-        
-        return groups.size();
-        
-    }
-
-    @Override
-    protected String getInventoryName() {
-        return "Choose group";
     }
 
 }

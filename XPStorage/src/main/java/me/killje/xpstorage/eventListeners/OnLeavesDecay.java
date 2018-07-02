@@ -5,13 +5,13 @@ import org.bukkit.event.block.LeavesDecayEvent;
 
 /**
  *
- * @author patrick
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class OnLeavesDecay extends OnBlockDestory{
     
     @EventHandler
     public void onLeavesDecay(LeavesDecayEvent event) {
-        if (!isDestroyable(event.getBlock())) {
+        if (!isDestroyable(event.getBlock(), null)) {
             event.setCancelled(true);
             
             byte d = event.getBlock().getData();

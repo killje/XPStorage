@@ -1,0 +1,53 @@
+package me.killje.xpstorage.gui.sign;
+
+import me.killje.xpstorage.gui.guiElement.GuiElement;
+import me.killje.xpstorage.gui.guiElement.GUISettingsFromFile;
+import me.killje.xpstorage.xpsign.AbstractXpSign;
+import me.killje.xpstorage.xpsign.PlayerSign;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+
+/**
+ *
+ * @author Zolder
+ */
+public class ChangeToEnder implements GuiElement{
+    
+    private AbstractXpSign xpSign;
+    private final boolean isSelected;
+
+    public ChangeToEnder(AbstractXpSign xpSign) {
+        this.xpSign = xpSign;
+        isSelected = xpSign instanceof PlayerSign;
+    }
+    
+    
+
+    @Override
+    public ItemStack getItemStack() {
+        if (isSelected) {
+            return GUISettingsFromFile.getItemStack("selected.ender");
+        }
+        return GUISettingsFromFile.getItemStack("changeTo.ender");
+    }
+
+    @Override
+    public void onGuiElementClickEvent(InventoryClickEvent event) {
+        if (isSelected) {
+            return;
+        }
+        HumanEntity entity = event.getWhoClicked();
+        if (!(entity instanceof Player)){
+            return;
+        }
+        if (!xpSign.destroySign()) {
+            return;
+        }
+        xpSign = new PlayerSign(xpSign.getSign(), entity.getUniqueId());
+        xpSign.changeSign();
+        event.getView().close();
+    }
+    
+}

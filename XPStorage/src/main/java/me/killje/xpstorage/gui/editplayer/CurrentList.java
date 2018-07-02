@@ -1,14 +1,17 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.ArrayList;
-import me.killje.xpstorage.gui.list.List;
+import me.killje.util.GuiSettingsFromFile;
+import me.killje.gui.list.List;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class CurrentList extends List {
     
@@ -42,7 +45,13 @@ public class CurrentList extends List {
 
     @Override
     protected String getInventoryName() {
-        return "Edit players";
+        return GuiSettingsFromFile.getText("editPlayers");
     }
+    
+    @Override
+    protected Plugin getInstance() {
+        return XPStorage.getInstance();
+    }
+    
     
 }

@@ -1,8 +1,9 @@
 package me.killje.xpstorage.gui.addplayer;
 
 import java.util.UUID;
-import me.killje.xpstorage.gui.guiElement.GuiElement;
-import me.killje.xpstorage.utils.HeadUtils;
+import me.killje.gui.InventoryUtils;
+import me.killje.gui.guiElement.GuiElement;
+import me.killje.util.HeadUtils;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.Bukkit;
@@ -13,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class AddPlayer implements GuiElement {
     
@@ -36,12 +37,16 @@ public class AddPlayer implements GuiElement {
         ItemStack itemStack = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(player));
         
         ItemMeta itemMeta = itemStack.getItemMeta();
+        
+        String headName;
         if (displayName == null) {
-            itemMeta.setDisplayName(ChatColor.WHITE + Bukkit.getOfflinePlayer(player).getName());
+            headName = Bukkit.getOfflinePlayer(player).getName();
         }
         else {
-            itemMeta.setDisplayName(ChatColor.WHITE + displayName);
+            headName = displayName;
         }
+        itemMeta.setDisplayName(ChatColor.WHITE + headName);
+        
         itemStack.setItemMeta(itemMeta);
 
         
@@ -49,10 +54,10 @@ public class AddPlayer implements GuiElement {
     }
 
     @Override
-    public void onGuiElementClickEvent(InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
         
         sign.getGroup().addPlayerToGroup(player);
-        event.getView().close();
+        currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
     
 }

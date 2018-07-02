@@ -2,12 +2,6 @@ name: ${project.artifactId}
 authors: ${project.authors}
 version: ${major.version}.b${buildNumber}
 main: ${project.main}
-commands:
-   createXpGroup:
-      description: This command creates a group.
-      usage: /<command> [Group name]
-      permission: xpStorage.createXpGroup
-      permission-message: You don't have permission to create a XpGroup
 permissions:
     xpStorage.createXpGroup:
         description: Gives the ability to create groups
