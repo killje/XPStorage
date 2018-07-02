@@ -215,15 +215,11 @@ public abstract class InventoryUtils implements Listener {
     }
     
     public void closeInventory(HumanEntity humanEntity, boolean isClosed) {
-        for (RegisteredListener registeredListener : InventoryClickEvent.getHandlerList().getRegisteredListeners()) {
-            
-            if (registeredListener.getListener().equals(this)) {
-                InventoryClickEvent.getHandlerList().unregister(registeredListener);
-                InventoryDragEvent.getHandlerList().unregister(registeredListener);
-            }
-        }
         
         InventoryClickEvent.getHandlerList().unregister(this);
+        InventoryDragEvent.getHandlerList().unregister(this);
+        InventoryCloseEvent.getHandlerList().unregister(this);
+        
         if (!isClosed) {
             humanEntity.closeInventory();
         }
