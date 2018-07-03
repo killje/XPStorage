@@ -648,11 +648,11 @@ GUIElements:
     message.add:
         type: item
         value: NAME_TAG
-        displayName: '&GREENShows occasionally information messages'
+        displayName: '&GREENShow information when creating signs'
     message.remove:
         type: item
         value: REDSTONE_TORCH_ON
-        displayName: '&BLusetops the occasional information message'
+        displayName: '&BLUEDo not recive sign creation messages'
     defaultSign:
         type: item
         value: HOPPER
@@ -736,7 +736,7 @@ texts:
     xpStorageTag: '&BLUE[XP Storage]'
     groupName: '&AQUA%GROUP_NAME'
     signInventory: 'XP Storage settings'
-    list: '%INVENTORY_NAME | PAGE %CURRENT_PAGE/%LAST_PAGE'
+    list: '%INVENTORY_NAME | Page %CURRENT_PAGE/%LAST_PAGE'
     editPlayer: 'Edit player | %PLAYER_NAME'
     customAmount: 'Set level: %CURRENT_LEVEL | Max: %MAX_LEVEL'
     editPlayers: 'Edit players'
@@ -761,8 +761,8 @@ texts:
     enterNameGroup: ' and enter the name of your group'
     notAuthorized: '&REDYou are not authorized to access someone else''s xp Storage'
     groupCreated: 'The group has been created'
-    message.add: 'You have now set to recive information messages'
-    message.remove: 'You have now set to not recive information messages'
+    message.add: 'You will now recive creation messages'
+    message.remove: 'You will no longer recive creation messages'
     defaultSignSet: 'Your default sign has been set'
     pickDefaultSign: 'Pick your default sign'
     nameSet: 'Group name has been set'
@@ -773,4 +773,4 @@ texts:
     settings: 'Sign settings'
     setName.empty: 'Please specify a new group name'
     newGroupName.empty: 'Please specify a group name'
-    signCreated: 'XP sign has been created, you can edit sign settings with %SIGN_INTERACT_MATERIAL. There you can also disable this message.'
+    signCreated: 'XP sign has been created, you can edit sign settings by using "%SIGN_INTERACT_MATERIAL" on this sign. There you can also disable this message.'

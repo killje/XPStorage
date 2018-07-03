@@ -1,4 +1,4 @@
-package me.killje.xpstorage.gui.characters;
+package me.killje.gui.characters;
 
 import me.killje.gui.InventoryUtils;
 import me.killje.util.GuiSettingsFromFile;
@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Patrick Beuks (s2288842) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class Number implements GuiElement {
 

@@ -5,10 +5,14 @@ main: ${project.main}
 permissions:
     xpStorage.createXpGroup:
         description: Gives the ability to create groups
-        default: op
+        default: true
     xpStorage.openGuiOthers:
         description: Gives a player to open the gui of a sign from other players. Owner specific items and abilities are still hidden.
         default: false
     xpStorage.changeOwner:
         description: Intended for moderators. This to change a sign from one owner to another. For groups and shared signs this is an default option in the edit player list.
         default: op
+commands:
+   xpreload:
+      description: Reloads the XPStorage plugin
+      usage: /xpreload

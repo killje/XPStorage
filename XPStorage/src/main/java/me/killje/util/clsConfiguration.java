@@ -11,20 +11,20 @@ import java.io.Reader;
 import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 public class clsConfiguration {
 
-    private final JavaPlugin plugin;
+    private final Plugin plugin;
     private FileConfiguration conf = null;
     private File file = null;
     private String fname = null;
 
-    public clsConfiguration(JavaPlugin plugin, String filename) {
+    public clsConfiguration(Plugin plugin, String filename) {
         this(plugin, filename, false);
     }
 
-    public clsConfiguration(JavaPlugin plugin, String filename, boolean saveDefault) {
+    public clsConfiguration(Plugin plugin, String filename, boolean saveDefault) {
         this.plugin = plugin;
         fname = filename;
         if (saveDefault) {

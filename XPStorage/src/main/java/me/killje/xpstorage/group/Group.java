@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import me.desht.dhutils.ExperienceManager;
-import me.killje.xpstorage.XPStorage;
 import me.killje.util.GuiSettingsFromFile;
+import me.killje.util.PluginUtils;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.util.clsConfiguration;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
+@SuppressWarnings("ResultOfObjectAllocationIgnored")
 public class Group implements ConfigurationSerializable {
     static {
         new groupPeriodSaver();
@@ -34,7 +35,7 @@ public class Group implements ConfigurationSerializable {
     private static class groupPeriodSaver implements Runnable {
 
         public groupPeriodSaver() {
-            Bukkit.getScheduler().runTaskTimerAsynchronously(XPStorage.getInstance(), this, 100, 12000);
+            Bukkit.getScheduler().runTaskTimerAsynchronously(PluginUtils.getPlugin(), this, 100, 12000);
         }
         
         @Override
@@ -50,7 +51,7 @@ public class Group implements ConfigurationSerializable {
     
     private int xpStored = 0;
     private final UUID groupId;
-    private static final clsConfiguration GROUP_CONFIG = new clsConfiguration(XPStorage.getInstance(), "groups.yml");
+    private static final clsConfiguration GROUP_CONFIG = new clsConfiguration(PluginUtils.getPlugin(), "groups.yml");
     private UUID owner;
     private String groupName = null;
     private Material groupIcon;
@@ -200,7 +201,7 @@ public class Group implements ConfigurationSerializable {
             AbstractXpSign.removeSign(xpSign);
             Sign sign = xpSign.getSign();
             if (xpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-                xpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getInstance());
+                xpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", PluginUtils.getPlugin());
             }
             XpSignFacingBlock.removeFacingBlock(xpSign.getSignFacingBlock());
             sign.setLine(0, "");

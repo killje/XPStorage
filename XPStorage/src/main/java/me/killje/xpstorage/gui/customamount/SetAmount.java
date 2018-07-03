@@ -2,8 +2,8 @@ package me.killje.xpstorage.gui.customamount;
 
 import me.desht.dhutils.ExperienceManager;
 import me.killje.gui.InventoryUtils;
-import me.killje.xpstorage.gui.characters.AmountStorage;
-import me.killje.xpstorage.gui.characters.SetAmountButton;
+import me.killje.gui.characters.AmountStorage;
+import me.killje.gui.characters.SetAmountButton;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;

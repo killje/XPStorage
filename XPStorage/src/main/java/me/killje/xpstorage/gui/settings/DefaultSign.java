@@ -4,14 +4,12 @@ import me.killje.gui.Exit;
 import me.killje.gui.InventoryUtils;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.gui.guiElement.GuiElement;
-import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.xpsign.NormalSign;
 import me.killje.xpstorage.xpsign.PlayerSign;
 import me.killje.xpstorage.xpsign.SharedSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -43,11 +41,6 @@ public class DefaultSign extends InventoryUtils implements GuiElement {
                 .addGuiElement(new DefaultSignPicker(player, PlayerSign.class, "ender"))
                 .addGuiElement(new DefaultSignPicker(player, SharedSign.class, "shared"))
                 .addGuiElement(new Exit(), 8);
-    }
-
-    @Override
-    protected Plugin getInstance() {
-        return XPStorage.getInstance();
     }
     
 }

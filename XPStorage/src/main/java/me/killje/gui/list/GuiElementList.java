@@ -3,7 +3,6 @@ package me.killje.gui.list;
 import java.util.ArrayList;
 import me.killje.gui.guiElement.GuiElement;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -13,13 +12,11 @@ public class GuiElementList extends List {
     
     private final ArrayList<GuiElement> guiElements;
     private final String inventoryName;
-    private final Plugin instance;
 
-    public GuiElementList(Player currentPlayer, ArrayList<GuiElement> guiElements, String inventoryName, Plugin instance) {
+    public GuiElementList(Player currentPlayer, ArrayList<GuiElement> guiElements, String inventoryName) {
         super(currentPlayer);
         this.guiElements = guiElements;
         this.inventoryName = inventoryName;
-        this.instance = instance;
     }
 
     @Override
@@ -36,11 +33,6 @@ public class GuiElementList extends List {
     @Override
     protected String getInventoryName() {
         return inventoryName;
-    }
-
-    @Override
-    protected Plugin getInstance() {
-        return instance;
     }
     
 }

@@ -1,12 +1,10 @@
-package me.killje.xpstorage.gui.characters;
+package me.killje.gui.characters;
 
-import me.killje.xpstorage.XPStorage;
 import me.killje.gui.Exit;
 import me.killje.gui.InventoryUtils;
 import me.killje.gui.guiElement.GuiElement;
-import org.bukkit.Bukkit;
+import me.killje.util.PluginUtils;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -53,7 +51,7 @@ public abstract class NumberBoard extends InventoryUtils implements StorageUpdat
     public void onStorageupdateEvent() {
         player.openInventory(this.getInventory());
         
-        Bukkit.getScheduler().runTask(XPStorage.getInstance(), new Runnable() {
+        PluginUtils.runTask(new Runnable() {
             @Override
             public void run() {
                 player.updateInventory();
@@ -64,13 +62,6 @@ public abstract class NumberBoard extends InventoryUtils implements StorageUpdat
     protected final AmountStorage getAmountStorage() {
         return amountStorage;
     }
-
-    @Override
-    protected Plugin getInstance() {
-        return XPStorage.getInstance();
-    }
-
-    
     
     protected abstract String getInventoryName();
     

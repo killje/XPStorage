@@ -9,7 +9,7 @@ import me.killje.xpstorage.xpsign.AbstractSharedSign;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class EditPlayerOptionsGroup extends EditPlayerOptions {
     

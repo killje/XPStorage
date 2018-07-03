@@ -1,7 +1,7 @@
 package me.killje.xpstorage.gui.choosegroup;
 
 import me.killje.gui.InventoryUtils;
-import me.killje.xpstorage.gui.characters.KeyBoard;
+import me.killje.gui.characters.KeyBoard;
 import me.killje.gui.guiElement.GuiElement;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.xpsign.AbstractXpSign;

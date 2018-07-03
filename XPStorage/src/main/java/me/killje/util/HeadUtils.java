@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
-import me.killje.xpstorage.XPStorage;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -80,7 +79,7 @@ public class HeadUtils {
             NMS_NBTTagString_Constructor_String_Assignment = NMS_NBTTagString.getConstructor(String.class);
 
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException ex) {
-            XPStorage.getInstance().getLogger().log(Level.SEVERE, null, ex);
+            PluginUtils.getLogger().log(Level.SEVERE, null, ex);
 
             NMS_NBTTagCompound_Constructor_Assignment = null;
             NMS_NBTTagCompound_set_Assignment = null;
@@ -131,7 +130,7 @@ public class HeadUtils {
 
             return head;
         } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
-            XPStorage.getInstance().getLogger().log(Level.SEVERE, null, ex);
+            PluginUtils.getLogger().log(Level.SEVERE, null, ex);
         }
         return getBaseHead();
     }
@@ -179,7 +178,7 @@ public class HeadUtils {
 
             return head;
         } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
-            XPStorage.getInstance().getLogger().log(Level.SEVERE, null, ex);
+            PluginUtils.getLogger().log(Level.SEVERE, null, ex);
         }
         return getBaseHead();
     }

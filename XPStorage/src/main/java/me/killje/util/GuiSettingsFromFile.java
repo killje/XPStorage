@@ -3,7 +3,7 @@ package me.killje.util;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import me.killje.xpstorage.XPStorage;
+import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -18,7 +18,7 @@ import org.bukkit.material.Dye;
  */
 public class GuiSettingsFromFile {
 
-    private final static clsConfiguration guiFile = new clsConfiguration(XPStorage.getInstance(), "GUI.yml", true);
+    private final static clsConfiguration guiFile = new clsConfiguration(PluginUtils.getPlugin(), "GUI.yml", true);
     private final static Map<String, String> chatColors = new HashMap<>();
 
     static {
@@ -74,18 +74,26 @@ public class GuiSettingsFromFile {
         return getItemStack(name, new HashMap<>());
     }
 
+    public static void reloadConfig() {
+        guiFile.ReloadConfig();
+    }
+    
     public static ItemStack getItemStack(String name, Map<String, String> replaceMap) {
 
         GUIElementInformation elementInformation = new GUIElementInformation(name);
 
+
         String type = elementInformation.getType();
+        
+        if (type == null) {
+            return null;
+        }
+        
         String value = elementInformation.getValue();
         String displayName = elementInformation.getDisplayName(replaceMap);
         List<String> lore = elementInformation.getLore();
         String color = elementInformation.getColor();
-        if (type == null) {
-            return null;
-        }
+        
         switch (type) {
 
             case "head":
@@ -154,6 +162,11 @@ public class GuiSettingsFromFile {
         private void extractInformation(String name) {
 
             ConfigurationSection section = configurationSection.getConfigurationSection(name);
+            
+            if (section == null) {
+                PluginUtils.getLogger().log(Level.SEVERE, "Could not find GUI element with name ''{0}''", name);
+                return;
+            }
             
             if (type == null && section.contains("type")) {
                 type = section.getString("type");

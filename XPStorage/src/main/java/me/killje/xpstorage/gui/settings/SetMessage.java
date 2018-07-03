@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Patrick Beuks (s2288842) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class SetMessage implements GuiElement {
 

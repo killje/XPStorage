@@ -3,7 +3,7 @@ package me.killje.xpstorage.xpsign;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import me.killje.xpstorage.XPStorage;
+import me.killje.util.PluginUtils;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -59,7 +59,7 @@ public class XpSignFacingBlock {
         if (!FACING_BLOCK_LIST.get(x).get(y).containsKey(z)) {
             ArrayList storageList = new ArrayList<>();
             FACING_BLOCK_LIST.get(x).get(y).put(z, storageList);
-            facingBlock.setMetadata("XP_STORAGE_XPSIGNFACEBLOCK", new FixedMetadataValue(XPStorage.getInstance(), storageList));
+            facingBlock.setMetadata("XP_STORAGE_XPSIGNFACEBLOCK", new FixedMetadataValue(PluginUtils.getPlugin(), storageList));
         }
         
         FACING_BLOCK_LIST.get(x).get(y).get(z).add(signFacingBlock);

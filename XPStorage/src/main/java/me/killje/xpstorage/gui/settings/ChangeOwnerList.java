@@ -4,19 +4,19 @@ import java.util.UUID;
 import me.killje.gui.InventoryUtils;
 import me.killje.gui.guiElement.GuiElement;
 import me.killje.util.GuiSettingsFromFile;
-import me.killje.xpstorage.gui.list.PlayerList;
-import me.killje.xpstorage.gui.list.PlayerListGuiElement;
+import me.killje.gui.list.PlayerList;
 import me.killje.xpstorage.permission.Permissions;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import me.killje.gui.list.PlayerListElementFetcher;
 
 /**
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class ChangeOwnerList implements GuiElement, PlayerListGuiElement {
+public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
 
     private final Player player;
     private final AbstractXpSign sign;
@@ -38,14 +38,14 @@ public class ChangeOwnerList implements GuiElement, PlayerListGuiElement {
             return;
         }
         
-        InventoryUtils inventoryUtils = new PlayerList(player, sign, this);
+        InventoryUtils inventoryUtils = new PlayerList(player, this);
         
         currentInventoryUtils.openNewInventory(player, inventoryUtils);
         
     }
 
     @Override
-    public GuiElement getGuiElement(UUID offlinePlayer, AbstractXpSign sign) {
+    public GuiElement getGuiElement(UUID offlinePlayer) {
         return new ChangeOwner(offlinePlayer, sign);
     }
     

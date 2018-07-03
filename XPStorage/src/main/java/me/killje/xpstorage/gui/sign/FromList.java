@@ -5,19 +5,18 @@ import me.killje.gui.InventoryUtils;
 import me.killje.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.addplayer.AddPlayer;
 import me.killje.util.GuiSettingsFromFile;
-import me.killje.xpstorage.gui.list.PlayerList;
-import me.killje.xpstorage.gui.list.PlayerListGuiElement;
+import me.killje.gui.list.PlayerList;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
-import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import me.killje.gui.list.PlayerListElementFetcher;
 
 /**
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class FromList implements GuiElement, PlayerListGuiElement {
+public class FromList implements GuiElement, PlayerListElementFetcher {
     
     private final AbstractSharedSign sign;
 
@@ -25,8 +24,6 @@ public class FromList implements GuiElement, PlayerListGuiElement {
         this.sign = sign;
     }
     
-    
-
     @Override
     public ItemStack getItemStack() {
         return GuiSettingsFromFile.getItemStack("fromList");
@@ -39,13 +36,13 @@ public class FromList implements GuiElement, PlayerListGuiElement {
             return;
         }
         Player player = (Player) event.getWhoClicked();
-        PlayerList playerList = new PlayerList(player, sign, this);
+        PlayerList playerList = new PlayerList(player, this);
         currentInventoryUtils.openNewInventory(player, playerList);
         
     }
 
     @Override
-    public GuiElement getGuiElement(UUID offlinePlayer, AbstractXpSign sign) {
+    public GuiElement getGuiElement(UUID offlinePlayer) {
         return new AddPlayer(offlinePlayer, sign);
     }
     

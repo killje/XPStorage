@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.choosegroup;
 
 import me.killje.xpstorage.group.Group;
 import me.killje.gui.InventoryUtils;
-import me.killje.xpstorage.gui.characters.SetStringButton;
+import me.killje.gui.characters.SetStringButton;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;

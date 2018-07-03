@@ -4,17 +4,15 @@ import me.killje.gui.Exit;
 import me.killje.gui.InventoryUtils;
 import me.killje.gui.guiElement.GuiElement;
 import me.killje.util.GuiSettingsFromFile;
-import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.permission.Permissions;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 /**
  *
- * @author Patrick Beuks (s2288842) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class Settings extends InventoryUtils implements GuiElement {
 
@@ -47,11 +45,6 @@ public class Settings extends InventoryUtils implements GuiElement {
     @Override
     public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
-    }
-
-    @Override
-    protected Plugin getInstance() {
-        return XPStorage.getInstance();
     }
 
 }

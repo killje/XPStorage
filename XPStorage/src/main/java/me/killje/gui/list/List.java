@@ -5,7 +5,7 @@ import java.util.Map;
 import me.killje.gui.Exit;
 import me.killje.gui.InventoryUtils;
 import me.killje.util.GuiSettingsFromFile;
-import org.bukkit.Bukkit;
+import me.killje.util.PluginUtils;
 import org.bukkit.entity.Player;
 
 /**
@@ -71,7 +71,7 @@ public abstract class List extends InventoryUtils {
     public void nextPage() {
         page++;
         player.openInventory(this.getInventory());
-        Bukkit.getScheduler().runTask(getInstance(), new Runnable() {
+        PluginUtils.runTask(new Runnable() {
             @Override
             public void run() {
                 player.updateInventory();
@@ -82,7 +82,7 @@ public abstract class List extends InventoryUtils {
     public void previousPage() {
         page--;
         player.openInventory(this.getInventory());
-        Bukkit.getScheduler().runTask(getInstance(), new Runnable() {
+        PluginUtils.runTask(new Runnable() {
             @Override
             public void run() {
                 player.updateInventory();

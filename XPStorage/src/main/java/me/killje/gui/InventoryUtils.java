@@ -3,6 +3,7 @@ package me.killje.gui;
 import java.util.ArrayList;
 import me.killje.gui.guiElement.GuiElement;
 import me.killje.gui.guiElement.InventoryElement;
+import me.killje.util.PluginUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -16,8 +17,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 
 /**
  *
@@ -87,7 +86,6 @@ public abstract class InventoryUtils implements Listener {
     }
 
     protected abstract void initInventory();
-    protected abstract Plugin getInstance();
 
     public Inventory getInventory() {
         guiElements.clear();
@@ -101,9 +99,8 @@ public abstract class InventoryUtils implements Listener {
 
         ItemStack[] inventoryItems = new ItemStack[realRows * inventoryUtilsType.getRowSize()];
 
-        int i = -1;
-        for (GuiElement guiElement : guiElements) {
-            i++;
+        for (int i = 0; i < guiElements.size(); i ++) {
+            GuiElement guiElement = guiElements.get(i);
             if (guiElement == null) {
                 continue;
             }
@@ -207,7 +204,7 @@ public abstract class InventoryUtils implements Listener {
     }
 
     public void attachListener() {
-        getInstance().getServer().getPluginManager().registerEvents(this, getInstance());
+        PluginUtils.registerEvents(this);
     }
 
     public void closeInventory(HumanEntity humanEntity) {
@@ -215,11 +212,9 @@ public abstract class InventoryUtils implements Listener {
     }
     
     public void closeInventory(HumanEntity humanEntity, boolean isClosed) {
-        
         InventoryClickEvent.getHandlerList().unregister(this);
         InventoryDragEvent.getHandlerList().unregister(this);
         InventoryCloseEvent.getHandlerList().unregister(this);
-        
         if (!isClosed) {
             humanEntity.closeInventory();
         }
@@ -232,7 +227,7 @@ public abstract class InventoryUtils implements Listener {
     public void openNewInventory(HumanEntity humanEntity, InventoryUtils inventoryUtils) {
         closeInventory(humanEntity);
 
-        Bukkit.getScheduler().runTask(getInstance(), new Runnable() {
+        PluginUtils.runTask(new Runnable() {
             @Override
             public void run() {
                 humanEntity.openInventory(inventoryUtils.getInventory());
@@ -242,11 +237,33 @@ public abstract class InventoryUtils implements Listener {
 
     }
     
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onInventoryCloseEvent(InventoryCloseEvent event) {
-        if (event.getInventory().equals(inventory)) {
-            closeInventory(event.getPlayer(), true);
+    public void openInventory(HumanEntity humanEntity) {
+        attachListener();
+        humanEntity.openInventory(getInventory());
+    }
+    
+    public void reloadInventory() {
+        int realRows = guiElements.size() / inventoryUtilsType.getRowSize();
+
+        if (guiElements.size() % inventoryUtilsType.getRowSize() != 0) {
+            realRows++;
         }
+        
+        ItemStack[] inventoryItems = new ItemStack[realRows * inventoryUtilsType.getRowSize()];
+
+        for (int i = 0; i < guiElements.size(); i ++) {
+            GuiElement guiElement = guiElements.get(i);
+            if (guiElement == null) {
+                continue;
+            }
+            inventoryItems[i] = guiElement.getItemStack();
+        }
+        
+        inventory.setContents(inventoryItems);
+    }
+    
+    public void updateItem(GuiElement item) {
+        inventory.setItem(guiElements.indexOf(item), item.getItemStack());
     }
     
     
@@ -270,7 +287,7 @@ public abstract class InventoryUtils implements Listener {
 
         event.setCancelled(true);
         
-        if (!ignorePlayerInventory && event.getClickedInventory() != null && event.getClickedInventory().equals(event.getWhoClicked().getInventory())) {
+        if (!ignorePlayerInventory && getClickedInventory(event) != null && getClickedInventory(event).equals(event.getWhoClicked().getInventory())) {
             
             if (event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) {
                 for (int i = 0; i < inventoryElements.size(); i++) {
@@ -289,7 +306,7 @@ public abstract class InventoryUtils implements Listener {
             return;
         }
 
-        if (event.getClickedInventory() == null || !event.getClickedInventory().equals(inventory)) {
+        if (getClickedInventory(event) == null || !getClickedInventory(event).equals(inventory)) {
             return;
         }
         
@@ -307,5 +324,21 @@ public abstract class InventoryUtils implements Listener {
         inventoryElement.onInventoryClickEvent(this, event);
 
     }
-
+    
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onInventoryCloseEvent(InventoryCloseEvent event) {
+        if (event.getInventory().equals(inventory)) {
+            closeInventory(event.getPlayer(), true);
+        }
+    }
+    
+    private Inventory getClickedInventory(InventoryClickEvent event) {
+        if (event.getRawSlot() < 0) {
+            return null;
+        } else if (event.getView().getTopInventory() != null && event.getRawSlot() < event.getView().getTopInventory().getSize()) {
+            return event.getView().getTopInventory();
+        } else {
+            return event.getView().getBottomInventory();
+        }
+    }
 }

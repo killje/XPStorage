@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class ChangeTo implements GuiElement{
     

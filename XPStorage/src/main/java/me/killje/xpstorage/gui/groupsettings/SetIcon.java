@@ -6,12 +6,10 @@ import me.killje.gui.InventoryUtils;
 import me.killje.gui.guiElement.GuiElement;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.gui.guiElement.SimpleGuiElement;
-import me.killje.xpstorage.XPStorage;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -48,9 +46,5 @@ public class SetIcon extends InventoryUtils implements GuiElement {
     public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
     }
-
-    @Override
-    protected Plugin getInstance() {
-        return XPStorage.getInstance();
-    }
+    
 }

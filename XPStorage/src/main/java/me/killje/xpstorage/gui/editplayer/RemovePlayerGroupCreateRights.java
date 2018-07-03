@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class RemovePlayerGroupCreateRights implements GuiElement{
 

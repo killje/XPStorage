@@ -1,8 +1,8 @@
-package me.killje.xpstorage.gui.characters;
+package me.killje.gui.characters;
 
 /**
  *
- * @author Patrick Beuks (s2288842) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public interface StorageUpdateListener {
     

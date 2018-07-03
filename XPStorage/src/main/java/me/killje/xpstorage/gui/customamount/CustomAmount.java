@@ -6,7 +6,7 @@ import me.desht.dhutils.ExperienceManager;
 import me.killje.gui.InventoryUtils;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.gui.guiElement.GuiElement;
-import me.killje.xpstorage.gui.characters.NumberBoard;
+import me.killje.gui.characters.NumberBoard;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

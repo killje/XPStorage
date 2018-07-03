@@ -1,16 +1,15 @@
-package me.killje.xpstorage.gui.list;
+package me.killje.gui.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.gui.guiElement.SimpleGuiElement;
-import me.killje.gui.list.List;
-import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.xpsign.AbstractXpSign;
+import me.killje.util.PluginUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 
 /**
  *
@@ -18,13 +17,11 @@ import org.bukkit.plugin.Plugin;
  */
 public class PlayerList extends List {
     
-    private final AbstractXpSign sign;
-    private final PlayerListGuiElement playerListGuiElement;
+    private final PlayerListElementFetcher playerListGuiElement;
     
-    public PlayerList(Player currentPlayer, AbstractXpSign sign, PlayerListGuiElement guiElement) {
+    public PlayerList(Player currentPlayer, PlayerListElementFetcher guiElement) {
         super(currentPlayer);
         this.playerListGuiElement = guiElement;
-        this.sign = sign;
     }
     
     @Override
@@ -56,7 +53,7 @@ public class PlayerList extends List {
             this.nextRow();
             
             for (OfflinePlayer offlinePlayer : offlinePlayers.subList(offlineStartLocation, offlineStopLocation)) {
-                this.addGuiElement(playerListGuiElement.getGuiElement(offlinePlayer.getUniqueId(), sign));
+                this.addGuiElement(playerListGuiElement.getGuiElement(offlinePlayer.getUniqueId()));
             }
         }
         else {
@@ -69,7 +66,7 @@ public class PlayerList extends List {
             }
             
             for (OfflinePlayer offlinePlayer : onlinePlayers.subList(startIndex, toIndex)) {
-                this.addGuiElement(playerListGuiElement.getGuiElement(offlinePlayer.getUniqueId(), sign));
+                this.addGuiElement(playerListGuiElement.getGuiElement(offlinePlayer.getUniqueId()));
             }
             
             if (stopIndex - onlineInventorySize > 9) {
@@ -85,7 +82,7 @@ public class PlayerList extends List {
                 
                 
                 for (OfflinePlayer offlinePlayer : offlinePlayers.subList(offlineStartLocation, offlineStopLocation - offlineStartLocation)) {
-                    this.addGuiElement(playerListGuiElement.getGuiElement(offlinePlayer.getUniqueId(), sign));
+                    this.addGuiElement(playerListGuiElement.getGuiElement(offlinePlayer.getUniqueId()));
                 }
                 
             }
@@ -101,8 +98,36 @@ public class PlayerList extends List {
     }
     
     @Override
-    protected Plugin getInstance() {
-        return XPStorage.getInstance();
+    public void closeInventory(HumanEntity humanEntity, boolean isClosed) {
+        InventoryOpenEvent.getHandlerList().unregister(this);
+        super.closeInventory(humanEntity, isClosed);
+    }
+
+    @Override
+    public void attachListener() {
+        PluginUtils.registerEvents(this);
+    }
+    
+    @Override
+    public void openInventory(HumanEntity humanEntity) {
+        
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                    humanEntity.sendMessage("Loading heads. This can take a while the first time");
+                } catch (InterruptedException ex) {
+                    // Thread interupted, player has inventory open
+                }
+            }
+        });
+        
+        thread.start();
+        
+        super.openInventory(humanEntity);
+        
+        thread.interrupt();
     }
     
 }

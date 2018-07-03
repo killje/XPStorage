@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import me.killje.xpstorage.XPStorage;
-import org.bukkit.Bukkit;
+import me.killje.util.PluginUtils;
 import org.bukkit.block.Sign;
 
 /**
@@ -22,7 +21,7 @@ public final class InteractTimeout {
             CURRENT_TIMEOUTS.put(player, new ArrayList<>());
         }
         CURRENT_TIMEOUTS.get(player).add(sign);
-        Bukkit.getScheduler().runTask(XPStorage.getInstance(), new Runnable() {
+        PluginUtils.runTask(new Runnable() {
             @Override
             public void run() {
                 CURRENT_TIMEOUTS.get(player).remove(sign);

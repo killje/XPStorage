@@ -1,13 +1,13 @@
 package me.killje.xpstorage.gui.sign;
 
 import java.util.ArrayList;
-import me.killje.xpstorage.XPStorage;
 import me.killje.gui.Exit;
 import me.killje.gui.guiElement.GuiElement;
 import me.killje.gui.InventoryUtils;
 import me.killje.xpstorage.gui.Owner;
 import me.killje.xpstorage.gui.customamount.CustomAmount;
 import me.killje.util.GuiSettingsFromFile;
+import me.killje.util.PluginUtils;
 import me.killje.xpstorage.gui.settings.Settings;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.NormalSign;
@@ -15,7 +15,6 @@ import me.killje.xpstorage.xpsign.PlayerSign;
 import me.killje.xpstorage.xpsign.SharedSign;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -24,7 +23,7 @@ import org.bukkit.plugin.Plugin;
 public class SignInventory extends InventoryUtils {
 
     static {
-        INTERACT_MATERIAL = Material.getMaterial(XPStorage.getInstance().getConfig().getString("interactMaterial"));
+        INTERACT_MATERIAL = Material.getMaterial(PluginUtils.getConfig().getString("interactMaterial"));
     }
 
     private final AbstractXpSign xpSign;
@@ -65,11 +64,6 @@ public class SignInventory extends InventoryUtils {
             }
         }
 
-    }
-
-    @Override
-    protected Plugin getInstance() {
-        return XPStorage.getInstance();
     }
 
 }

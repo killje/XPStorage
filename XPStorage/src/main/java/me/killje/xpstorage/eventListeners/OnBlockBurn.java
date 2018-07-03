@@ -5,7 +5,7 @@ import org.bukkit.event.block.BlockBurnEvent;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class OnBlockBurn extends OnBlockDestory{
     

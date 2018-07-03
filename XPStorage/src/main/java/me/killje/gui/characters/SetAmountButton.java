@@ -1,4 +1,4 @@
-package me.killje.xpstorage.gui.characters;
+package me.killje.gui.characters;
 
 import me.killje.gui.guiElement.GuiElement;
 

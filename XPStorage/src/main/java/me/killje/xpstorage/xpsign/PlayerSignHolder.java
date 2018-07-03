@@ -6,7 +6,7 @@ import java.util.UUID;
 
 /**
  *
- * @author Zolder
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class PlayerSignHolder {
     

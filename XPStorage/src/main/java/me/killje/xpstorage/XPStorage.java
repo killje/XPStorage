@@ -1,5 +1,6 @@
 package me.killje.xpstorage;
 
+import me.killje.util.PluginUtils;
 import me.killje.xpstorage.eventListeners.OnBlockBreak;
 import me.killje.xpstorage.eventListeners.OnBlockBurn;
 import me.killje.xpstorage.eventListeners.OnPlayerInteract;
@@ -20,6 +21,7 @@ import me.killje.xpstorage.xpsign.GroupSign;
 import me.killje.xpstorage.xpsign.NormalSign;
 import me.killje.xpstorage.xpsign.PlayerSign;
 import me.killje.xpstorage.xpsign.SharedSign;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,13 +32,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class XPStorage extends JavaPlugin {
 
     private static clsConfiguration signs;
-    private static XPStorage instance;
     private boolean init = true;
 
-    public static XPStorage getInstance() {
-        return instance;
-    }
-    
     public static clsConfiguration getSignConfig() {
         return signs;
     }
@@ -47,11 +44,10 @@ public class XPStorage extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        
         saveDefaultConfig();
         
+        PluginUtils.setPlugin(this);
         signs = new clsConfiguration(this, "Signs.yml");
-        instance = this;
         
         getServer().getPluginManager().registerEvents(new OnSignChange(), this);
         getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
@@ -64,6 +60,12 @@ public class XPStorage extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnLeavesDecay(), this);
         getServer().getPluginManager().registerEvents(new OnEntityBreakDoor(), this);
         getServer().getPluginManager().registerEvents(new OnEntityChangeBlock(), this);
+        
+        getCommand("xpreload").setExecutor((sender, command, label, args) -> {
+            Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getPluginManager().enablePlugin(this);
+            return true;
+        });
         
         ConfigurationSerialization.registerClass(PlayerInformation.class);
         ConfigurationSerialization.registerClass(GroupRights.class);

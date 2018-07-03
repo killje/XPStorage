@@ -1,7 +1,7 @@
 package me.killje.xpstorage.gui.groupsettings;
 
 import me.killje.gui.InventoryUtils;
-import me.killje.xpstorage.gui.characters.SetStringButton;
+import me.killje.gui.characters.SetStringButton;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.event.inventory.InventoryClickEvent;

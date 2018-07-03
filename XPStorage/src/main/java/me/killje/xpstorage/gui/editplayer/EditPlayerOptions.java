@@ -10,11 +10,9 @@ import me.killje.gui.guiElement.GuiElement;
 import me.killje.gui.InventoryUtils;
 import me.killje.util.GuiSettingsFromFile;
 import me.killje.gui.guiElement.SimpleGuiElement;
-import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.utils.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -86,11 +84,6 @@ public class EditPlayerOptions extends InventoryUtils {
         
         this.setInventoryName(GuiSettingsFromFile.getText("editPlayer", replaceList));
         
-    }
-
-    @Override
-    protected Plugin getInstance() {
-        return XPStorage.getInstance();
     }
     
 }
