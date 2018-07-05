@@ -2,7 +2,6 @@ package me.desht.dhutils;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 

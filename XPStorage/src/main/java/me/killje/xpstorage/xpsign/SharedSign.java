@@ -2,9 +2,9 @@ package me.killje.xpstorage.xpsign;
 
 import java.util.Map;
 import java.util.UUID;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
-import me.killje.util.GuiSettingsFromFile;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
@@ -24,12 +24,12 @@ public class SharedSign extends AbstractSharedSign {
 
     @Override
     protected String getSignText() {
-        return GuiSettingsFromFile.getText("sharedSignText");
+        return XPStorage.getGuiSettings().getText("sharedSignText");
     }
 
     @Override
     public String signType() {
-        return GuiSettingsFromFile.getText("sharedSignType");
+        return XPStorage.getGuiSettings().getText("sharedSignType");
     }
 
     @Override

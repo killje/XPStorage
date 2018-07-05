@@ -1,9 +1,14 @@
 package me.killje.xpstorage.eventListeners;
 
-import me.killje.util.GuiSettingsFromFile;
+import java.util.HashMap;
+import me.desht.dhutils.ExperienceManager;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
 import me.killje.xpstorage.permission.Permissions;
-import me.killje.xpstorage.utils.InteractTimeout;
+import me.killje.xpstorage.util.InteractTimeout;
+import me.killje.xpstorage.util.PlayerInformation;
+import me.killje.xpstorage.util.PluginUtils;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -50,27 +55,35 @@ public class OnPlayerInteract implements Listener {
         boolean hasAccess = xpSign.hasAccess(player.getUniqueId());
         
         if (!hasAccess && !openGuiOther) {
-            event.getPlayer().sendMessage(GuiSettingsFromFile.getText("notAuthorized"));
+            event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("notAuthorized"));
             return;
         }
         
         ItemStack interactItem = event.getItem();
         
         if (interactItem != null && interactItem.getType().equals(SignInventory.INTERACT_MATERIAL)) {
-            SignInventory signInventory = new SignInventory(player, xpSign);
-            signInventory.attachListener();
-            player.openInventory(signInventory.getInventory());
+            new SignInventory(player, xpSign).openInventory(player);
             event.setCancelled(true);
             player.updateInventory();
             return;
         }
         
         if (!hasAccess) {
-            event.getPlayer().sendMessage(GuiSettingsFromFile.getText("notAuthorized"));
+            event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("notAuthorized"));
             return;
         }
         
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(player.getUniqueId());
+            if (playerInformation == null || playerInformation.isMessage()) {
+                ExperienceManager expMan = new ExperienceManager(player);
+                if (expMan.getCurrentExp() == 0) {
+                    HashMap<String, String> replaceMap = new HashMap<>();
+                    replaceMap.put("SIGN_INTERACT_MATERIAL", SignInventory.INTERACT_MATERIAL.toString());
+                    String message = XPStorage.getGuiSettings().getText("noXPLeft", replaceMap);
+                    player.sendMessage(message);
+                }
+            }
             event.setCancelled(true);
             if (player.isSneaking()) {
                 xpSign.increaseXp(player, 10);

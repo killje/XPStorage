@@ -1,16 +1,17 @@
 package me.killje.xpstorage.gui.settings;
 
-import java.util.UUID;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.list.PlayerList;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.list.PlayerList;
+import me.killje.spigotgui.list.PlayerListElementFetcher;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.permission.Permissions;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import me.killje.gui.list.PlayerListElementFetcher;
 
 /**
  *
@@ -27,25 +28,25 @@ public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
     }
 
     @Override
-    public ItemStack getItemStack() {
-        return GuiSettingsFromFile.getItemStack("changeOwner");
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("changeOwner");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         
         if (!player.hasPermission(Permissions.CHANGE_OWNER.getPermission())) {
             return;
         }
         
-        InventoryUtils inventoryUtils = new PlayerList(player, this);
+        InventoryUtil inventoryUtils = new PlayerList(XPStorage.getGuiSettings(), player, this);
         
         currentInventoryUtils.openNewInventory(player, inventoryUtils);
         
     }
 
     @Override
-    public GuiElement getGuiElement(UUID offlinePlayer) {
+    public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
         return new ChangeOwner(offlinePlayer, sign);
     }
     

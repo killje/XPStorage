@@ -1,9 +1,10 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.UUID;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.HeadUtils;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.HeadUtil;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,9 +29,9 @@ public class EditPlayer implements GuiElement {
     }
     
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(GuiSetting guiSettings) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
-        ItemStack itemStack = HeadUtils.getPlayerHead(offlinePlayer);
+        ItemStack itemStack = HeadUtil.getPlayerHead(offlinePlayer);
         
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.WHITE + offlinePlayer.getName());
@@ -42,7 +43,7 @@ public class EditPlayer implements GuiElement {
 
     
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)){
             return;
         }

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import me.killje.spigotgui.guielement.Exit;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.guielement.SimpleGuiElement;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.gui.Exit;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.gui.InventoryUtils;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.guiElement.SimpleGuiElement;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
 
@@ -18,14 +18,14 @@ import org.bukkit.Bukkit;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class EditPlayerOptions extends InventoryUtils {
+public class EditPlayerOptions extends InventoryUtil {
     
     private final AbstractSharedSign sign;
     private final UUID playerToEdit;
     private final UUID playerEditing;
     
     public EditPlayerOptions(AbstractSharedSign sign, UUID playerToEdit, UUID playerEditing) {
-        super();
+        super(XPStorage.getGuiSettings());
         this.sign = sign;
         this.playerToEdit = playerToEdit;
         this.playerEditing = playerEditing;
@@ -35,10 +35,10 @@ public class EditPlayerOptions extends InventoryUtils {
         ArrayList<GuiElement> guiElements = new ArrayList<>();
         
         if (playerToEdit.equals(sign.getOwner())) {
-            this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("selected.owner")));
+            this.addGuiElement(new SimpleGuiElement(getGuiSettings().getItemStack("selected.owner")));
         }
         else if (playerToEdit.equals(playerEditing)) {
-            this.addGuiElement(new SimpleGuiElement(GuiSettingsFromFile.getItemStack("selected.yourself")));
+            this.addGuiElement(new SimpleGuiElement(getGuiSettings().getItemStack("selected.yourself")));
         }
         else {
             PlayerInformation playerInformationPlayerEditing = PlayerInformation.getPlayerInformation(playerEditing);
@@ -82,7 +82,7 @@ public class EditPlayerOptions extends InventoryUtils {
         
         replaceList.put("PLAYER_NAME", Bukkit.getOfflinePlayer(playerToEdit).getName());
         
-        this.setInventoryName(GuiSettingsFromFile.getText("editPlayer", replaceList));
+        this.setInventoryName(getGuiSettings().getText("editPlayer", replaceList));
         
     }
     

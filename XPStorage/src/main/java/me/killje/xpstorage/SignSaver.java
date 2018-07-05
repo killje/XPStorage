@@ -47,4 +47,8 @@ public class SignSaver implements ConfigurationSerializable {
         World world = Bukkit.getWorld(UUID.fromString((String) sign.get("world")));
         return new Location(world, (int) sign.get("x"), (int) sign.get("y"), (int) sign.get("z"));
     }
+    
+    public World getWorld() {
+        return Bukkit.getWorld(UUID.fromString((String) sign.get("world")));
+    }
 }

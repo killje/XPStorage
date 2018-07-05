@@ -1,14 +1,14 @@
 package me.killje.xpstorage.gui.sign;
 
 import java.util.ArrayList;
-import me.killje.gui.Exit;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.gui.InventoryUtils;
+import me.killje.spigotgui.guielement.Exit;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.Owner;
 import me.killje.xpstorage.gui.customamount.CustomAmount;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.util.PluginUtils;
 import me.killje.xpstorage.gui.settings.Settings;
+import me.killje.xpstorage.util.PluginUtils;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.NormalSign;
 import me.killje.xpstorage.xpsign.PlayerSign;
@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class SignInventory extends InventoryUtils {
+public class SignInventory extends InventoryUtil {
 
     static {
         INTERACT_MATERIAL = Material.getMaterial(PluginUtils.getConfig().getString("interactMaterial"));
@@ -31,7 +31,7 @@ public class SignInventory extends InventoryUtils {
     public final static Material INTERACT_MATERIAL;
 
     public SignInventory(Player player, AbstractXpSign xpSign) {
-        super();
+        super(XPStorage.getGuiSettings());
         this.xpSign = xpSign;
         this.player = player;
     }
@@ -40,12 +40,12 @@ public class SignInventory extends InventoryUtils {
     protected void initInventory() {
 
         this
-                .setInventoryName(GuiSettingsFromFile.getText("signInventory"))
+                .setInventoryName(getGuiSettings().getText("signInventory"))
                 .addGuiElement(new GetAllXp(this.xpSign))
                 .addGuiElement(new PutAllXp(this.xpSign))
                 .addGuiElement(new CustomAmount(player, xpSign))
                 .addGuiElement(new Settings(xpSign, player), 6)
-                .addGuiElement(new Owner(this.xpSign))
+                .addGuiElement(new Owner(this.xpSign, player))
                 .addGuiElement(new Exit());
         if (this.xpSign.getOwner().equals(this.player.getUniqueId())) {
             this

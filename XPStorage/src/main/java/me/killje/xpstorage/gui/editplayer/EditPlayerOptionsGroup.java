@@ -2,9 +2,9 @@ package me.killje.xpstorage.gui.editplayer;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 
 /**

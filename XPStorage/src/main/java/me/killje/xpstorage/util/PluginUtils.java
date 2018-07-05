@@ -1,4 +1,4 @@
-package me.killje.util;
+package me.killje.xpstorage.util;
 
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
@@ -25,6 +25,7 @@ public class PluginUtils {
         }
         return plugin;
     }
+    
     public static Logger getLogger() {
         return getPlugin().getLogger();
     }

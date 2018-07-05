@@ -1,9 +1,9 @@
 package me.killje.xpstorage.gui.settings;
 
-import me.killje.gui.InventoryUtils;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -28,23 +28,23 @@ public class DefaultSignPicker implements GuiElement {
     }
     
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(GuiSetting guiSettings) {
         String iconToPick;
         if (playerInformation.getDefaultSign() == defaultSignPick) {
             iconToPick = "selected." + settingsName;
         } else {
             iconToPick = "changeTo." + settingsName;
         }
-        return GuiSettingsFromFile.getItemStack(iconToPick);
+        return guiSettings.getItemStack(iconToPick);
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         if (playerInformation.getDefaultSign() == defaultSignPick) {
             return;
         }
         playerInformation.setDefaultSign(defaultSignPick);
-        player.sendMessage(GuiSettingsFromFile.getText("defaultSignSet"));
+        player.sendMessage(currentInventoryUtils.getGuiSettings().getText("defaultSignSet"));
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
     

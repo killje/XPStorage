@@ -11,12 +11,11 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.logging.Level;
 import me.desht.dhutils.ExperienceManager;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.Update;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.PluginUtils;
-import me.killje.util.clsConfiguration;
 import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.util.PluginUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -263,7 +262,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     }
 
     /**
-     * Load signs from config. Should only be sone while initializing the plugin
+     * Load signs from config. Should only be done while initializing the plugin
      */
     public static void loadSigns() {
         // Boolean to keep track if all signs have been converted
@@ -274,10 +273,15 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
             if (!XP_SIGN_CONFIG.GetConfig().contains("xpSigns")) {
                 // Update to new format
-                new Update(XP_SIGN_CONFIG.GetConfig());
+                new Update(XPStorage.getSignConfig().GetConfig());
+                XPStorage.getSignConfig().SaveConfig();
                 // Save file after completion
                 dirty = true;
             } else {
+                List<?> oldSigns = XPStorage.getSignConfig().GetConfig().getList("Signs");
+                if (oldSigns != null && !oldSigns.isEmpty()) {
+                    XPStorage.getSignConfig().GetConfig().set("skiped", oldSigns);
+                }
                 // Unset the old signs file
                 XPStorage.getSignConfig().GetConfig().set("Signs", null);
                 // Load the signs
@@ -287,7 +291,15 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             // Load the signs
             signsList = (List<AbstractXpSign>) XP_SIGN_CONFIG.GetConfig().getList("xpSigns");
         }
-
+        
+        List<Map<?, ?>> failedSigns = (List<Map<?, ?>>) XP_SIGN_CONFIG.GetConfig().getMapList("failedSigns");
+        if (failedSigns == null) {
+            failedSigns = new ArrayList<>();
+        }
+        
+        if (signsList == null) {
+            signsList = new ArrayList<>();
+        }
         // Go over the signs to see if they all have been loaded properly
         for (Iterator<AbstractXpSign> it = signsList.iterator(); it.hasNext();) {
             AbstractXpSign xpSign = it.next();
@@ -312,12 +324,14 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                     Location location = xpSign.getLocation();
                     PluginUtils.getLogger().log(Level.WARNING, "Sign does not exsist anymore at: x={0}, y={1}, z={2}", new Object[]{location.getX(), location.getY(), location.getZ()});
                     it.remove();
+                    failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
                     break;
                 case NO_GROUP:
                     // No group found on uuid
                     PluginUtils.getLogger().log(Level.WARNING, "Sign contains a group that does not exsists");
                     it.remove();
+                    failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
                     break;
                 case BAD_LOCATION:
@@ -325,6 +339,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                     Map<String, Object> loadInformation = xpSign.getLoadInformation();
                     PluginUtils.getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) loadInformation.get("world"), (int) loadInformation.get("x"), (int) loadInformation.get("y"), (int) loadInformation.get("z")});
                     it.remove();
+                    failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
                     break;
                 case NO_PLAYER:
@@ -332,11 +347,17 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                     Map<String, Object> sign = xpSign.serialize();
                     PluginUtils.getLogger().log(Level.WARNING, "Could not retrive player: uuid={0}", new Object[]{(String) sign.get("ownerUuid")});
                     it.remove();
+                    failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
                     break;
             }
         }
+        
         if (dirty) {
+            if (!failedSigns.isEmpty()) {
+                XP_SIGN_CONFIG.GetConfig().set("failedSigns", failedSigns);
+                XP_SIGN_CONFIG.SaveConfig();
+            }
             // Save signs if changes have been found
             saveSigns(true);
         }
@@ -359,6 +380,9 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @return 
      */
     public static String getSaveName(String name) {
+        if (name == null) {
+            name = "";
+        }
         if (name.length() > 15) {
             return name.substring(0, 15);
         } else {
@@ -530,7 +554,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             setNewXp(currentXp + experienceManager.getCurrentExp());
             experienceManager.setExp(0);
         } else if (currentXp + xpToIncrease > 210000000) {
-            player.sendMessage(GuiSettingsFromFile.getText("maximumStorageMessage"));
+            player.sendMessage(XPStorage.getGuiSettings().getText("maximumStorageMessage"));
             return;
         } else {
             setNewXp(currentXp + xpToIncrease);
@@ -625,7 +649,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * Update the amount of XP displayed
      */
     public final void updateSign() {
-        sign.setLine(0, GuiSettingsFromFile.getText("xpStorageTag"));
+        sign.setLine(0, XPStorage.getGuiSettings().getText("xpStorageTag"));
         sign.setLine(1, getSecondLine());
         sign.setLine(2, getCurrentXp() + "");
         sign.setLine(3, getSignText());

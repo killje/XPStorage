@@ -1,15 +1,17 @@
 package me.killje.xpstorage.gui.list;
 
-import java.util.ArrayList;
-import java.util.UUID;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.gui.list.GuiElementList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.guielement.SimpleGuiElement;
+import me.killje.spigotgui.list.GuiElementList;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.gui.choosegroup.CreateNewGroup;
-import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.permission.Permissions;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 
@@ -21,31 +23,38 @@ public class GroupList extends GuiElementList {
     
     private final Player player;
     private final AbstractXpSign xpSign;
+    private final Map<String, GuiElement> groups = new HashMap<>();
     
     public GroupList(Player player, GroupListGuiElement groupListGuiElement, AbstractXpSign xpSign) {
-        super(player, getGuiElements(player.getUniqueId(), groupListGuiElement, xpSign), GuiSettingsFromFile.getText("choseGroup"));
+        super(XPStorage.getGuiSettings(), player, XPStorage.getGuiSettings().getText("choseGroup"));
         this.player = player;
         this.xpSign = xpSign;
-    }
-    
-    private static ArrayList<GuiElement> getGuiElements (UUID playerId, GroupListGuiElement groupListGuiElement, AbstractXpSign xpSign) {
-        ArrayList<Group> groups = PlayerInformation.getPlayerInformation(playerId).getGroups(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
-        ArrayList<GuiElement> guiElements = new ArrayList<>();
-        for (Group group : groups) {
-            guiElements.add(groupListGuiElement.getGuiElement(group.getGroupUuid(), xpSign));
+        
+        List<Group> groupList = PlayerInformation.getPlayerInformation(player.getUniqueId()).getGroups(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
+        
+        for (Group group : groupList) {
+            GuiElement groupGuiElement = groupListGuiElement.getGuiElement(group.getGroupUuid(), xpSign);
+            groups.put(group.getGroupName(), groupGuiElement);
         }
-        return guiElements;
     }
     
     @Override
     protected int initInventory(int startIndex, int stopIndex, int maxItemsOnPage) {
         
+        int initInventory = super.initInventory(startIndex, stopIndex, maxItemsOnPage);
         if (player.hasPermission(Permissions.CREATE_XP_GROUP.getPermission())) {
-            this.addGuiElement(new CreateNewGroup(player, xpSign));
+            this.addGuiElement(new CreateNewGroup(player, xpSign), 1);
+        } else {
+            this.addGuiElement(new SimpleGuiElement(guiSettings.getItemStack("newGroup.noacces")), 1);
         }
         
-        return super.initInventory(startIndex, stopIndex, maxItemsOnPage);
+        return initInventory;
         
+    }
+
+    @Override
+    protected Map<String, ? extends GuiElement> getElementMap() {
+        return groups;
     }
 
 }

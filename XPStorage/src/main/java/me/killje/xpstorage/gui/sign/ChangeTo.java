@@ -1,8 +1,8 @@
 package me.killje.xpstorage.gui.sign;
 
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -30,15 +30,15 @@ public class ChangeTo implements GuiElement{
     
 
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(GuiSetting guiSettings) {
         if (xpSign.getClass().equals(signClass)) {
-            return GuiSettingsFromFile.getItemStack("selected." + guiSettingsName);
+            return guiSettings.getItemStack("selected." + guiSettingsName);
         }
-        return GuiSettingsFromFile.getItemStack("changeTo." + guiSettingsName);
+        return guiSettings.getItemStack("changeTo." + guiSettingsName);
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         if (xpSign.getClass().equals(signClass)) {
             return;
         }

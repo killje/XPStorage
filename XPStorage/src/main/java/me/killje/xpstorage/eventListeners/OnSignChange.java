@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.util.PluginUtils;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.xpstorage.util.PlayerInformation;
+import me.killje.xpstorage.util.PluginUtils;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -48,7 +48,7 @@ public class OnSignChange implements Listener {
                 AbstractXpSign sign = AbstractXpSign.createSign(playerInformation.getDefaultSign(),(Sign) event.getBlock().getState(), event.getPlayer().getUniqueId());
                 sign.updateSign();
                 if(playerInformation.isMessage()) {
-                    event.getPlayer().sendMessage(GuiSettingsFromFile.getText("signCreated", interactMatiral));
+                    event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("signCreated", interactMatiral));
                 }
                 
             }

@@ -1,9 +1,9 @@
 package me.killje.xpstorage.gui.settings;
 
-import me.killje.gui.InventoryUtils;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.util.PlayerInformation;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,23 +23,23 @@ public class SetMessage implements GuiElement {
     }
 
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(GuiSetting guiSettings) {
         if (playerInformation.isMessage()) {
-            return GuiSettingsFromFile.getItemStack("message.remove");
+            return guiSettings.getItemStack("message.remove");
         } else {
-            return GuiSettingsFromFile.getItemStack("message.add");
+            return guiSettings.getItemStack("message.add");
         }
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         boolean currentGetMessage = playerInformation.isMessage();
         playerInformation.isMessage(!currentGetMessage);
         
         if (currentGetMessage) {
-            player.sendMessage(GuiSettingsFromFile.getText("message.remove"));
+            player.sendMessage(currentInventoryUtils.getGuiSettings().getText("message.remove"));
         } else {
-            player.sendMessage(GuiSettingsFromFile.getText("message.add"));
+            player.sendMessage(currentInventoryUtils.getGuiSettings().getText("message.add"));
         }
         
         currentInventoryUtils.closeInventory(player);

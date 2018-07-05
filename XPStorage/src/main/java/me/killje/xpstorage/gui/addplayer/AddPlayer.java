@@ -1,13 +1,13 @@
 package me.killje.xpstorage.gui.addplayer;
 
-import java.util.UUID;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.HeadUtils;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.HeadUtil;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,29 +18,29 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class AddPlayer implements GuiElement {
     
-    private final UUID player;
+    private final OfflinePlayer player;
     private final AbstractSharedSign sign;
     private final String displayName;
 
-    public AddPlayer(UUID player, AbstractXpSign sign, String displayName) {
+    public AddPlayer(OfflinePlayer player, AbstractXpSign sign, String displayName) {
         this.player = player;
         this.sign = (AbstractSharedSign) sign;
         this.displayName = displayName;
     }
     
-    public AddPlayer(UUID player, AbstractXpSign sign) {
+    public AddPlayer(OfflinePlayer player, AbstractXpSign sign) {
         this(player, sign, null);
     }
     
     @Override
-    public ItemStack getItemStack() {
-        ItemStack itemStack = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(player));
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        ItemStack itemStack = HeadUtil.getPlayerHead(player);
         
         ItemMeta itemMeta = itemStack.getItemMeta();
         
         String headName;
         if (displayName == null) {
-            headName = Bukkit.getOfflinePlayer(player).getName();
+            headName = player.getName();
         }
         else {
             headName = displayName;
@@ -54,9 +54,9 @@ public class AddPlayer implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         
-        sign.getGroup().addPlayerToGroup(player);
+        sign.getGroup().addPlayerToGroup(player.getUniqueId());
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
     

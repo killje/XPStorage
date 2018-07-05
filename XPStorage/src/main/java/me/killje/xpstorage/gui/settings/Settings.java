@@ -1,9 +1,10 @@
 package me.killje.xpstorage.gui.settings;
 
-import me.killje.gui.Exit;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.spigotgui.guielement.Exit;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.permission.Permissions;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
@@ -14,12 +15,13 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class Settings extends InventoryUtils implements GuiElement {
+public class Settings extends InventoryUtil implements GuiElement {
 
     private final Player player;
     private final AbstractXpSign xpSign;
 
     public Settings(AbstractXpSign xpSign, Player player) {
+        super(XPStorage.getGuiSettings());
         this.player = player;
         this.xpSign = xpSign;
     }
@@ -27,7 +29,7 @@ public class Settings extends InventoryUtils implements GuiElement {
     @Override
     protected void initInventory() {
         this
-                .setInventoryName(GuiSettingsFromFile.getText("settings"))
+                .setInventoryName(getGuiSettings().getText("settings"))
                 .addGuiElement(new SetMessage(player))
                 .addGuiElement(new DefaultSign(player));
 
@@ -38,12 +40,12 @@ public class Settings extends InventoryUtils implements GuiElement {
     }
 
     @Override
-    public ItemStack getItemStack() {
-        return GuiSettingsFromFile.getItemStack("settings");
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("settings");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
     }
 

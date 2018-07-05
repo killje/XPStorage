@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.util.PlayerInformation;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -67,12 +67,12 @@ public class PlayerSign extends AbstractXpSign {
     protected String getSignText() {
         Map<String, String> replacement = new HashMap<>();
         replacement.put("PLAYER_NAME", getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName()));
-        return GuiSettingsFromFile.getText("playerSignText", replacement);
+        return XPStorage.getGuiSettings().getText("playerSignText", replacement);
     }
 
     @Override
     public String signType() {
-        return GuiSettingsFromFile.getText("playerSignType");
+        return XPStorage.getGuiSettings().getText("playerSignType");
     }
 
     @Override

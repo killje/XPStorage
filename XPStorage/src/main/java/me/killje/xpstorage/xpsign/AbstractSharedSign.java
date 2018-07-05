@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
 import me.killje.xpstorage.gui.sign.EditList;
 import me.killje.xpstorage.gui.sign.FromList;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.xpstorage.util.PlayerInformation;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 

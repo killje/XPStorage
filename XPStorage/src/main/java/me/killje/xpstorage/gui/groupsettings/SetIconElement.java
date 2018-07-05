@@ -1,12 +1,10 @@
 package me.killje.xpstorage.gui.groupsettings;
 
 import java.util.UUID;
+import me.killje.spigotgui.guielement.InventoryElement;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.group.Group;
-import me.killje.gui.InventoryUtils;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.guiElement.InventoryElement;
 import org.bukkit.Material;
-import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,7 +21,7 @@ public class SetIconElement implements InventoryElement {
     }
     
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         ItemStack chosenIcon = null;
         switch (event.getAction()) {
             case MOVE_TO_OTHER_INVENTORY:
@@ -31,7 +29,7 @@ public class SetIconElement implements InventoryElement {
                 break;
             case PLACE_ALL:
             case PLACE_ONE:
-                chosenIcon = event.getCursor();
+                chosenIcon = event.getCursor().clone();
                 event.getWhoClicked().getInventory().addItem(chosenIcon.clone());
                 event.getCursor().setAmount(0);
                 break;
@@ -46,7 +44,7 @@ public class SetIconElement implements InventoryElement {
         }
         
         setIcon(chosenIcon.getType());
-        event.getWhoClicked().sendMessage(GuiSettingsFromFile.getText("iconSet"));
+        event.getWhoClicked().sendMessage(currentInventoryUtils.getGuiSettings().getText("iconSet"));
         currentInventoryUtils.closeInventory(event.getWhoClicked());
         
         

@@ -7,14 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import me.desht.dhutils.ExperienceManager;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.util.PluginUtils;
-import me.killje.xpstorage.utils.PlayerInformation;
-import me.killje.util.clsConfiguration;
+import me.killje.spigotgui.util.clsConfiguration;
+import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.util.PlayerInformation;
+import me.killje.xpstorage.util.PluginUtils;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.XpSignFacingBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -35,7 +34,7 @@ public class Group implements ConfigurationSerializable {
     private static class groupPeriodSaver implements Runnable {
 
         public groupPeriodSaver() {
-            Bukkit.getScheduler().runTaskTimerAsynchronously(PluginUtils.getPlugin(), this, 100, 12000);
+            PluginUtils.runTaskTimerAsynchronously(this, 100, 12000);
         }
         
         @Override
@@ -233,7 +232,7 @@ public class Group implements ConfigurationSerializable {
     public ItemStack getGroupIcon() {
         Map<String, String> replaceMap = new HashMap<>();
         replaceMap.put("GROUP_NAME", getGroupName());
-        ItemStack parsedIcon = GuiSettingsFromFile.getItemStack("groupDefault", replaceMap);
+        ItemStack parsedIcon = XPStorage.getGuiSettings().getItemStack("groupDefault", replaceMap);
         if (groupIcon != null) {
             parsedIcon.setType(groupIcon);
         }

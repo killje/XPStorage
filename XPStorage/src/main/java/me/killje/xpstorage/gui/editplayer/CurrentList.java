@@ -1,9 +1,9 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.ArrayList;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.list.List;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.spigotgui.list.List;
+import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.entity.Player;
 
@@ -16,7 +16,7 @@ public class CurrentList extends List {
     private final AbstractSharedSign sign;
     
     public CurrentList(Player currentPlayer, AbstractSharedSign sign) {
-        super(currentPlayer);
+        super(XPStorage.getGuiSettings(), currentPlayer);
         this.sign = sign;
     }
     
@@ -43,7 +43,7 @@ public class CurrentList extends List {
 
     @Override
     protected String getInventoryName() {
-        return GuiSettingsFromFile.getText("editPlayers");
+        return getGuiSettings().getText("editPlayers");
     }
     
 }

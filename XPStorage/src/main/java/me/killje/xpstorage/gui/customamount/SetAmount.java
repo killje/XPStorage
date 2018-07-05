@@ -1,10 +1,10 @@
 package me.killje.xpstorage.gui.customamount;
 
 import me.desht.dhutils.ExperienceManager;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.characters.AmountStorage;
-import me.killje.gui.characters.SetAmountButton;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.spigotgui.character.AmountStorage;
+import me.killje.spigotgui.character.SetAmountButton;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -31,7 +31,7 @@ public class SetAmount extends SetAmountButton {
     }
 
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(GuiSetting guiSettings) {
         ExperienceManager experienceManager = new ExperienceManager(this.player);
 
         int totalXp = xpSign.getCurrentXp() + experienceManager.getCurrentExp();
@@ -42,18 +42,18 @@ public class SetAmount extends SetAmountButton {
         if (maxLVL < amountStorage.getCurrent()) {
             characterToShow = "confirmCharacterNotAvailable";
         }
-        return GuiSettingsFromFile.getItemStack(characterToShow);
+        return guiSettings.getItemStack(characterToShow);
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         ExperienceManager experienceManager = new ExperienceManager(this.player);
 
         int totalXp = xpSign.getCurrentXp() + experienceManager.getCurrentExp();
         int maxLVL = experienceManager.getLevelForExp(totalXp);
 
         if (maxLVL < amountStorage.getCurrent()) {
-            event.getWhoClicked().sendMessage(GuiSettingsFromFile.getText("amounthNotAvaialable"));
+            event.getWhoClicked().sendMessage(currentInventoryUtils.getGuiSettings().getText("amounthNotAvaialable"));
             return;
         }
 

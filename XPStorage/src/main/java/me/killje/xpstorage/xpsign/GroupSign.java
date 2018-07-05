@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.Group;
-import me.killje.gui.guiElement.GuiElement;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptionsGroup;
 import me.killje.xpstorage.gui.groupsettings.DeleteGroup;
 import me.killje.xpstorage.gui.groupsettings.SetIcon;
 import me.killje.xpstorage.gui.groupsettings.SetName;
-import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.gui.sign.ChangeToGroup;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class GroupSign extends AbstractSharedSign {
 
     @Override
     protected String getSignText() {
-        return GuiSettingsFromFile.getText("groupSignText");
+        return XPStorage.getGuiSettings().getText("groupSignText");
     }
 
     @Override
@@ -46,12 +46,12 @@ public class GroupSign extends AbstractSharedSign {
         
         String saveName = getSaveName(groupName);
         replacement.put("GROUP_NAME", saveName);
-        return GuiSettingsFromFile.getText("groupName", replacement);
+        return XPStorage.getGuiSettings().getText("groupName", replacement);
     }
 
     @Override
     public String signType() {
-        return GuiSettingsFromFile.getText("groupSignType");
+        return XPStorage.getGuiSettings().getText("groupSignType");
     }
 
     @Override
@@ -64,8 +64,8 @@ public class GroupSign extends AbstractSharedSign {
         ArrayList<GuiElement> guiElements = super.getAdditionalGuiElements(player);
         if (getOwner().equals(player.getUniqueId())) {
             guiElements.add(new ChangeToGroup(player, this, true));
-            guiElements.add(new SetIcon(getGroup().getGroupUuid()));
             guiElements.add(new SetName(player, this));
+            guiElements.add(new SetIcon(getGroup().getGroupUuid()));
             guiElements.add(new DeleteGroup(this, player));
         }
         return guiElements;

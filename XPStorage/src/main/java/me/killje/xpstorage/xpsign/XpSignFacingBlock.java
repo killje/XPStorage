@@ -3,7 +3,7 @@ package me.killje.xpstorage.xpsign;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import me.killje.util.PluginUtils;
+import me.killje.xpstorage.util.PluginUtils;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 

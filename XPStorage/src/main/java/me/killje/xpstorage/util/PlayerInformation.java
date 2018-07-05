@@ -1,13 +1,12 @@
-package me.killje.xpstorage.utils;
+package me.killje.xpstorage.util;
 
-import me.killje.util.clsConfiguration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
-import me.killje.util.PluginUtils;
+import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.group.GroupRights.Right;
@@ -58,7 +57,7 @@ public class PlayerInformation implements ConfigurationSerializable {
         if (!PluginUtils.getPlugin().isEnabled()) {
             return null;
         }
-
+        
         UUID playerUUID = UUID.fromString((String) player.get("player"));
 
         int xp = (int) player.get("xp");

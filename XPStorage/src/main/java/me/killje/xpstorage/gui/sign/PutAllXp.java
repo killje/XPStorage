@@ -1,8 +1,8 @@
 package me.killje.xpstorage.gui.sign;
 
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -23,12 +23,12 @@ public class PutAllXp implements GuiElement {
     }
 
     @Override
-    public ItemStack getItemStack() {
-        return GuiSettingsFromFile.getItemStack("putAllXP");
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("putAllXP");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)){
             return;

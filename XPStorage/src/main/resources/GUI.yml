@@ -477,7 +477,6 @@ GUIElements:
         # Stone:
         # value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU5MTIwMGRmMWNhZTUxYWNjMDcxZjg1YzdmN2Y1Yjg0NDlkMzliYjMyZjM2M2IwYWE1MWRiYzg1ZDEzM2UifX19
         displayName: '&WHITEZ'
-
     page.prev: 
         use: arrow.left
         displayName: '&WHITEPrevious page'
@@ -498,6 +497,10 @@ GUIElements:
         use: undo
     undo.number: 
         use: undo
+    back: 
+        type: item
+        value: MAGENTA_GLAZED_TERRACOTTA
+        displayName: 'Go back'
     confirm:
         type: item
         value: DYE
@@ -538,6 +541,10 @@ GUIElements:
         displayName: '&WHITESet group name'
         lore:
             - 'Enter at least a single character'
+    search:
+        type: item
+        value: COMPASS
+        displayName: '&WHITESearch'
     putAllXP:
         type: item
         value: BUCKET
@@ -580,7 +587,7 @@ GUIElements:
         value: EMPTY_MAP
         displayName: 'Choose diffrent group'
         lore: 
-            - 'Change this group sign to a diffrent group'
+            - 'Change this ender group sign to a diffrent group'
     addPlayerEditRights:
         type: item
         value: NAME_TAG
@@ -588,7 +595,7 @@ GUIElements:
         lore: 
             - 'Gives this player, the right'
             - 'to add and remove other players'
-            - 'to this shared sign'
+            - 'to this group sign'
     removePlayerEditRights:
         type: item
         value: REDSTONE_TORCH_ON
@@ -596,7 +603,7 @@ GUIElements:
         lore: 
             - 'Removes the right from this player'
             - 'to add and remove other players'
-            - 'to this shared sign'
+            - 'to this group sign'
     addPlayerCreateRights:
         type: item
         value: MAP
@@ -625,6 +632,14 @@ GUIElements:
         type: item
         value: PAPER
         displayName: 'Create new group'
+    newGroup.noacces:
+        type: item
+        value: EMPTY_MAP
+        displayName: 'Create new group'
+        lore:
+            - 'You do not have the permission to make your own groups.'
+            - 'You can only select groups for which you are able to create'
+            - 'ender group signs for'
     setNewOwner:
         type: item
         value: REDSTONE
@@ -634,9 +649,9 @@ GUIElements:
     editList:
         type: item
         value: BOOK_AND_QUILL
-        displayName: '&WHITEEdit person from shared list'
+        displayName: '&WHITEEdit person from group list'
         lore: 
-            - 'Opens a list of all shared players.'
+            - 'Opens a list of all group players.'
             - 'You can edit the players here.'
     fromList:
         type: item
@@ -648,11 +663,17 @@ GUIElements:
     message.add:
         type: item
         value: NAME_TAG
-        displayName: '&GREENShow information when creating signs'
+        displayName: '&BLUEReceive information messages'
+        lore: 
+            - 'Get a message when creating a sign or when'
+            - 'you run out of xp'
     message.remove:
         type: item
         value: REDSTONE_TORCH_ON
-        displayName: '&BLUEDo not recive sign creation messages'
+        displayName: '&BLUEDo not receive information messages'
+        lore: 
+            - 'Do not get a message when creating a sign or when'
+            - 'you run out of xp'
     defaultSign:
         type: item
         value: HOPPER
@@ -672,59 +693,59 @@ GUIElements:
     changeTo.normal:
         type: item
         value: CHEST
-        displayName: '&WHITELocation sign'
+        displayName: '&WHITELocal player sign'
         lore: 
-            - 'Change the sign to a location bound sign.'
+            - 'Change the sign to a location bound player sign.'
             - 'The XP on this sign will only'
             - 'be available on this location for you.'
     changeTo.shared:
         type: item
         value: BEACON
-        displayName: '&WHITEShared sign'
+        displayName: '&WHITELocal group sign'
         lore: 
-            - 'Change the sign to a shared sign.'
-            - 'With this the XP will be'
-            - 'available to you and people you share it with.'
+            - 'Change the sign to a local group sign.'
+            - 'With this the XP will be available to you'
+            - 'and people you share it with on this location.'
     changeTo.ender:
         type: item
         value: ENDER_CHEST
-        displayName: '&WHITEPlayer sign'
+        displayName: '&WHITEEnder player sign'
         lore: 
-            - 'Change the sign to a player bound sign.'
+            - 'Change the sign to a ender bound player sign.'
             - 'With this the XP will be'
             - 'available on other signs for you.'
     changeTo.group:
         type: item
         value: END_CRYSTAL
-        displayName: '&WHITEGroup sign'
+        displayName: '&WHITEEnder group sign'
         lore: 
-            - 'Change the sign to a group sign.'
+            - 'Change the sign to a ender group sign.'
             - 'With this the XP will be available'
             - 'Within a selected group.'
     selected: 
         type: item
         value: STAINED_GLASS_PANE
-        color: WHITE
+        color: GREEN
     selected.group:
         use: 
             - selected
             - changeTo.group
-        displayName: '&YELLOWCurrently selected &WHITE Group sign'
+        displayName: '&YELLOWCurrently selected &WHITE Ender group sign'
     selected.shared:
         use: 
             - selected
             - changeTo.shared
-        displayName: '&YELLOWCurrently selected &WHITE Shared sign'
+        displayName: '&YELLOWCurrently selected &WHITE Local group sign'
     selected.ender:
         use: 
             - selected
             - changeTo.ender
-        displayName: '&YELLOWCurrently selected &WHITE Player sign'
+        displayName: '&YELLOWCurrently selected &WHITE Ender player sign'
     selected.normal:
         use: 
             - selected
             - changeTo.normal
-        displayName: '&YELLOWCurrently selected &WHITE Location sign'
+        displayName: '&YELLOWCurrently selected &WHITE Local player sign'
     selected.owner:
         use: selected
         displayName: 'You can''t edit the owner'
@@ -733,6 +754,7 @@ GUIElements:
         displayName: 'You can''t edit yourself'
         
 texts: 
+    search: '%SEARCH | Found: %MATCHES | %CURRENT_PAGE/%LAST_PAGE'
     xpStorageTag: '&BLUE[XP Storage]'
     groupName: '&AQUA%GROUP_NAME'
     signInventory: 'XP Storage settings'
@@ -742,27 +764,28 @@ texts:
     editPlayers: 'Edit players'
     choseGroup: 'Choose group'
     addPlayer: 'Add player'
-    normalSignType: 'Location sign'
+    normalSignType: 'Local player sign'
     normalSignText: '%PLAYER_NAME'
-    playerSignType: 'Player sign'
+    playerSignType: 'Ender player sign'
     playerSignText: '&DARK_PURPLE%PLAYER_NAME'
-    sharedSignType: 'Shared sign'
-    sharedSignText: '&DARK_PURPLEShared'
-    groupSignType: 'Group sign'
-    groupSignText: '&GREENGroup'
+    sharedSignType: 'Local group sign'
+    sharedSignText: '&DARK_PURPLELocal group'
+    groupSignType: 'Ender group sign'
+    groupSignText: '&GREENEnder group'
     amounthNotAvaialable: 'That amount is not available'
     maximumStorageMessage: '&DARK_REDMaximum of storage reached'
     information: '&WHITEInformation'
     player: 'Player: %PLAYER_NAME'
     signType: 'Sign type: %SIGN_TYPE'
     groupUUID: 'Group UUID: %GROUP_UUID'
+    groupNameOwner: 'Group name: %GROUP_NAME'
     ownerUUID: 'Owner UUID: %OWNER_UUID'
     clickHere: 'Click here'
     enterNameGroup: ' and enter the name of your group'
     notAuthorized: '&REDYou are not authorized to access someone else''s xp Storage'
     groupCreated: 'The group has been created'
-    message.add: 'You will now recive creation messages'
-    message.remove: 'You will no longer recive creation messages'
+    message.add: 'You will now receive creation messages'
+    message.remove: 'You will no longer receive creation messages'
     defaultSignSet: 'Your default sign has been set'
     pickDefaultSign: 'Pick your default sign'
     nameSet: 'Group name has been set'
@@ -774,3 +797,4 @@ texts:
     setName.empty: 'Please specify a new group name'
     newGroupName.empty: 'Please specify a group name'
     signCreated: 'XP sign has been created, you can edit sign settings by using "%SIGN_INTERACT_MATERIAL" on this sign. There you can also disable this message.'
+    noXPLeft: 'You don''t have any experience left. If you want to access the sign, interact with a "%SIGN_INTERACT_MATERIAL" to open the GUI'

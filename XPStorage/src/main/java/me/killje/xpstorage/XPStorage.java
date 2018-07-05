@@ -1,28 +1,36 @@
 package me.killje.xpstorage;
 
-import me.killje.util.PluginUtils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.eventListeners.OnBlockBreak;
 import me.killje.xpstorage.eventListeners.OnBlockBurn;
-import me.killje.xpstorage.eventListeners.OnPlayerInteract;
-import me.killje.xpstorage.eventListeners.OnSignChange;
 import me.killje.xpstorage.eventListeners.OnBlockExplode;
 import me.killje.xpstorage.eventListeners.OnBlockIgnite;
-import me.killje.xpstorage.eventListeners.OnEntityChangeBlock;
 import me.killje.xpstorage.eventListeners.OnBlockPistonExtend;
 import me.killje.xpstorage.eventListeners.OnBlockPistonRetract;
 import me.killje.xpstorage.eventListeners.OnEntityBreakDoor;
+import me.killje.xpstorage.eventListeners.OnEntityChangeBlock;
 import me.killje.xpstorage.eventListeners.OnLeavesDecay;
+import me.killje.xpstorage.eventListeners.OnPlayerInteract;
+import me.killje.xpstorage.eventListeners.OnSignChange;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
-import me.killje.util.clsConfiguration;
-import me.killje.xpstorage.utils.PlayerInformation;
+import me.killje.xpstorage.util.PlayerInformation;
+import me.killje.xpstorage.util.PluginUtils;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
 import me.killje.xpstorage.xpsign.NormalSign;
 import me.killje.xpstorage.xpsign.PlayerSign;
 import me.killje.xpstorage.xpsign.SharedSign;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -31,11 +39,17 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class XPStorage extends JavaPlugin {
 
+    private static GuiSetting guiSettings;
     private static clsConfiguration signs;
+    
     private boolean init = true;
 
     public static clsConfiguration getSignConfig() {
         return signs;
+    }
+    
+    public static GuiSetting getGuiSettings() {
+        return guiSettings;
     }
     
     public boolean isInit() {
@@ -45,8 +59,9 @@ public class XPStorage extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        
         PluginUtils.setPlugin(this);
+        
+        guiSettings = new GuiSetting(this, "GUI.yml");
         signs = new clsConfiguration(this, "Signs.yml");
         
         getServer().getPluginManager().registerEvents(new OnSignChange(), this);
@@ -61,9 +76,14 @@ public class XPStorage extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnEntityBreakDoor(), this);
         getServer().getPluginManager().registerEvents(new OnEntityChangeBlock(), this);
         
-        getCommand("xpreload").setExecutor((sender, command, label, args) -> {
-            Bukkit.getPluginManager().disablePlugin(this);
-            Bukkit.getPluginManager().enablePlugin(this);
+        getCommand("xpreloadgui").setExecutor((sender, command, label, args) -> {
+            guiSettings.reloadConfig();
+            sender.sendMessage("The GUI of XPStorage has been reloaded");
+            return true;
+        });
+        
+        getCommand("xpstorage").setExecutor((sender, command, label, args) -> {
+            sender.sendMessage("Visit " + ChatColor.UNDERLINE + "https://github.com/killje/XPStorage/wiki/" + ChatColor.RESET +" for information on how to use XPStorage");
             return true;
         });
         

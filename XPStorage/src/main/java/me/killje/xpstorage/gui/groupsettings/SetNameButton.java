@@ -1,8 +1,8 @@
 package me.killje.xpstorage.gui.groupsettings;
 
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.characters.SetStringButton;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.spigotgui.character.SetStringButton;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,25 +21,25 @@ public class SetNameButton extends SetStringButton {
 
 
     @Override
-    protected ItemStack confirmItem() {
-        return GuiSettingsFromFile.getItemStack("setName.confirm");
+    protected ItemStack confirmItem(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("setName.confirm");
     }
 
     @Override
-    protected ItemStack noNameYetItem() {
-        return GuiSettingsFromFile.getItemStack("setName.noNameYet");
+    protected ItemStack noNameYetItem(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("setName.noNameYet");
     }
     
     @Override
-    protected String textForEmpty() {
-        return GuiSettingsFromFile.getText("setName.empty");
+    protected String textForEmpty(GuiSetting guiSettings) {
+        return guiSettings.getText("setName.empty");
     }
     
     @Override
-    protected void executeSet(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    protected void executeSet(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         groupSign.getGroup().setGroupName(getKeyBoardStringStorage().getCurrent());
         currentInventoryUtils.closeInventory(event.getWhoClicked());
-        event.getWhoClicked().sendMessage(GuiSettingsFromFile.getText("nameSet"));
+        event.getWhoClicked().sendMessage(currentInventoryUtils.getGuiSettings().getText("nameSet"));
         groupSign.updateSign();
     }
 

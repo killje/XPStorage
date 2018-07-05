@@ -3,7 +3,7 @@ package me.killje.xpstorage.xpsign;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.xpstorage.XPStorage;
 import static me.killje.xpstorage.xpsign.AbstractXpSign.getSaveName;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
@@ -65,12 +65,12 @@ public class NormalSign extends AbstractXpSign {
     protected String getSignText() {
         Map<String, String> replacement = new HashMap<>();
         replacement.put("PLAYER_NAME", getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName()));
-        return GuiSettingsFromFile.getText("normalSignText", replacement);
+        return XPStorage.getGuiSettings().getText("normalSignText", replacement);
     }
 
     @Override
     public String signType() {
-        return GuiSettingsFromFile.getText("normalSignType");
+        return XPStorage.getGuiSettings().getText("normalSignType");
     }
 
     @Override
@@ -109,6 +109,14 @@ public class NormalSign extends AbstractXpSign {
         
         saveMap.put("xpStored", this.xpInStorage);
         return saveMap;
+    }
+    
+    /**
+     * SHOULD ONLY BE USED FOR CONVERTING FROM OLD SIGNS
+     * @param xp 
+     */
+    public void setXP(int xp) {
+        this.xpInStorage = xp;
     }
     
 }

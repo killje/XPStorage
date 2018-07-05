@@ -1,9 +1,9 @@
 package me.killje.xpstorage.gui.choosegroup;
 
+import me.killje.spigotgui.character.SetStringButton;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.group.Group;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.characters.SetStringButton;
-import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.entity.HumanEntity;
@@ -26,22 +26,22 @@ public class SetNewGroupNameButton extends SetStringButton {
     }
 
     @Override
-    protected ItemStack confirmItem() {
-        return GuiSettingsFromFile.getItemStack("newGroupName.confirm");
+    protected ItemStack confirmItem(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("newGroupName.confirm");
     }
 
     @Override
-    protected ItemStack noNameYetItem() {
-        return GuiSettingsFromFile.getItemStack("newGroupName.noNameYet");
+    protected ItemStack noNameYetItem(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("newGroupName.noNameYet");
     }
 
     @Override
-    protected String textForEmpty() {
-        return GuiSettingsFromFile.getText("newGroupName.empty");
+    protected String textForEmpty(GuiSetting guiSettings) {
+        return guiSettings.getText("newGroupName.empty");
     }
 
     @Override
-    protected void executeSet(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    protected void executeSet(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)){
             return;

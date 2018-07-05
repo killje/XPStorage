@@ -1,9 +1,10 @@
 package me.killje.xpstorage.gui.groupsettings;
 
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.characters.KeyBoard;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.spigotgui.character.KeyBoard;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,22 +19,17 @@ public class SetName extends KeyBoard implements GuiElement {
     private final Player player;
 
     public SetName(Player player, GroupSign groupSign) {
-        super(player, new SetNameButton(groupSign));
+        super(XPStorage.getGuiSettings(), player, new SetNameButton(groupSign));
         this.player = player;
     }
 
     @Override
-    protected String getInventoryName() {
-        return getKeyBoardStringStorage().getCurrent();
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("setName");
     }
 
     @Override
-    public ItemStack getItemStack() {
-        return GuiSettingsFromFile.getItemStack("setName");
-    }
-
-    @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(player, this);
     }
     

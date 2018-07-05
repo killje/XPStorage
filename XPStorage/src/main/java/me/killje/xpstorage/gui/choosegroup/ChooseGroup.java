@@ -1,9 +1,10 @@
 package me.killje.xpstorage.gui.choosegroup;
 
 import java.util.UUID;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.group.Group;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.entity.HumanEntity;
@@ -28,13 +29,13 @@ public class ChooseGroup implements GuiElement{
     }
     
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(GuiSetting guiSettings) {
         Group group = Group.getGroupFromUUID(groupId);
         return group.getGroupIcon();
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)){

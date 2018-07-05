@@ -1,10 +1,10 @@
 package me.killje.xpstorage.gui.sign;
 
 import java.util.UUID;
-import me.killje.gui.InventoryUtils;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.gui.choosegroup.ChooseGroup;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
 import me.killje.xpstorage.gui.list.GroupList;
 import me.killje.xpstorage.gui.list.GroupListGuiElement;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
@@ -36,18 +36,18 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
     }
     
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(GuiSetting guiSettings) {
         if (fromGroup) {
-            return GuiSettingsFromFile.getItemStack("diffrentGroup");
+            return guiSettings.getItemStack("diffrentGroup");
         }
         if (isSelected) {
-            return GuiSettingsFromFile.getItemStack("selected.group");
+            return guiSettings.getItemStack("selected.group");
         }
-        return GuiSettingsFromFile.getItemStack("changeTo.group");
+        return guiSettings.getItemStack("changeTo.group");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         if (isSelected && !fromGroup) {
             return;
         }
@@ -56,7 +56,7 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
             return;
         }
         
-        InventoryUtils groupList = new GroupList(player, this, xpSign);
+        InventoryUtil groupList = new GroupList(player, this, xpSign);
         
         currentInventoryUtils.openNewInventory(player, groupList);
     }

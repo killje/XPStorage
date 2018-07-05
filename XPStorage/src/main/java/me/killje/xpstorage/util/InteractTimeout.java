@@ -1,10 +1,9 @@
-package me.killje.xpstorage.utils;
+package me.killje.xpstorage.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import me.killje.util.PluginUtils;
 import org.bukkit.block.Sign;
 
 /**

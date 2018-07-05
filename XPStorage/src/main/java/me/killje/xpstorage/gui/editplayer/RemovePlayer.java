@@ -1,9 +1,9 @@
 package me.killje.xpstorage.gui.editplayer;
 
 import java.util.UUID;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,12 +23,12 @@ public class RemovePlayer implements GuiElement {
     }
     
     @Override
-    public ItemStack getItemStack() {
-        return GuiSettingsFromFile.getItemStack("removePlayer");
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("removePlayer");
     }
     
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         sign.getGroup().removePlayerFromGroup(player);
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }

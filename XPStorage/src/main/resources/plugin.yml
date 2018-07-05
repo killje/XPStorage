@@ -12,7 +12,21 @@ permissions:
     xpStorage.changeOwner:
         description: Intended for moderators. This to change a sign from one owner to another. For groups and shared signs this is an default option in the edit player list.
         default: op
+    xpStorage.xpreloadgui:
+        description: Reloads the plugin GUI
+        default: op
+    xpStorage.showuuid:
+        description: Shows the uuid of the owner and sign on the head
+        default: op
+    xpStorage.xpstorage:
+        description: Access to the help page of XPStorage
+        default: true
 commands:
-   xpreload:
-      description: Reloads the XPStorage plugin
-      usage: /xpreload
+    xpreloadgui:
+        description: Reloads the XPStorage GUI file
+        usage: /xpreloadgui
+        permission: xpStorage.xpreloadgui
+    xpstorage:
+        description: Get help page of XPStorage
+        usage: /xpstorage
+        permission: xpStorage.xpstorage

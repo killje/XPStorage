@@ -1,16 +1,16 @@
 package me.killje.xpstorage.gui.sign;
 
-import java.util.UUID;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.list.PlayerList;
+import me.killje.spigotgui.list.PlayerListElementFetcher;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
 import me.killje.xpstorage.gui.addplayer.AddPlayer;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.list.PlayerList;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import me.killje.gui.list.PlayerListElementFetcher;
 
 /**
  *
@@ -25,24 +25,25 @@ public class FromList implements GuiElement, PlayerListElementFetcher {
     }
     
     @Override
-    public ItemStack getItemStack() {
-        return GuiSettingsFromFile.getItemStack("fromList");
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("fromList");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         
         if (!(event.getWhoClicked() instanceof Player)){
             return;
         }
+        
         Player player = (Player) event.getWhoClicked();
-        PlayerList playerList = new PlayerList(player, this);
+        PlayerList playerList = new PlayerList(currentInventoryUtils.getGuiSettings(), player, this);
         currentInventoryUtils.openNewInventory(player, playerList);
         
     }
 
     @Override
-    public GuiElement getGuiElement(UUID offlinePlayer) {
+    public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
         return new AddPlayer(offlinePlayer, sign);
     }
     

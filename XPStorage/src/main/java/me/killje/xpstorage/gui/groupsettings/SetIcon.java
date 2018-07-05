@@ -1,11 +1,12 @@
 package me.killje.xpstorage.gui.groupsettings;
 
 import java.util.UUID;
-import me.killje.gui.Exit;
-import me.killje.gui.InventoryUtils;
-import me.killje.gui.guiElement.GuiElement;
-import me.killje.util.GuiSettingsFromFile;
-import me.killje.gui.guiElement.SimpleGuiElement;
+import me.killje.spigotgui.guielement.Exit;
+import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.spigotgui.guielement.SimpleGuiElement;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.xpstorage.XPStorage;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,20 +16,20 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class SetIcon extends InventoryUtils implements GuiElement {
+public class SetIcon extends InventoryUtil implements GuiElement {
 
     private final UUID groupUUID;
     
     public SetIcon(UUID groupUUID) {
-        super(InventoryUtilsType.HOPPER);
+        super(XPStorage.getGuiSettings(), InventoryUtilsType.HOPPER);
         this.groupUUID = groupUUID;
     }
 
     @Override
     protected void initInventory() {
-        String iconInMiddle = GuiSettingsFromFile.getText("iconInMiddle");
+        String iconInMiddle = getGuiSettings().getText("iconInMiddle");
         this
-                .setInventoryName(GuiSettingsFromFile.getText("setIcon"))
+                .setInventoryName(guiSettings.getText("setIcon"))
                 .isIgnorePlayerInventory(false)
                 .addGuiElement(new SimpleGuiElement(new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getWoolData()), iconInMiddle))
                 .addGuiElement(new SimpleGuiElement(new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getWoolData()), iconInMiddle))
@@ -38,12 +39,12 @@ public class SetIcon extends InventoryUtils implements GuiElement {
     }
 
     @Override
-    public ItemStack getItemStack() {
-        return GuiSettingsFromFile.getItemStack("setIcon");
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("setIcon");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtils currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
     }
     
