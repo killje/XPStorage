@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class SetName extends KeyBoard implements GuiElement {
-    
+
     private final Player player;
 
     public SetName(Player player, GroupSign groupSign) {
@@ -32,5 +32,5 @@ public class SetName extends KeyBoard implements GuiElement {
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(player, this);
     }
-    
+
 }

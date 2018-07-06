@@ -13,15 +13,13 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class GetAllXp implements GuiElement{
-    
+public class GetAllXp implements GuiElement {
+
     private final AbstractXpSign xpSign;
 
     public GetAllXp(AbstractXpSign xpSign) {
         this.xpSign = xpSign;
     }
-    
-    
 
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
@@ -31,11 +29,11 @@ public class GetAllXp implements GuiElement{
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         HumanEntity entity = event.getWhoClicked();
-        if (!(entity instanceof Player)){
+        if (!(entity instanceof Player)) {
             return;
         }
         xpSign.allXpOut((Player) entity);
         currentInventoryUtils.closeInventory(entity);
     }
-    
+
 }

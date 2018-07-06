@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class DefaultSign extends InventoryUtil implements GuiElement {
-    
+
     private final Player player;
 
     public DefaultSign(Player player) {
@@ -34,7 +34,7 @@ public class DefaultSign extends InventoryUtil implements GuiElement {
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
     }
-    
+
     @Override
     protected void initInventory() {
         this
@@ -44,5 +44,5 @@ public class DefaultSign extends InventoryUtil implements GuiElement {
                 .addGuiElement(new DefaultSignPicker(player, SharedSign.class, "shared"))
                 .addGuiElement(new Exit(), 8);
     }
-    
+
 }

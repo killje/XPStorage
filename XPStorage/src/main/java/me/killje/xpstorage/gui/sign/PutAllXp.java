@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PutAllXp implements GuiElement {
 
-    
     private final AbstractXpSign xpSign;
 
     public PutAllXp(AbstractXpSign xpSign) {
@@ -30,11 +29,11 @@ public class PutAllXp implements GuiElement {
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         HumanEntity entity = event.getWhoClicked();
-        if (!(entity instanceof Player)){
+        if (!(entity instanceof Player)) {
             return;
         }
         xpSign.allXpIn((Player) entity);
         currentInventoryUtils.closeInventory(entity);
     }
-    
+
 }

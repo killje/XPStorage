@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class ChangeToGroup implements GuiElement, GroupListGuiElement {
-    
+
     private AbstractXpSign xpSign;
     private final boolean isSelected;
     private final boolean fromGroup;
@@ -27,14 +27,14 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
     public ChangeToGroup(Player player, AbstractXpSign xpSign) {
         this(player, xpSign, false);
     }
-    
+
     public ChangeToGroup(Player player, AbstractXpSign xpSign, boolean fromGroup) {
         this.xpSign = xpSign;
         this.isSelected = xpSign instanceof GroupSign;
         this.fromGroup = fromGroup;
         this.player = player;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         if (fromGroup) {
@@ -51,19 +51,19 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
         if (isSelected && !fromGroup) {
             return;
         }
-        if (!(event.getWhoClicked() instanceof Player)){
+        if (!(event.getWhoClicked() instanceof Player)) {
             event.setCancelled(true);
             return;
         }
-        
+
         InventoryUtil groupList = new GroupList(player, this, xpSign);
-        
+
         currentInventoryUtils.openNewInventory(player, groupList);
     }
-    
+
     @Override
     public GuiElement getGuiElement(UUID groupUUID, AbstractXpSign sign) {
         return new ChooseGroup(groupUUID, sign, player);
     }
-    
+
 }

@@ -61,9 +61,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
 
     }
-    
-    
-    
+
     public static AbstractXpSign createSign(Class<? extends AbstractXpSign> signClass, Sign sign, UUID player) {
         try {
             Constructor<? extends AbstractXpSign> constructor = signClass.getConstructor(Sign.class, UUID.class);
@@ -143,7 +141,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
         BlockFace facingDirection = ((org.bukkit.material.Sign) sign.getData()).getAttachedFace();
         this.signFacingBlock = new XpSignFacingBlock(sign.getBlock().getRelative(facingDirection), this);
-        
+
         loadError = LoadError.NONE;
         // Dubble check if the block has not already initiated a XPSign that has not been removed properly
         if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
@@ -151,7 +149,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
         // Set metadata of the sign
         sign.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(PluginUtils.getPlugin(), this));
-        
+
         // Add sign to list of signs
         addSign(this);
     }
@@ -187,10 +185,10 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
         // Try to get player and sign
         Sign signBlock = (Sign) location.getBlock().getState();
-        
+
         BlockFace facingDirection = ((org.bukkit.material.Sign) signBlock.getData()).getAttachedFace();
         this.signFacingBlock = new XpSignFacingBlock(signBlock.getBlock().getRelative(facingDirection), this);
-        
+
         this.sign = signBlock;
         this.loadError = LoadError.NONE;
         // Dubble check if the block has not already initiated a XPSign that has not been removed properly
@@ -205,7 +203,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Add sign to list of signs
-     * 
+     *
      * @param xpSign The created xpSign
      */
     private static void addSign(AbstractXpSign xpSign) {
@@ -216,8 +214,8 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Remove the specified xpSign
-     * 
-     * @param xpSign 
+     *
+     * @param xpSign
      */
     public static void removeSign(AbstractXpSign xpSign) {
         signsList.remove(xpSign);
@@ -227,7 +225,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Location of the sign block in the world
-     * 
+     *
      * @return The location
      */
     private Location getLocation() {
@@ -236,9 +234,9 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Save the signs, when initializing the signs will not be directly saved
-     * 
-     * @param overrideInitCheck When initializing the signs are saved once, 
-     * this boolean allows that, should not be used in normal saving
+     *
+     * @param overrideInitCheck When initializing the signs are saved once, this
+     * boolean allows that, should not be used in normal saving
      */
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public static void saveSigns(boolean overrideInitCheck) {
@@ -253,7 +251,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
 
     }
-    
+
     /**
      * Saving signs to config
      */
@@ -267,7 +265,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     public static void loadSigns() {
         // Boolean to keep track if all signs have been converted
         boolean dirty = false;
-        
+
         // Check if there is a signs file (old format)
         if (XPStorage.getSignConfig().GetConfig().contains("Signs")) {
 
@@ -291,12 +289,12 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             // Load the signs
             signsList = (List<AbstractXpSign>) XP_SIGN_CONFIG.GetConfig().getList("xpSigns");
         }
-        
+
         List<Map<?, ?>> failedSigns = (List<Map<?, ?>>) XP_SIGN_CONFIG.GetConfig().getMapList("failedSigns");
         if (failedSigns == null) {
             failedSigns = new ArrayList<>();
         }
-        
+
         if (signsList == null) {
             signsList = new ArrayList<>();
         }
@@ -352,7 +350,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                     break;
             }
         }
-        
+
         if (dirty) {
             if (!failedSigns.isEmpty()) {
                 XP_SIGN_CONFIG.GetConfig().set("failedSigns", failedSigns);
@@ -365,7 +363,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Get the name for the signs, max length is 15.
-     * 
+     *
      * @param player The player to get the name from
      * @return The signs ready name
      */
@@ -375,9 +373,9 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Get the name for the signs, max length is 15.
-     * 
+     *
      * @param name
-     * @return 
+     * @return
      */
     public static String getSaveName(String name) {
         if (name == null) {
@@ -389,19 +387,19 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             return name;
         }
     }
-    
+
     /**
      * Returns if a material is a sign
-     * 
+     *
      * @param material
      * @return True if it is a sign
      */
     public static boolean isSign(Material material) {
         return material == Material.WALL_SIGN
-            || material == Material.SIGN_POST
-            || material == Material.SIGN;
+                || material == Material.SIGN_POST
+                || material == Material.SIGN;
     }
-    
+
     public static void destroyMetaDatas() {
         for (AbstractXpSign abstractXpSign : signsList) {
             if (abstractXpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
@@ -415,8 +413,8 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Function to save this class to YAML
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public Map<String, Object> serialize() {
@@ -431,27 +429,28 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * This function should be implemented to save the amount of xp on the sign
-     * 
+     *
      * @param xpInStorage The new XP amount it has to be set to
      */
     protected abstract void setNewXp(int xpInStorage);
 
     /**
      * The function should return the total amount of XP on the sign
-     * 
+     *
      * @return The amount of XP
      */
     public abstract int getCurrentXp();
-    
-    
+
     /**
      * Retrieves the text second line of text for the sign
-     * 
+     *
      * @return The text to display on the sign
      */
-    protected String getSecondLine(){
+    protected String getSecondLine() {
         return "";
-    };
+    }
+
+    ;
 
     /**
      * Retrieves the text for the sign
@@ -462,36 +461,38 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * A human readable name for the sign.
-     * 
-     * @return 
+     *
+     * @return
      */
     public abstract String signType();
 
     /**
      * Checks if the given player can add/remove xp from the sign
-     * 
+     *
      * @param player
-     * @return 
+     * @return
      */
     public abstract boolean hasAccess(UUID player);
 
     /**
      * Returns the owner of the sign
-     * 
+     *
      * @return The uuid of the owner
      */
     public abstract UUID getOwner();
 
     /**
      * Sets the owner of the sign
-     * 
-     * @param newOwner 
+     *
+     * @param newOwner
      */
     public abstract void setOwner(UUID newOwner);
-    
+
     /**
-     * Whether or not this is a group sign. This is so the AbstractSharedSign can add additional functions
-     * @return 
+     * Whether or not this is a group sign. This is so the AbstractSharedSign
+     * can add additional functions
+     *
+     * @return
      */
     public boolean isGroupSign() {
         return false;
@@ -506,43 +507,42 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Increases the XP on the sign with the current selected amount
-     * 
+     *
      * @param player The current player increasing the XP of the sign
      */
     public void increaseXp(Player player) {
         increaseXp(player, 1);
     }
-    
-    
+
     /**
      * Increases the XP on the sign with the current selected amount
-     * 
+     *
      * @param player The current player increasing the XP of the sign
      * @param levelsToIncrease The amount of levels to increase
      */
     public void increaseXp(Player player, int levelsToIncrease) {
         ExperienceManager experienceManager = new ExperienceManager(player);
         boolean levelCheck = experienceManager.getCurrentExp() == experienceManager.getXpForLevel(player.getLevel());
-        
+
         int levelToCompare = player.getLevel();
         if (levelCheck && levelToCompare > 0) {
             levelToCompare--;
         }
-        
+
         levelToCompare -= levelsToIncrease - 1;
-        
+
         if (levelToCompare < 0) {
             levelToCompare = 0;
         }
-        
+
         int xpToIncrease = experienceManager.getCurrentExp() - experienceManager.getXpForLevel(levelToCompare);
-        
+
         increaseXpSign(player, xpToIncrease);
     }
-    
+
     /**
      * Increases the XP on the sign with the current selected amount
-     * 
+     *
      * @param player The current player increasing the XP of the sign
      * @param xpToIncrease The amount of player levels to increase the sign with
      */
@@ -566,30 +566,31 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Decreases the XP on the sign with the current selected amount
-     * 
+     *
      * @param player The current player decreasing the XP of the sign
      */
     public void decreaseXp(Player player) {
         decreaseXp(player, 1);
     }
-    
+
     /**
      * Decreases the XP on the sign with the current selected amount
-     * 
+     *
      * @param player The current player decreasing the XP of the sign
-     * @param levelsToDecrease The amount of player levels to decrease the sign with
+     * @param levelsToDecrease The amount of player levels to decrease the sign
+     * with
      */
     public void decreaseXp(Player player, int levelsToDecrease) {
-        
+
         ExperienceManager experienceManager = new ExperienceManager(player);
         int xpToDecrease = experienceManager.getXpForLevel(player.getLevel() + levelsToDecrease) - experienceManager.getCurrentExp();
-        
+
         decreaseXpSign(player, xpToDecrease);
     }
-    
+
     /**
      * Decreases the XP on the sign with the current selected amount
-     * 
+     *
      * @param player The current player decreasing the XP of the sign
      * @param xpToDecrease The amount of xp to decrease
      */
@@ -610,7 +611,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Remove all the experience from the sign
-     * 
+     *
      * @param player
      */
     public void allXpOut(Player player) {
@@ -619,8 +620,8 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Add all the player experience to the sign
-     * 
-     * @param player 
+     *
+     * @param player
      */
     public void allXpIn(Player player) {
         ExperienceManager experienceManager = new ExperienceManager(player);
@@ -629,16 +630,16 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Get the sign block
-     * 
+     *
      * @return The sign block
      */
     public Sign getSign() {
         return sign;
     }
-    
+
     /**
      * Get the sign block
-     * 
+     *
      * @return The sign block
      */
     public XpSignFacingBlock getSignFacingBlock() {
@@ -658,8 +659,8 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * The load error for this sign
-     * 
-     * @return 
+     *
+     * @return
      */
     public final LoadError getError() {
         return loadError;
@@ -667,9 +668,9 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Remove the sign form the list
-     * 
+     *
      * @param playerWhoDestroys The player destroying the sign
-     * @return 
+     * @return
      */
     public boolean destroySign(Player playerWhoDestroys) {
         if (!canDestroySign(playerWhoDestroys)) {
@@ -685,9 +686,9 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Check if can be removed form the list
-     * 
+     *
      * @param playerWhoDestroys The player who is destroying the sign
-     * @return 
+     * @return
      */
     public boolean canDestroySign(Player playerWhoDestroys) {
         if (playerWhoDestroys == null) {
@@ -698,13 +699,13 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
      * Return debug information, only for printing errors
-     * 
-     * @return 
+     *
+     * @return
      */
     Map<String, Object> getLoadInformation() {
         return this.loadInformation;
     }
-    
+
     public ArrayList<GuiElement> getAdditionalGuiElements(Player player) {
         return new ArrayList<>(0);
     }

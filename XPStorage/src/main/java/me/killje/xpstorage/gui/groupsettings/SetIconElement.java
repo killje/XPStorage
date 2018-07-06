@@ -13,13 +13,13 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class SetIconElement implements InventoryElement {
-    
+
     private final UUID groupUUID;
-    
+
     public SetIconElement(UUID groupUUID) {
         this.groupUUID = groupUUID;
     }
-    
+
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         ItemStack chosenIcon = null;
@@ -42,14 +42,13 @@ public class SetIconElement implements InventoryElement {
         if (chosenIcon == null) {
             return;
         }
-        
+
         setIcon(chosenIcon.getType());
         event.getWhoClicked().sendMessage(currentInventoryUtils.getGuiSettings().getText("iconSet"));
         currentInventoryUtils.closeInventory(event.getWhoClicked());
-        
-        
+
     }
-    
+
     private void setIcon(Material groupIcon) {
         Group group = Group.getGroupFromUUID(groupUUID);
         if (group == null) {
@@ -57,5 +56,5 @@ public class SetIconElement implements InventoryElement {
         }
         group.setGroupIcon(groupIcon);
     }
-    
+
 }

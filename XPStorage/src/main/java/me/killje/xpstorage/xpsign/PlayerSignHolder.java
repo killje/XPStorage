@@ -9,18 +9,18 @@ import java.util.UUID;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class PlayerSignHolder {
-    
+
     private static final HashMap<String, ArrayList<PlayerSign>> SIGNS = new HashMap<>();
-    
+
     public static void addSignToPlayer(UUID player, final PlayerSign sign) {
         UUID playerUUID = player;
         if (!SIGNS.containsKey(playerUUID.toString())) {
             SIGNS.put(playerUUID.toString(), new ArrayList<>());
         }
         SIGNS.get(playerUUID.toString()).add(sign);
-        
+
     }
-    
+
     public static ArrayList<PlayerSign> getSignsForPlayer(UUID player) {
         return SIGNS.get(player.toString());
     }
@@ -32,5 +32,5 @@ public class PlayerSignHolder {
         }
         currentSigns.remove(sign);
     }
-    
+
 }

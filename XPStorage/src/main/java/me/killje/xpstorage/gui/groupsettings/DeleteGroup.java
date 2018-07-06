@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class DeleteGroup implements GuiElement {
-    
+
     private final GroupSign groupSign;
     private final Player player;
 
@@ -30,19 +30,19 @@ public class DeleteGroup implements GuiElement {
 
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        
+
         HumanEntity entity = event.getWhoClicked();
-        if (!(entity instanceof Player)){
+        if (!(entity instanceof Player)) {
             return;
         }
         if (!groupSign.canDestroySign(player)) {
             return;
         }
-        
+
         currentInventoryUtils.closeInventory(entity);
-        
+
         groupSign.getGroup().destoryGroup(player);
-        
+
     }
-    
+
 }

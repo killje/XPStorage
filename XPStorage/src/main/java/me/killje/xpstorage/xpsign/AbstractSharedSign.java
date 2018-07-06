@@ -19,16 +19,15 @@ import org.bukkit.entity.Player;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public abstract class AbstractSharedSign extends AbstractXpSign {
-    
-    
+
     private final Group group;
-    
+
     public AbstractSharedSign(Sign sign, Group group) {
         super(sign);
         this.group = group;
         group.addSignToGroup(this);
     }
-    
+
     public AbstractSharedSign(Map<String, Object> sign) {
         super(sign);
         if (getError() != LoadError.NONE) {
@@ -50,7 +49,6 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
         group.setXp(xpInStorage);
         updateSign();
     }
-    
 
     @Override
     public int getCurrentXp() {
@@ -67,18 +65,17 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
         returnMap.put("uuidGroup", group.getGroupUuid().toString());
         return returnMap;
     }
-    
-    
+
     @Override
     public boolean isGroupSign() {
         return true;
     }
-    
+
     @Override
     public boolean hasAccess(UUID player) {
         return group.hasPlayer(player);
     }
-    
+
     @Override
     public boolean destroySign(Player playerWhoDestroys) {
         if (!super.destroySign(playerWhoDestroys)) {
@@ -88,7 +85,7 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
         group.removeSignFromGroup(this);
         return true;
     }
-    
+
     @Override
     public boolean canDestroySign(Player playerWhoDestroys) {
         if (playerWhoDestroys == null) {
@@ -103,7 +100,7 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
         }
         return playerInformation.getGroupRights(group.getGroupUuid()).hasRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
     }
-    
+
     public Group getGroup() {
         return group;
     }
@@ -127,6 +124,6 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
         }
         return guiElements;
     }
-    
+
     public abstract EditPlayerOptions getEditList(UUID playerToEdit, UUID playerEditing);
 }

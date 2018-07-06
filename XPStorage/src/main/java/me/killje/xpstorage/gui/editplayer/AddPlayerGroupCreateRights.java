@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class AddPlayerGroupCreateRights implements GuiElement{
+public class AddPlayerGroupCreateRights implements GuiElement {
 
     private final UUID player;
     private final AbstractSharedSign sign;
@@ -23,16 +23,16 @@ public class AddPlayerGroupCreateRights implements GuiElement{
         this.player = player;
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("addPlayerCreateRights");
     }
-    
+
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         PlayerInformation.getPlayerInformation(player).getGroupRights(sign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
-    
+
 }

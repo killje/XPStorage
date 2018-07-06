@@ -9,9 +9,7 @@ import me.killje.xpstorage.xpsign.AbstractXpSign;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public interface GroupListGuiElement {
-    
-    
-    public GuiElement getGuiElement (UUID groupUUID, AbstractXpSign sign);
-    
-    
+
+    public GuiElement getGuiElement(UUID groupUUID, AbstractXpSign sign);
+
 }

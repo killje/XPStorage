@@ -38,12 +38,12 @@ public class GroupSign extends AbstractSharedSign {
     @Override
     protected String getSecondLine() {
         Map<String, String> replacement = new HashMap<>();
-        
+
         String groupName = "";
         if (getGroup() != null) {
             groupName = getGroup().getGroupName();
         }
-        
+
         String saveName = getSaveName(groupName);
         replacement.put("GROUP_NAME", saveName);
         return XPStorage.getGuiSettings().getText("groupName", replacement);

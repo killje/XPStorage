@@ -21,12 +21,12 @@ public class RemovePlayer implements GuiElement {
         this.player = player;
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("removePlayer");
     }
-    
+
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         sign.getGroup().removePlayerFromGroup(player);

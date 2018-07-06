@@ -22,7 +22,7 @@ public class CustomAmount extends NumberBoard implements GuiElement {
     private final Player player;
     private final AbstractXpSign xpSign;
     private final ExperienceManager experienceManager;
-    
+
     public CustomAmount(Player player, AbstractXpSign xpSign) {
         super(XPStorage.getGuiSettings(), player, new SetAmount(player, xpSign));
         this.player = player;
@@ -42,15 +42,15 @@ public class CustomAmount extends NumberBoard implements GuiElement {
 
     @Override
     protected String getInventoryName() {
-        
+
         int totalXp = xpSign.getCurrentXp() + experienceManager.getCurrentExp();
         int maxLVL = experienceManager.getLevelForExp(totalXp);
-        
+
         Map<String, String> replaceList = new HashMap<>();
-        
+
         replaceList.put("CURRENT_LEVEL", getAmountStorage().getCurrent() + "");
         replaceList.put("MAX_LEVEL", maxLVL + "");
-        
+
         return getGuiSettings().getText("customAmount", replaceList);
     }
 

@@ -27,7 +27,7 @@ public abstract class OnBlockDestory implements Listener {
 
     protected boolean isDestroyable(Block blockBeingDestroyed, Player playerDestroying) {
         if (!blockBeingDestroyed.hasMetadata("XP_STORAGE_XPSIGN")) {
-            
+
             if (!blockBeingDestroyed.hasMetadata("XP_STORAGE_XPSIGNFACEBLOCK")) {
                 return true;
             }
@@ -42,19 +42,19 @@ public abstract class OnBlockDestory implements Listener {
                     return false;
                 }
             }
-            
+
             ArrayList<AbstractXpSign> signsToRemove = new ArrayList<>();
             for (XpSignFacingBlock xpSignFacingBlock : xpSign) {
                 signsToRemove.add(xpSignFacingBlock.getSign());
             }
-            
+
             for (AbstractXpSign abstractXpSign : signsToRemove) {
                 abstractXpSign.destroySign(playerDestroying);
             }
-            
+
             return true;
         }
-        
+
         if (playerDestroying == null) {
             return false;
         }

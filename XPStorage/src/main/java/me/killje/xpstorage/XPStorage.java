@@ -41,29 +41,29 @@ public class XPStorage extends JavaPlugin {
 
     private static GuiSetting guiSettings;
     private static clsConfiguration signs;
-    
+
     private boolean init = true;
 
     public static clsConfiguration getSignConfig() {
         return signs;
     }
-    
+
     public static GuiSetting getGuiSettings() {
         return guiSettings;
     }
-    
+
     public boolean isInit() {
         return init;
     }
-    
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
         PluginUtils.setPlugin(this);
-        
+
         guiSettings = new GuiSetting(this, "GUI.yml");
         signs = new clsConfiguration(this, "Signs.yml");
-        
+
         getServer().getPluginManager().registerEvents(new OnSignChange(), this);
         getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new OnBlockBreak(), this);
@@ -75,18 +75,18 @@ public class XPStorage extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnLeavesDecay(), this);
         getServer().getPluginManager().registerEvents(new OnEntityBreakDoor(), this);
         getServer().getPluginManager().registerEvents(new OnEntityChangeBlock(), this);
-        
+
         getCommand("xpreloadgui").setExecutor((sender, command, label, args) -> {
             guiSettings.reloadConfig();
             sender.sendMessage("The GUI of XPStorage has been reloaded");
             return true;
         });
-        
+
         getCommand("xpstorage").setExecutor((sender, command, label, args) -> {
-            sender.sendMessage("Visit " + ChatColor.UNDERLINE + "https://github.com/killje/XPStorage/wiki/" + ChatColor.RESET +" for information on how to use XPStorage");
+            sender.sendMessage("Visit " + ChatColor.UNDERLINE + "https://github.com/killje/XPStorage/wiki/" + ChatColor.RESET + " for information on how to use XPStorage");
             return true;
         });
-        
+
         ConfigurationSerialization.registerClass(PlayerInformation.class);
         ConfigurationSerialization.registerClass(GroupRights.class);
         ConfigurationSerialization.registerClass(Group.class);
@@ -95,7 +95,7 @@ public class XPStorage extends JavaPlugin {
         ConfigurationSerialization.registerClass(NormalSign.class);
         ConfigurationSerialization.registerClass(SharedSign.class);
         ConfigurationSerialization.registerClass(GroupSign.class);
-        
+
         PlayerInformation.loadPlayerInformation();
         Group.loadGroups();
         AbstractXpSign.loadSigns();
@@ -109,7 +109,5 @@ public class XPStorage extends JavaPlugin {
         AbstractXpSign.saveSigns(true);
         AbstractXpSign.destroyMetaDatas();
     }
-    
-    
-    
+
 }

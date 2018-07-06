@@ -16,8 +16,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 public class SignSaver implements ConfigurationSerializable {
 
     private final Map<String, Object> sign;
-    
-    public SignSaver(Block block, String uuid){
+
+    public SignSaver(Block block, String uuid) {
         sign = new HashMap<>();
         int x = block.getX();
         int y = block.getY();
@@ -33,21 +33,21 @@ public class SignSaver implements ConfigurationSerializable {
     public SignSaver(Map<String, Object> map) {
         sign = map;
     }
-    
+
     @Override
     public Map<String, Object> serialize() {
         return sign;
     }
-    
-    public String getOwnerUuid(){
+
+    public String getOwnerUuid() {
         return (String) sign.get("ownerUuid");
     }
-    
-    public Location getLocation(){
+
+    public Location getLocation() {
         World world = Bukkit.getWorld(UUID.fromString((String) sign.get("world")));
         return new Location(world, (int) sign.get("x"), (int) sign.get("y"), (int) sign.get("z"));
     }
-    
+
     public World getWorld() {
         return Bukkit.getWorld(UUID.fromString((String) sign.get("world")));
     }

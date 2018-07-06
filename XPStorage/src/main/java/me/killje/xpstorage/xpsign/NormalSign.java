@@ -17,8 +17,7 @@ public class NormalSign extends AbstractXpSign {
 
     private int xpInStorage;
     private UUID owner;
-    
-    
+
     public NormalSign(Sign sign, UUID player) {
         super(sign);
         this.owner = player;
@@ -28,7 +27,7 @@ public class NormalSign extends AbstractXpSign {
         }
         this.xpInStorage = 0;
     }
-    
+
     public NormalSign(Map<String, Object> sign) {
         super(sign);
         this.owner = UUID.fromString((String) sign.get("ownerUuid"));
@@ -41,12 +40,11 @@ public class NormalSign extends AbstractXpSign {
         }
         if (sign.containsKey("xpStored")) {
             this.xpInStorage = (int) sign.get("xpStored");
-        }
-        else {
+        } else {
             this.xpInStorage = 0;
         }
     }
-    
+
     @Override
     protected void setNewXp(int xpInStorage) {
         this.xpInStorage = xpInStorage;
@@ -56,11 +54,11 @@ public class NormalSign extends AbstractXpSign {
     public int getCurrentXp() {
         return xpInStorage;
     }
-    
-    public void onSignWrite () {
+
+    public void onSignWrite() {
         updateSign();
     }
-    
+
     @Override
     protected String getSignText() {
         Map<String, String> replacement = new HashMap<>();
@@ -77,7 +75,7 @@ public class NormalSign extends AbstractXpSign {
     public boolean hasAccess(UUID player) {
         return player.equals(getOwner());
     }
-    
+
     @Override
     public boolean destroySign(Player playerWhoDestroys) {
         if (!super.destroySign(playerWhoDestroys)) {
@@ -97,26 +95,26 @@ public class NormalSign extends AbstractXpSign {
         this.owner = newOwner;
     }
 
-    
     /**
      * Function to save this class to YAML
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> saveMap = super.serialize();
-        
+
         saveMap.put("xpStored", this.xpInStorage);
         return saveMap;
     }
-    
+
     /**
      * SHOULD ONLY BE USED FOR CONVERTING FROM OLD SIGNS
-     * @param xp 
+     *
+     * @param xp
      */
     public void setXP(int xp) {
         this.xpInStorage = xp;
     }
-    
+
 }

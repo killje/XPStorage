@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class OnEntityChangeBlock extends OnBlockDestory {
-    
+
     @EventHandler
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         Player player = null;
@@ -20,7 +20,7 @@ public class OnEntityChangeBlock extends OnBlockDestory {
             event.setCancelled(true);
             event.getBlock().getState().update();
         }
-        
+
     }
-    
+
 }

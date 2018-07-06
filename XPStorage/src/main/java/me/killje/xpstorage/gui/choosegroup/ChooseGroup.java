@@ -16,8 +16,8 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class ChooseGroup implements GuiElement{
-    
+public class ChooseGroup implements GuiElement {
+
     private final UUID groupId;
     private AbstractXpSign xpSign;
     private final Player player;
@@ -27,7 +27,7 @@ public class ChooseGroup implements GuiElement{
         this.xpSign = xpSign;
         this.player = player;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         Group group = Group.getGroupFromUUID(groupId);
@@ -36,9 +36,9 @@ public class ChooseGroup implements GuiElement{
 
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        
+
         HumanEntity entity = event.getWhoClicked();
-        if (!(entity instanceof Player)){
+        if (!(entity instanceof Player)) {
             return;
         }
         if (!xpSign.destroySign(player)) {
@@ -46,8 +46,8 @@ public class ChooseGroup implements GuiElement{
         }
         xpSign = new GroupSign(xpSign.getSign(), groupId);
         xpSign.changeSign();
-        
+
         currentInventoryUtils.closeInventory(entity);
     }
-    
+
 }

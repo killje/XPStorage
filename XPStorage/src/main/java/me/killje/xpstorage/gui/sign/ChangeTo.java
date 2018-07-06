@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class ChangeTo implements GuiElement{
-    
+public class ChangeTo implements GuiElement {
+
     private AbstractXpSign xpSign;
     private final String guiSettingsName;
     private final Class<? extends AbstractXpSign> signClass;
@@ -26,8 +26,6 @@ public class ChangeTo implements GuiElement{
         this.signClass = signClass;
         this.player = player;
     }
-    
-    
 
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
@@ -43,17 +41,17 @@ public class ChangeTo implements GuiElement{
             return;
         }
         HumanEntity entity = event.getWhoClicked();
-        if (!(entity instanceof Player)){
+        if (!(entity instanceof Player)) {
             return;
         }
         if (!xpSign.destroySign(player)) {
             return;
         }
-        
+
         xpSign = AbstractXpSign.createSign(signClass, xpSign.getSign(), entity.getUniqueId());
         xpSign.changeSign();
-        
+
         currentInventoryUtils.closeInventory(entity);
     }
-    
+
 }

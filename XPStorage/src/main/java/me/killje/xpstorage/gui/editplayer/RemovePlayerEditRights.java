@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class RemovePlayerEditRights implements GuiElement{
+public class RemovePlayerEditRights implements GuiElement {
 
     private final UUID player;
     private final AbstractSharedSign sign;
@@ -23,16 +23,16 @@ public class RemovePlayerEditRights implements GuiElement{
         this.player = player;
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("removePlayerEditRights");
     }
-    
+
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         PlayerInformation.getPlayerInformation(player).getGroupRights(sign.getGroup().getGroupUuid()).removeRight(GroupRights.Right.CAN_EDIT_PLAYERS);
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
-    
+
 }

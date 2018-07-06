@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 public class SetIcon extends InventoryUtil implements GuiElement {
 
     private final UUID groupUUID;
-    
+
     public SetIcon(UUID groupUUID) {
         super(XPStorage.getGuiSettings(), InventoryUtilsType.HOPPER);
         this.groupUUID = groupUUID;
@@ -47,5 +47,5 @@ public class SetIcon extends InventoryUtil implements GuiElement {
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
     }
-    
+
 }

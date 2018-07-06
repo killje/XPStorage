@@ -17,10 +17,10 @@ import org.bukkit.entity.Player;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class CurrentList extends GuiElementList {
-    
+
     private final AbstractSharedSign sign;
     private final Map<String, GuiElement> elementMap = new HashMap<>();
-    
+
     public CurrentList(Player currentPlayer, AbstractSharedSign sign) {
         super(XPStorage.getGuiSettings(), currentPlayer);
         this.sign = sign;
@@ -30,7 +30,7 @@ public class CurrentList extends GuiElementList {
             elementMap.put(offlinePlayer.getName(), new EditPlayer(player.getUUID(), sign));
         }
     }
-    
+
     @Override
     protected String getInventoryName() {
         return getGuiSettings().getText("editPlayers");
@@ -40,5 +40,5 @@ public class CurrentList extends GuiElementList {
     protected Map<String, ? extends GuiElement> getElementMap() {
         return elementMap;
     }
-    
+
 }

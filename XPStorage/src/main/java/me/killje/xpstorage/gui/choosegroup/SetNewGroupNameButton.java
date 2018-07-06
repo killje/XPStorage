@@ -43,7 +43,7 @@ public class SetNewGroupNameButton extends SetStringButton {
     @Override
     protected void executeSet(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         HumanEntity entity = event.getWhoClicked();
-        if (!(entity instanceof Player)){
+        if (!(entity instanceof Player)) {
             return;
         }
         if (!xpSign.destroySign(player)) {
@@ -54,5 +54,5 @@ public class SetNewGroupNameButton extends SetStringButton {
         sign.changeSign();
         currentInventoryUtils.closeInventory(entity);
     }
-    
+
 }

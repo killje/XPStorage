@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class AddPlayer implements GuiElement {
-    
+
     private final OfflinePlayer player;
     private final AbstractSharedSign sign;
     private final String displayName;
@@ -27,37 +27,35 @@ public class AddPlayer implements GuiElement {
         this.sign = (AbstractSharedSign) sign;
         this.displayName = displayName;
     }
-    
+
     public AddPlayer(OfflinePlayer player, AbstractXpSign sign) {
         this(player, sign, null);
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         ItemStack itemStack = HeadUtil.getPlayerHead(player);
-        
+
         ItemMeta itemMeta = itemStack.getItemMeta();
-        
+
         String headName;
         if (displayName == null) {
             headName = player.getName();
-        }
-        else {
+        } else {
             headName = displayName;
         }
         itemMeta.setDisplayName(ChatColor.WHITE + headName);
-        
+
         itemStack.setItemMeta(itemMeta);
 
-        
         return itemStack;
     }
 
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        
+
         sign.getGroup().addPlayerToGroup(player.getUniqueId());
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
-    
+
 }

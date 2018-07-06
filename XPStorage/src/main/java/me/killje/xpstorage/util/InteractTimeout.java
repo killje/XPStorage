@@ -27,12 +27,12 @@ public final class InteractTimeout {
             }
         });
     }
-    
+
     public static boolean hasInteractTimeout(UUID player, Sign sign) {
         if (!CURRENT_TIMEOUTS.containsKey(player)) {
             return false;
         }
-        
+
         return CURRENT_TIMEOUTS.get(player).contains(sign);
     }
 

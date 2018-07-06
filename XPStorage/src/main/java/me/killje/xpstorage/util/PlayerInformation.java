@@ -57,7 +57,7 @@ public class PlayerInformation implements ConfigurationSerializable {
         if (!PluginUtils.getPlugin().isEnabled()) {
             return null;
         }
-        
+
         UUID playerUUID = UUID.fromString((String) player.get("player"));
 
         int xp = (int) player.get("xp");

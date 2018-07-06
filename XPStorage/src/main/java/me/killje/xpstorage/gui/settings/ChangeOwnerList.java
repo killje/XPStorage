@@ -34,20 +34,20 @@ public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
 
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        
+
         if (!player.hasPermission(Permissions.CHANGE_OWNER.getPermission())) {
             return;
         }
-        
+
         InventoryUtil inventoryUtils = new PlayerList(XPStorage.getGuiSettings(), player, this);
-        
+
         currentInventoryUtils.openNewInventory(player, inventoryUtils);
-        
+
     }
 
     @Override
     public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
         return new ChangeOwner(offlinePlayer, sign);
     }
-    
+
 }

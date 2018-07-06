@@ -19,7 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class EditPlayer implements GuiElement {
-    
+
     private final UUID player;
     private final AbstractSharedSign sign;
 
@@ -27,32 +27,30 @@ public class EditPlayer implements GuiElement {
         this.player = player;
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         ItemStack itemStack = HeadUtil.getPlayerHead(offlinePlayer);
-        
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.WHITE + offlinePlayer.getName());
         itemStack.setItemMeta(itemMeta);
 
-        
         return itemStack;
     }
 
-    
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)){
+        if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         Player playerWhoClicked = (Player) event.getWhoClicked();
-        
+
         EditPlayerOptions editList = sign.getEditList(this.player, playerWhoClicked.getUniqueId());
-        
+
         currentInventoryUtils.openNewInventory(playerWhoClicked, editList);
-        
+
     }
-    
+
 }

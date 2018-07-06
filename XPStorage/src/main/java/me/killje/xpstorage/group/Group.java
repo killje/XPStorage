@@ -26,28 +26,28 @@ import org.bukkit.inventory.ItemStack;
  */
 @SuppressWarnings("ResultOfObjectAllocationIgnored")
 public class Group implements ConfigurationSerializable {
+
     static {
         new groupPeriodSaver();
     }
-
 
     private static class groupPeriodSaver implements Runnable {
 
         public groupPeriodSaver() {
             PluginUtils.runTaskTimerAsynchronously(this, 100, 12000);
         }
-        
+
         @Override
         public void run() {
             Group.saveGroups();
         }
 
     }
-    
+
     private final HashMap<String, PlayerInformation> playerInformationMap = new HashMap<>();
     private final ArrayList<AbstractSharedSign> signs = new ArrayList<>();
     private final static HashMap<String, Group> GROUPS = new HashMap<>();
-    
+
     private int xpStored = 0;
     private final UUID groupId;
     private static final clsConfiguration GROUP_CONFIG = new clsConfiguration(PluginUtils.getPlugin(), "groups.yml");
@@ -60,9 +60,9 @@ public class Group implements ConfigurationSerializable {
         GROUPS.put(groupId.toString(), this);
         addPlayerToGroup(player);
         this.owner = player;
-        
+
     }
-    
+
     public Group(UUID player, String groupName) {
         groupId = UUID.randomUUID();
         GROUPS.put(groupId.toString(), this);
@@ -71,7 +71,7 @@ public class Group implements ConfigurationSerializable {
         this.groupName = groupName;
         PlayerInformation.getPlayerInformation(player).getGroupRights(groupId).addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
     }
-    
+
     public Group(Map<String, Object> group) {
         groupId = UUID.fromString((String) group.get("uuidGroup"));
         if (group.containsKey("amount")) {
@@ -97,7 +97,7 @@ public class Group implements ConfigurationSerializable {
         GROUP_CONFIG.GetConfig().set("groups", new ArrayList<>(GROUPS.values()));
         GROUP_CONFIG.SaveConfig();
     }
-    
+
     public static void loadGroups() {
         List<Group> groupList = (List<Group>) GROUP_CONFIG.GetConfig().getList("groups");
         if (groupList == null) {
@@ -105,43 +105,42 @@ public class Group implements ConfigurationSerializable {
         }
     }
 
-    
     public static Group getGroupFromUUID(UUID groupUUID) {
         if (!GROUPS.containsKey(groupUUID.toString())) {
             return null;
         }
         return GROUPS.get(groupUUID.toString());
     }
-    
-    public void addPlayerToGroup (UUID player) {
+
+    public void addPlayerToGroup(UUID player) {
         PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(player);
-        playerInformationMap.put(player.toString() ,playerInformation);
+        playerInformationMap.put(player.toString(), playerInformation);
         playerInformation.addGroup(this);
     }
-    
+
     public void removePlayerFromGroup(UUID player) {
         if (!playerInformationMap.containsKey(player.toString())) {
             return;
         }
         playerInformationMap.remove(player.toString());
     }
-    
+
     public void addSignToGroup(AbstractSharedSign sign) {
         signs.add(sign);
     }
-    
+
     public void removeSignFromGroup(AbstractSharedSign sign) {
         if (!signs.contains(sign)) {
             return;
         }
         signs.remove(sign);
     }
-    
+
     public boolean hasPlayer(UUID player) {
         return playerInformationMap.containsKey(player.toString());
-        
+
     }
-    
+
     public Collection<PlayerInformation> getPlayers() {
         return playerInformationMap.values();
     }
@@ -165,21 +164,21 @@ public class Group implements ConfigurationSerializable {
     public UUID getGroupUuid() {
         return groupId;
     }
-    
+
     public void setXp(int xpAmount) {
         xpStored = xpAmount;
-       
+
         for (AbstractSharedSign sign : signs) {
             sign.updateSign();
         }
     }
-    
+
     public int getXp() {
         return xpStored;
     }
-    
+
     public void destoryGroup(Player playerWhoDestroys) {
-        
+
         for (AbstractSharedSign sign : signs) {
             if (!sign.canDestroySign(playerWhoDestroys)) {
                 return;
@@ -188,14 +187,13 @@ public class Group implements ConfigurationSerializable {
         for (PlayerInformation player : getPlayers()) {
             player.removeGroupRights(groupId);
         }
-        
-        
+
         ExperienceManager experienceManager = new ExperienceManager(playerWhoDestroys);
         experienceManager.changeExp(getXp());
         setXp(0);
-        
+
         playerInformationMap.clear();
-        
+
         for (AbstractSharedSign xpSign : signs) {
             AbstractXpSign.removeSign(xpSign);
             Sign sign = xpSign.getSign();
@@ -212,23 +210,23 @@ public class Group implements ConfigurationSerializable {
         signs.clear();
         GROUPS.remove(groupId.toString());
     }
-    
-    public void setOwner(UUID newOwner){
+
+    public void setOwner(UUID newOwner) {
         this.owner = newOwner;
     }
-    
-    public UUID getOwner(){
+
+    public UUID getOwner() {
         return this.owner;
     }
 
     public String getGroupName() {
         return groupName == null ? "{ERROR: Unable to load group name}" : groupName;
     }
-    
+
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-    
+
     public ItemStack getGroupIcon() {
         Map<String, String> replaceMap = new HashMap<>();
         replaceMap.put("GROUP_NAME", getGroupName());
@@ -242,6 +240,5 @@ public class Group implements ConfigurationSerializable {
     public void setGroupIcon(Material groupIcon) {
         this.groupIcon = groupIcon;
     }
-    
-    
+
 }

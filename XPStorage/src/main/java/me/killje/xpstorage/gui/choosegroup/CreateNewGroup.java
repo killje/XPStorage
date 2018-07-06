@@ -17,12 +17,12 @@ import org.bukkit.inventory.ItemStack;
 public class CreateNewGroup extends KeyBoard implements GuiElement {
 
     private final Player player;
-    
+
     public CreateNewGroup(Player player, AbstractXpSign xpSign) {
         super(XPStorage.getGuiSettings(), player, new SetNewGroupNameButton(player, xpSign));
         this.player = player;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("newGroup");
@@ -31,7 +31,7 @@ public class CreateNewGroup extends KeyBoard implements GuiElement {
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         currentInventoryUtils.openNewInventory(player, this);
-        
+
     }
-    
+
 }

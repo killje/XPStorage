@@ -28,15 +28,15 @@ public class ChangeOwner implements GuiElement {
         this.player = player;
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         ItemStack itemStack = HeadUtil.getPlayerHead(player);
-        
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.WHITE + player.getName());
         itemStack.setItemMeta(itemMeta);
-        
+
         return itemStack;
     }
 
@@ -54,5 +54,5 @@ public class ChangeOwner implements GuiElement {
         sign.updateSign();
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
-    
+
 }

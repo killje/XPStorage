@@ -14,13 +14,13 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class EditList implements GuiElement {
-    
+
     private final AbstractSharedSign sign;
 
     public EditList(AbstractSharedSign sign) {
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("editList");
@@ -29,11 +29,11 @@ public class EditList implements GuiElement {
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (!(event.getWhoClicked() instanceof Player)){
+        if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         CurrentList currentList = new CurrentList(player, sign);
         currentInventoryUtils.openNewInventory(player, currentList);
-        
+
     }
 }

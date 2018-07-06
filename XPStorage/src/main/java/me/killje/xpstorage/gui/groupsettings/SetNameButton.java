@@ -12,13 +12,12 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class SetNameButton extends SetStringButton {
-    
+
     private final GroupSign groupSign;
 
     public SetNameButton(GroupSign groupSign) {
         this.groupSign = groupSign;
     }
-
 
     @Override
     protected ItemStack confirmItem(GuiSetting guiSettings) {
@@ -29,12 +28,12 @@ public class SetNameButton extends SetStringButton {
     protected ItemStack noNameYetItem(GuiSetting guiSettings) {
         return guiSettings.getItemStack("setName.noNameYet");
     }
-    
+
     @Override
     protected String textForEmpty(GuiSetting guiSettings) {
         return guiSettings.getText("setName.empty");
     }
-    
+
     @Override
     protected void executeSet(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         groupSign.getGroup().setGroupName(getKeyBoardStringStorage().getCurrent());
@@ -43,5 +42,4 @@ public class SetNameButton extends SetStringButton {
         groupSign.updateSign();
     }
 
-    
 }

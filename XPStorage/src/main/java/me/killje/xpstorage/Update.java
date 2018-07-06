@@ -18,10 +18,10 @@ import org.bukkit.configuration.file.FileConfiguration;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class Update {
-    
+
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
-    public Update (FileConfiguration config) {
-        
+    public Update(FileConfiguration config) {
+
         List<SignSaver> signsList = (List<SignSaver>) config.getList("Signs");
         List<Map<?, ?>> failed = new ArrayList<>();
         int worldNotFound = 0;
@@ -30,7 +30,7 @@ public class Update {
         int failedToParse = 0;
         int locationFailed = 0;
         int signsCreated = 0;
-        
+
         Map<String, Object> serialize;
         if (signsList == null) {
             signsList = new ArrayList<>();
@@ -65,16 +65,16 @@ public class Update {
                     Sign sign = (Sign) block.getState();
                     int xpInStorage = Integer.parseInt(sign.getLine(1));
                     signsCreated++;
-                    
+
                     NormalSign normalSign = new NormalSign(sign, UUID.fromString(signSaver.getOwnerUuid()));
                     normalSign.setXP(xpInStorage);
-                } catch(NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     failedToParse++;
                     serialize.put("Reason", "Could not parse the xp amount on the sign");
                     failed.add(serialize);
                     PluginUtils.getLogger().log(Level.WARNING, "Could not parse the xp amount on the sign");
                 }
-                
+
             } else {
                 serialize.put("Reason", "Could not generate a location from file");
                 locationFailed++;
@@ -82,14 +82,14 @@ public class Update {
                 PluginUtils.getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) serialize.get("world"), (int) serialize.get("x"), (int) serialize.get("y"), (int) serialize.get("z")});
             }
         }
-        
+
         PluginUtils.getLogger().log(Level.INFO, "Updating complete. Stats: Succesfull ({0}), Location failed ({1}), Sign does not exist ({2})", new Object[]{signsCreated, locationFailed, signDoesntExist});
         PluginUtils.getLogger().log(Level.INFO, "XPStorage already created ({0}), Failed to parse xp ({1}), World not found ({2})", new Object[]{xpSignAlreadyExists, failedToParse, worldNotFound});
-        
+
         config.set("Signs", null);
         if (!failed.isEmpty()) {
             config.set("Failed", failed);
         }
     }
-    
+
 }

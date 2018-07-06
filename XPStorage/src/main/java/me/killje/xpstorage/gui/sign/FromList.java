@@ -17,13 +17,13 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class FromList implements GuiElement, PlayerListElementFetcher {
-    
+
     private final AbstractSharedSign sign;
 
     public FromList(AbstractSharedSign sign) {
         this.sign = sign;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("fromList");
@@ -31,20 +31,20 @@ public class FromList implements GuiElement, PlayerListElementFetcher {
 
     @Override
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        
-        if (!(event.getWhoClicked() instanceof Player)){
+
+        if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
-        
+
         Player player = (Player) event.getWhoClicked();
         PlayerList playerList = new PlayerList(currentInventoryUtils.getGuiSettings(), player, this);
         currentInventoryUtils.openNewInventory(player, playerList);
-        
+
     }
 
     @Override
     public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
         return new AddPlayer(offlinePlayer, sign);
     }
-    
+
 }

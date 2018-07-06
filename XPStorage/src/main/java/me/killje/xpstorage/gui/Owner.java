@@ -31,44 +31,44 @@ public class Owner implements GuiElement {
         this.xpSign = xpSign;
         this.playerViewing = playerViewing;
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(xpSign.getOwner());
-        
+
         Map<String, String> replacement = new HashMap<>();
         replacement.put("PLAYER_NAME", player.getName());
         replacement.put("SIGN_TYPE", xpSign.signType());
         replacement.put("OWNER_UUID", xpSign.getOwner().toString());
-        
+
         ItemStack itemStack = HeadUtil.getPlayerHead(player);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(guiSettings.getText("information"));
         List<String> lore = new ArrayList<>();
         lore.add(guiSettings.getText("player", replacement));
         lore.add(guiSettings.getText("signType", replacement));
-        
+
         if (playerViewing.hasPermission("xpStorage.showuuid")) {
-            
+
             lore.add(guiSettings.getText("ownerUUID", replacement));
-            
+
         }
-        
+
         if (xpSign instanceof AbstractSharedSign) {
-            
+
             AbstractSharedSign sign = (AbstractSharedSign) xpSign;
-            
+
             replacement.put("GROUP_NAME", sign.getGroup().getGroupName());
             replacement.put("GROUP_UUID", sign.getGroup().getGroupUuid().toString());
-            
+
             lore.add(guiSettings.getText("groupNameOwner", replacement));
-            
+
             if (playerViewing.hasPermission("xpStorage.showuuid")) {
                 lore.add(guiSettings.getText("groupUUID", replacement));
             }
-            
+
         }
-        
+
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
@@ -86,6 +86,5 @@ public class Owner implements GuiElement {
             humanEntity.sendMessage("Group: " + sign.getGroup().getGroupUuid().toString());
         }
     }
-    
-    
+
 }

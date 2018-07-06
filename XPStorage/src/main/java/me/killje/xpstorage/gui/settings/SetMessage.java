@@ -35,13 +35,13 @@ public class SetMessage implements GuiElement {
     public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
         boolean currentGetMessage = playerInformation.isMessage();
         playerInformation.isMessage(!currentGetMessage);
-        
+
         if (currentGetMessage) {
             player.sendMessage(currentInventoryUtils.getGuiSettings().getText("message.remove"));
         } else {
             player.sendMessage(currentInventoryUtils.getGuiSettings().getText("message.add"));
         }
-        
+
         currentInventoryUtils.closeInventory(player);
     }
 

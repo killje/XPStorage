@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class DefaultSignPicker implements GuiElement {
-    
+
     private final Class<? extends AbstractXpSign> defaultSignPick;
     private final PlayerInformation playerInformation;
     private final Player player;
@@ -26,7 +26,7 @@ public class DefaultSignPicker implements GuiElement {
         this.settingsName = settingsName;
         playerInformation = PlayerInformation.getPlayerInformation(player.getUniqueId());
     }
-    
+
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         String iconToPick;
@@ -47,5 +47,5 @@ public class DefaultSignPicker implements GuiElement {
         player.sendMessage(currentInventoryUtils.getGuiSettings().getText("defaultSignSet"));
         currentInventoryUtils.closeInventory(event.getWhoClicked());
     }
-    
+
 }
