@@ -1,10 +1,10 @@
 package me.killje.xpstorage.gui.customamount;
 
+import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.character.AmountStorage;
 import me.killje.spigotgui.character.SetAmountButton;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
-import me.killje.xpstorage.util.ExperienceManager;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -34,8 +34,8 @@ public class SetAmount extends SetAmountButton {
     public ItemStack getItemStack(GuiSetting guiSettings) {
         ExperienceManager experienceManager = new ExperienceManager(this.player);
 
-        int totalXp = xpSign.getCurrentXp() + experienceManager.getTotalExperience();
-        int maxLVL = experienceManager.getMaxLevel(totalXp);
+        int totalXp = xpSign.getCurrentXp() + experienceManager.getCurrentExp();
+        int maxLVL = experienceManager.getLevelForExp(totalXp);
 
         String characterToShow = "confirmCharacter";
 
@@ -49,15 +49,15 @@ public class SetAmount extends SetAmountButton {
     public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         ExperienceManager experienceManager = new ExperienceManager(this.player);
 
-        int totalXp = xpSign.getCurrentXp() + experienceManager.getTotalExperience();
-        int maxLVL = experienceManager.getMaxLevel(totalXp);
+        int totalXp = xpSign.getCurrentXp() + experienceManager.getCurrentExp();
+        int maxLVL = experienceManager.getLevelForExp(totalXp);
 
         if (maxLVL < amountStorage.getCurrent()) {
             event.getWhoClicked().sendMessage(currentinventoryBase.getGuiSettings().getText("amounthNotAvaialable"));
             return;
         }
 
-        int currentLevel = experienceManager.getLevel();
+        int currentLevel = experienceManager.getLevelForExp(experienceManager.getCurrentExp());
         int levelSelected = amountStorage.getCurrent();
 
         if (currentLevel < levelSelected) {

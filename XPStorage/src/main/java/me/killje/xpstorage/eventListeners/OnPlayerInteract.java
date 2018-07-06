@@ -1,10 +1,10 @@
 package me.killje.xpstorage.eventListeners;
 
 import java.util.HashMap;
+import me.desht.dhutils.ExperienceManager;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
 import me.killje.xpstorage.permission.Permission;
-import me.killje.xpstorage.util.ExperienceManager;
 import me.killje.xpstorage.util.InteractTimeout;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
@@ -73,7 +73,8 @@ public class OnPlayerInteract implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(player.getUniqueId());
             if (playerInformation == null || playerInformation.isMessage()) {
-                if (new ExperienceManager(player).getTotalExperience() == 0) {
+                ExperienceManager expMan = new ExperienceManager(player);
+                if (expMan.getCurrentExp() == 0) {
                     HashMap<String, String> replaceMap = new HashMap<>();
                     replaceMap.put("SIGN_INTERACT_MATERIAL", SignInventory.INTERACT_MATERIAL.toString());
                     String message = XPStorage.getGuiSettings().getText("noXPLeft", replaceMap);
