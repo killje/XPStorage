@@ -11,11 +11,11 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.Update;
 import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.util.ExperienceManager;
 import me.killje.xpstorage.util.PluginUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -532,7 +532,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      */
     public void increaseXp(Player player, int levelsToIncrease) {
         ExperienceManager experienceManager = new ExperienceManager(player);
-        boolean levelCheck = experienceManager.getCurrentExp() == experienceManager.getXpForLevel(player.getLevel());
+        boolean levelCheck = experienceManager.getTotalExperience() == player.getExpToLevel();
 
         int levelToCompare = player.getLevel();
         if (levelCheck && levelToCompare > 0) {
@@ -545,7 +545,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             levelToCompare = 0;
         }
 
-        int xpToIncrease = experienceManager.getCurrentExp() - experienceManager.getXpForLevel(levelToCompare);
+        int xpToIncrease = experienceManager.getTotalExperience() - experienceManager.getExperienceForLevel(levelToCompare);
 
         increaseXpSign(player, xpToIncrease);
     }
@@ -560,15 +560,15 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         // Use the experience manager to accuratly update the amount of XP
         ExperienceManager experienceManager = new ExperienceManager(player);
         int currentXp = getCurrentXp();
-        if (experienceManager.getCurrentExp() < xpToIncrease) {
-            setNewXp(currentXp + experienceManager.getCurrentExp());
-            experienceManager.setExp(0);
+        if (experienceManager.getTotalExperience()< xpToIncrease) {
+            setNewXp(currentXp + experienceManager.getTotalExperience());
+            experienceManager.setExperience(0);
         } else if (currentXp + xpToIncrease > 210000000) {
             player.sendMessage(XPStorage.getGuiSettings().getText("maximumStorageMessage"));
             return;
         } else {
             setNewXp(currentXp + xpToIncrease);
-            experienceManager.changeExp(0 - xpToIncrease);
+            experienceManager.changeExperience(0 - xpToIncrease);
         }
         // Update the text on the sign
         updateSign();
@@ -593,7 +593,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     public void decreaseXp(Player player, int levelsToDecrease) {
 
         ExperienceManager experienceManager = new ExperienceManager(player);
-        int xpToDecrease = experienceManager.getXpForLevel(player.getLevel() + levelsToDecrease) - experienceManager.getCurrentExp();
+        int xpToDecrease = experienceManager.getExperienceForLevel(player.getLevel() + levelsToDecrease) - experienceManager.getTotalExperience();
 
         decreaseXpSign(player, xpToDecrease);
     }
@@ -609,10 +609,10 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         ExperienceManager experienceManager = new ExperienceManager(player);
         int currentXp = getCurrentXp();
         if (currentXp < xpToDecrease) {
-            experienceManager.changeExp(currentXp);
+            experienceManager.changeExperience(currentXp);
             setNewXp(0);
         } else {
-            experienceManager.changeExp(xpToDecrease);
+            experienceManager.changeExperience(xpToDecrease);
             setNewXp(currentXp - xpToDecrease);
         }
         // Update the text on the sign
@@ -635,7 +635,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      */
     public void allXpIn(Player player) {
         ExperienceManager experienceManager = new ExperienceManager(player);
-        increaseXpSign(player, experienceManager.getCurrentExp());
+        increaseXpSign(player, experienceManager.getTotalExperience());
     }
 
     /**

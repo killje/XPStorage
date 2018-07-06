@@ -2,12 +2,12 @@ package me.killje.xpstorage.gui.customamount;
 
 import java.util.HashMap;
 import java.util.Map;
-import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.character.NumberBoard;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.util.ExperienceManager;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -43,8 +43,8 @@ public class CustomAmount extends NumberBoard implements GuiElement {
     @Override
     protected String getInventoryName() {
 
-        int totalXp = xpSign.getCurrentXp() + experienceManager.getCurrentExp();
-        int maxLVL = experienceManager.getLevelForExp(totalXp);
+        int totalXp = xpSign.getCurrentXp() + experienceManager.getTotalExperience();
+        int maxLVL = experienceManager.getMaxLevel(totalXp);
 
         Map<String, String> replaceList = new HashMap<>();
 

@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.util.ExperienceManager;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
@@ -187,8 +187,7 @@ public class Group implements ConfigurationSerializable {
             player.removeGroupRights(groupId);
         }
 
-        ExperienceManager experienceManager = new ExperienceManager(playerWhoDestroys);
-        experienceManager.changeExp(getXp());
+        new ExperienceManager(playerWhoDestroys).changeExperience(getXp());
         setXp(0);
 
         playerInformationMap.clear();
