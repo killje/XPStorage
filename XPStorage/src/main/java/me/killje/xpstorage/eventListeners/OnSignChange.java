@@ -7,7 +7,6 @@ import java.util.Map;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.util.PluginUtils;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +20,7 @@ import org.bukkit.event.block.SignChangeEvent;
  */
 public class OnSignChange implements Listener {
 
-    private final static FileConfiguration config = PluginUtils.getConfig();
+    private final static FileConfiguration config = XPStorage.getPluginUtil().getConfig();
 
     public OnSignChange() {
     }
@@ -39,7 +38,7 @@ public class OnSignChange implements Listener {
             return;
         }
 
-        PluginUtils.runTask(new Runnable() {
+        XPStorage.getPluginUtil().runTask(new Runnable() {
             @Override
             public void run() {
                 Map<String, String> interactMatiral = new HashMap<>();

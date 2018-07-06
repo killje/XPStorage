@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.sign;
 
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -36,7 +36,7 @@ public class ChangeTo implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         if (xpSign.getClass().equals(signClass)) {
             return;
         }
@@ -51,7 +51,7 @@ public class ChangeTo implements GuiElement {
         xpSign = AbstractXpSign.createSign(signClass, xpSign.getSign(), entity.getUniqueId());
         xpSign.changeSign();
 
-        currentInventoryUtils.closeInventory(entity);
+        currentinventoryBase.closeInventory(entity);
     }
 
 }

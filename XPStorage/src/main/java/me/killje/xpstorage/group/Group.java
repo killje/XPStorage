@@ -10,7 +10,6 @@ import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.util.PluginUtils;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.XpSignFacingBlock;
@@ -34,7 +33,7 @@ public class Group implements ConfigurationSerializable {
     private static class groupPeriodSaver implements Runnable {
 
         public groupPeriodSaver() {
-            PluginUtils.runTaskTimerAsynchronously(this, 100, 12000);
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, 100, 12000);
         }
 
         @Override
@@ -50,7 +49,7 @@ public class Group implements ConfigurationSerializable {
 
     private int xpStored = 0;
     private final UUID groupId;
-    private static final clsConfiguration GROUP_CONFIG = new clsConfiguration(PluginUtils.getPlugin(), "groups.yml");
+    private static final clsConfiguration GROUP_CONFIG = new clsConfiguration(XPStorage.getPluginUtil().getPlugin(), "groups.yml");
     private UUID owner;
     private String groupName = null;
     private Material groupIcon;
@@ -198,7 +197,7 @@ public class Group implements ConfigurationSerializable {
             AbstractXpSign.removeSign(xpSign);
             Sign sign = xpSign.getSign();
             if (xpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-                xpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", PluginUtils.getPlugin());
+                xpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
             }
             XpSignFacingBlock.removeFacingBlock(xpSign.getSignFacingBlock());
             sign.setLine(0, "");

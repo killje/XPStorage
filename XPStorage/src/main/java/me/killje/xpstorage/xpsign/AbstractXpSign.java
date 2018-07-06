@@ -10,12 +10,13 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.Update;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.util.PluginUtils;
+import me.killje.xpstorage.util.PluginUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,7 +49,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             if (lastTask != null) {
                 lastTask.cancel();
             }
-            lastTask = PluginUtils.runTaskAsynchronously(this);
+            lastTask = XPStorage.getPluginUtil().runTaskAsynchronously(this);
         }
 
         /**
@@ -72,7 +73,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                 | IllegalAccessException
                 | IllegalArgumentException
                 | InvocationTargetException ex) {
-            PluginUtils.getLogger().log(Level.SEVERE, null, ex);
+            XPStorage.getPluginUtil().getLogger().log(Level.SEVERE, null, ex);
         }
         return new NormalSign(sign, player);
     }
@@ -111,7 +112,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     /**
      * Sign config
      */
-    private static final clsConfiguration XP_SIGN_CONFIG = new clsConfiguration(PluginUtils.getPlugin(), "xpSigns.yml");
+    private static final clsConfiguration XP_SIGN_CONFIG = new clsConfiguration(XPStorage.getPluginUtil().getPlugin(), "xpSigns.yml");
 
     /**
      * Location of the sign in the world
@@ -145,10 +146,10 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         loadError = LoadError.NONE;
         // Dubble check if the block has not already initiated a XPSign that has not been removed properly
         if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", PluginUtils.getPlugin());
+            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
         }
         // Set metadata of the sign
-        sign.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(PluginUtils.getPlugin(), this));
+        sign.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(XPStorage.getPluginUtil().getPlugin(), this));
 
         // Add sign to list of signs
         addSign(this);
@@ -164,6 +165,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     public AbstractXpSign(Map<String, Object> sign) {
         // Try to get world
         World world = Bukkit.getWorld(UUID.fromString((String) sign.get("world")));
+        PluginUtil pluginUtil = XPStorage.getPluginUtil();
         this.loadInformation = sign;
         if (world == null) {
             this.loadError = LoadError.BAD_LOCATION;
@@ -175,7 +177,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         Location location = new Location(world, (int) sign.get("x"), (int) sign.get("y"), (int) sign.get("z"));
         if (location.getBlock() == null || !isSign(location.getBlock().getType())) {
             if (location.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-                location.getBlock().removeMetadata("XP_STORAGE_XPSIGN", PluginUtils.getPlugin());
+                location.getBlock().removeMetadata("XP_STORAGE_XPSIGN", pluginUtil.getPlugin());
             }
             this.loadError = LoadError.NO_SIGN;
             this.sign = null;
@@ -193,10 +195,10 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         this.loadError = LoadError.NONE;
         // Dubble check if the block has not already initiated a XPSign that has not been removed properly
         if (signBlock.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-            signBlock.getBlock().removeMetadata("XP_STORAGE_XPSIGN", PluginUtils.getPlugin());
+            signBlock.getBlock().removeMetadata("XP_STORAGE_XPSIGN", pluginUtil.getPlugin());
         }
         // Set metadata of the sign
-        signBlock.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(PluginUtils.getPlugin(), this));
+        signBlock.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(pluginUtil.getPlugin(), this));
         // Add sign to list of signs
         addSign(this);
     }
@@ -240,7 +242,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      */
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public static void saveSigns(boolean overrideInitCheck) {
-        if (!overrideInitCheck && PluginUtils.getPlugin().isEnabled()) {
+        if (!overrideInitCheck && XPStorage.getPluginUtil().getPlugin().isEnabled()) {
             return;
         }
         if (overrideInitCheck) {
@@ -263,6 +265,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * Load signs from config. Should only be done while initializing the plugin
      */
     public static void loadSigns() {
+        Logger logger = XPStorage.getPluginUtil().getLogger();
         // Boolean to keep track if all signs have been converted
         boolean dirty = false;
 
@@ -305,8 +308,15 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             // It it is not, then there is somthing wrong in the file or code,
             // report imidialty
             if (xpSign == null) {
-                PluginUtils.getLogger().log(Level.SEVERE, "\u001B[31mCould not parse sign. THIS IS A SEVERE ERROR. This plugin will disable itself to prevent it from destroying itself. Pleas read the console to find out what caused this bug.\u001b[m");
-                Bukkit.getPluginManager().disablePlugin(PluginUtils.getPlugin());
+                logger.log(Level.SEVERE, "\u001B[31mCould not parse sign. THIS IS A SEVERE ERROR. This plugin will disable itself to prevent it from destroying itself. Pleas read the console to find out what caused this bug.\u001b[m");
+                try {
+                    // Proper unloading of the plugin
+                    XPStorage.getPluginUtil().unloadPlugin();
+                } catch (NoSuchFieldException | IllegalAccessException | NullPointerException ex) {
+                    // Backup if something fails
+                    Bukkit.getPluginManager().disablePlugin(XPStorage.getPluginUtil().getPlugin());
+                    Logger.getLogger(AbstractXpSign.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 return;
             }
             // Get the error
@@ -320,14 +330,14 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                 case NO_SIGN:
                     // No sign found on location, report location
                     Location location = xpSign.getLocation();
-                    PluginUtils.getLogger().log(Level.WARNING, "Sign does not exsist anymore at: x={0}, y={1}, z={2}", new Object[]{location.getX(), location.getY(), location.getZ()});
+                    logger.log(Level.WARNING, "Sign does not exsist anymore at: x={0}, y={1}, z={2}", new Object[]{location.getX(), location.getY(), location.getZ()});
                     it.remove();
                     failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
                     break;
                 case NO_GROUP:
                     // No group found on uuid
-                    PluginUtils.getLogger().log(Level.WARNING, "Sign contains a group that does not exsists");
+                    logger.log(Level.WARNING, "Sign contains a group that does not exsists");
                     it.remove();
                     failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
@@ -335,7 +345,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                 case BAD_LOCATION:
                     // The location could not be found (is the proper world loaded?)
                     Map<String, Object> loadInformation = xpSign.getLoadInformation();
-                    PluginUtils.getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) loadInformation.get("world"), (int) loadInformation.get("x"), (int) loadInformation.get("y"), (int) loadInformation.get("z")});
+                    logger.log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) loadInformation.get("world"), (int) loadInformation.get("x"), (int) loadInformation.get("y"), (int) loadInformation.get("z")});
                     it.remove();
                     failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
@@ -343,7 +353,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                 case NO_PLAYER:
                     // Could not assign player, it does not exsist anymore?
                     Map<String, Object> sign = xpSign.serialize();
-                    PluginUtils.getLogger().log(Level.WARNING, "Could not retrive player: uuid={0}", new Object[]{(String) sign.get("ownerUuid")});
+                    logger.log(Level.WARNING, "Could not retrive player: uuid={0}", new Object[]{(String) sign.get("ownerUuid")});
                     it.remove();
                     failedSigns.add(xpSign.getLoadInformation());
                     dirty = true;
@@ -403,10 +413,10 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     public static void destroyMetaDatas() {
         for (AbstractXpSign abstractXpSign : signsList) {
             if (abstractXpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", PluginUtils.getPlugin());
+                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
             }
             if (abstractXpSign.getSignFacingBlock().getFacingBlock().hasMetadata("XP_STORAGE_XPSIGNFACEBLOCK")) {
-                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGNFACEBLOCK", PluginUtils.getPlugin());
+                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGNFACEBLOCK", XPStorage.getPluginUtil().getPlugin());
             }
         }
     }
@@ -678,7 +688,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
         removeSign(this);
         if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", PluginUtils.getPlugin());
+            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
         }
         XpSignFacingBlock.removeFacingBlock(signFacingBlock);
         return true;

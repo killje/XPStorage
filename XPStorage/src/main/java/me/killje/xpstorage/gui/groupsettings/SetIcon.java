@@ -5,7 +5,7 @@ import me.killje.spigotgui.guielement.Exit;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.guielement.SimpleGuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -16,12 +16,12 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class SetIcon extends InventoryUtil implements GuiElement {
+public class SetIcon extends InventoryBase implements GuiElement {
 
     private final UUID groupUUID;
 
     public SetIcon(UUID groupUUID) {
-        super(XPStorage.getGuiSettings(), InventoryUtilsType.HOPPER);
+        super(XPStorage.getGuiSettings(), InventoryBaseType.HOPPER);
         this.groupUUID = groupUUID;
     }
 
@@ -44,8 +44,8 @@ public class SetIcon extends InventoryUtil implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+        currentinventoryBase.openNewInventory(event.getWhoClicked(), this);
     }
 
 }

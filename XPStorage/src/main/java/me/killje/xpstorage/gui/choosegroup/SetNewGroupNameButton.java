@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.choosegroup;
 
 import me.killje.spigotgui.character.SetStringButton;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
@@ -41,7 +41,7 @@ public class SetNewGroupNameButton extends SetStringButton {
     }
 
     @Override
-    protected void executeSet(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    protected void executeSet(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)) {
             return;
@@ -52,7 +52,7 @@ public class SetNewGroupNameButton extends SetStringButton {
         Group group = new Group(player.getUniqueId(), getKeyBoardStringStorage().getCurrent());
         GroupSign sign = new GroupSign(xpSign.getSign(), group.getGroupUuid());
         sign.changeSign();
-        currentInventoryUtils.closeInventory(entity);
+        currentinventoryBase.closeInventory(entity);
     }
 
 }

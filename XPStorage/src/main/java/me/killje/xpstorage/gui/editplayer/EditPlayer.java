@@ -4,7 +4,7 @@ import java.util.UUID;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.HeadUtil;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,7 +41,7 @@ public class EditPlayer implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
@@ -49,7 +49,7 @@ public class EditPlayer implements GuiElement {
 
         EditPlayerOptions editList = sign.getEditList(this.player, playerWhoClicked.getUniqueId());
 
-        currentInventoryUtils.openNewInventory(playerWhoClicked, editList);
+        currentinventoryBase.openNewInventory(playerWhoClicked, editList);
 
     }
 

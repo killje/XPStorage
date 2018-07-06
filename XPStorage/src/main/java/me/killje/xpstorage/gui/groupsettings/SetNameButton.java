@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.groupsettings;
 
 import me.killje.spigotgui.character.SetStringButton;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -35,10 +35,10 @@ public class SetNameButton extends SetStringButton {
     }
 
     @Override
-    protected void executeSet(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    protected void executeSet(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         groupSign.getGroup().setGroupName(getKeyBoardStringStorage().getCurrent());
-        currentInventoryUtils.closeInventory(event.getWhoClicked());
-        event.getWhoClicked().sendMessage(currentInventoryUtils.getGuiSettings().getText("nameSet"));
+        currentinventoryBase.closeInventory(event.getWhoClicked());
+        event.getWhoClicked().sendMessage(currentinventoryBase.getGuiSettings().getText("nameSet"));
         groupSign.updateSign();
     }
 

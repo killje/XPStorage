@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.groupsettings;
 
 import java.util.UUID;
 import me.killje.spigotgui.guielement.InventoryElement;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.group.Group;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,7 +21,7 @@ public class SetIconElement implements InventoryElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         ItemStack chosenIcon = null;
         switch (event.getAction()) {
             case MOVE_TO_OTHER_INVENTORY:
@@ -44,8 +44,8 @@ public class SetIconElement implements InventoryElement {
         }
 
         setIcon(chosenIcon.getType());
-        event.getWhoClicked().sendMessage(currentInventoryUtils.getGuiSettings().getText("iconSet"));
-        currentInventoryUtils.closeInventory(event.getWhoClicked());
+        event.getWhoClicked().sendMessage(currentinventoryBase.getGuiSettings().getText("iconSet"));
+        currentinventoryBase.closeInventory(event.getWhoClicked());
 
     }
 

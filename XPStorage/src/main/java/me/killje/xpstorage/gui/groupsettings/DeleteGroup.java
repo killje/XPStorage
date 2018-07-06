@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.groupsettings;
 
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.xpsign.GroupSign;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class DeleteGroup implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
 
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)) {
@@ -39,7 +39,7 @@ public class DeleteGroup implements GuiElement {
             return;
         }
 
-        currentInventoryUtils.closeInventory(entity);
+        currentinventoryBase.closeInventory(entity);
 
         groupSign.getGroup().destoryGroup(player);
 

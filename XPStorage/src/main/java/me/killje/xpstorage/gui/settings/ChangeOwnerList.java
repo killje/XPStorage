@@ -4,9 +4,9 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.list.PlayerList;
 import me.killje.spigotgui.list.PlayerListElementFetcher;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.permission.Permissions;
+import me.killje.xpstorage.permission.Permission;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -33,15 +33,15 @@ public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
 
-        if (!player.hasPermission(Permissions.CHANGE_OWNER.getPermission())) {
+        if (!player.hasPermission(Permission.CHANGE_OWNER.getPermission())) {
             return;
         }
 
-        InventoryUtil inventoryUtils = new PlayerList(XPStorage.getGuiSettings(), player, this);
+        InventoryBase inventoryBase = new PlayerList(XPStorage.getGuiSettings(), player, this);
 
-        currentInventoryUtils.openNewInventory(player, inventoryUtils);
+        currentInventoryBase.openNewInventory(player, inventoryBase);
 
     }
 

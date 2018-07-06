@@ -7,7 +7,7 @@ import java.util.UUID;
 import me.killje.spigotgui.guielement.Exit;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.guielement.SimpleGuiElement;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
@@ -18,7 +18,7 @@ import org.bukkit.Bukkit;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class EditPlayerOptions extends InventoryUtil {
+public class EditPlayerOptions extends InventoryBase {
 
     private final AbstractSharedSign sign;
     private final UUID playerToEdit;

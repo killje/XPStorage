@@ -10,7 +10,7 @@ import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.gui.choosegroup.CreateNewGroup;
-import me.killje.xpstorage.permission.Permissions;
+import me.killje.xpstorage.permission.Permission;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
@@ -42,7 +42,7 @@ public class GroupList extends GuiElementList {
     protected int initInventory(int startIndex, int stopIndex, int maxItemsOnPage) {
 
         int initInventory = super.initInventory(startIndex, stopIndex, maxItemsOnPage);
-        if (player.hasPermission(Permissions.CREATE_XP_GROUP.getPermission())) {
+        if (player.hasPermission(Permission.CREATE_XP_GROUP.getPermission())) {
             this.addGuiElement(new CreateNewGroup(player, xpSign), 1);
         } else {
             this.addGuiElement(new SimpleGuiElement(guiSettings.getItemStack("newGroup.noacces")), 1);

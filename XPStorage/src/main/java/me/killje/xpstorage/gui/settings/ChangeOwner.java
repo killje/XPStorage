@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.settings;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.HeadUtil;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
@@ -41,7 +41,7 @@ public class ChangeOwner implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
         if (sign instanceof AbstractSharedSign) {
             AbstractSharedSign abstractSharedSign = (AbstractSharedSign) sign;
             PlayerInformation.getPlayerInformation(sign.getOwner()).getGroupRights(abstractSharedSign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_EDIT_PLAYERS);
@@ -52,7 +52,7 @@ public class ChangeOwner implements GuiElement {
         }
         sign.setOwner(player.getUniqueId());
         sign.updateSign();
-        currentInventoryUtils.closeInventory(event.getWhoClicked());
+        currentInventoryBase.closeInventory(event.getWhoClicked());
     }
 
 }

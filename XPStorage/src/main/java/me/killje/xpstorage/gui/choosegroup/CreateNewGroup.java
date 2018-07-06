@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.choosegroup;
 import me.killje.spigotgui.character.KeyBoard;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
@@ -29,8 +29,8 @@ public class CreateNewGroup extends KeyBoard implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        currentInventoryUtils.openNewInventory(player, this);
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+        currentinventoryBase.openNewInventory(player, this);
 
     }
 

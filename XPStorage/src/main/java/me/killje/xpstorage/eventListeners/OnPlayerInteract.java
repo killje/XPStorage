@@ -4,7 +4,7 @@ import java.util.HashMap;
 import me.desht.dhutils.ExperienceManager;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
-import me.killje.xpstorage.permission.Permissions;
+import me.killje.xpstorage.permission.Permission;
 import me.killje.xpstorage.util.InteractTimeout;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
@@ -48,7 +48,7 @@ public class OnPlayerInteract implements Listener {
 
         xpSign.updateSign();
 
-        boolean openGuiOther = player.hasPermission(Permissions.OPEN_GUI_OTHERS.getPermission());
+        boolean openGuiOther = player.hasPermission(Permission.OPEN_GUI_OTHERS.getPermission());
         boolean hasAccess = xpSign.hasAccess(player.getUniqueId());
 
         if (!hasAccess && !openGuiOther) {

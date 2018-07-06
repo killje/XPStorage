@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.sign;
 
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.gui.editplayer.CurrentList;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.entity.Player;
@@ -27,13 +27,13 @@ public class EditList implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         CurrentList currentList = new CurrentList(player, sign);
-        currentInventoryUtils.openNewInventory(player, currentList);
+        currentinventoryBase.openNewInventory(player, currentList);
 
     }
 }

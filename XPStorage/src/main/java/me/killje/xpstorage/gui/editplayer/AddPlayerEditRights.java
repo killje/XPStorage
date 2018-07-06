@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.editplayer;
 import java.util.UUID;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
@@ -30,9 +30,9 @@ public class AddPlayerEditRights implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
         PlayerInformation.getPlayerInformation(player).getGroupRights(sign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_EDIT_PLAYERS);
-        currentInventoryUtils.closeInventory(event.getWhoClicked());
+        currentInventoryBase.closeInventory(event.getWhoClicked());
     }
 
 }

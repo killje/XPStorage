@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.sign;
 import java.util.UUID;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.gui.choosegroup.ChooseGroup;
 import me.killje.xpstorage.gui.list.GroupList;
 import me.killje.xpstorage.gui.list.GroupListGuiElement;
@@ -47,7 +47,7 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         if (isSelected && !fromGroup) {
             return;
         }
@@ -56,9 +56,9 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
             return;
         }
 
-        InventoryUtil groupList = new GroupList(player, this, xpSign);
+        InventoryBase groupList = new GroupList(player, this, xpSign);
 
-        currentInventoryUtils.openNewInventory(player, groupList);
+        currentinventoryBase.openNewInventory(player, groupList);
     }
 
     @Override

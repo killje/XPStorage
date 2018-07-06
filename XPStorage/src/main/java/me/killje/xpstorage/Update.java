@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
-import me.killje.xpstorage.util.PluginUtils;
+import me.killje.xpstorage.util.PluginUtil;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.NormalSign;
 import org.bukkit.Location;
@@ -21,7 +21,7 @@ public class Update {
 
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public Update(FileConfiguration config) {
-
+        PluginUtil pluginUtil = XPStorage.getPluginUtil();
         List<SignSaver> signsList = (List<SignSaver>) config.getList("Signs");
         List<Map<?, ?>> failed = new ArrayList<>();
         int worldNotFound = 0;
@@ -41,7 +41,7 @@ public class Update {
                 serialize.put("Reason", "World not found");
                 worldNotFound++;
                 failed.add(serialize);
-                PluginUtils.getLogger().log(Level.WARNING, "World not found: world uuid: {0}", new Object[]{serialize.get("world")});
+                pluginUtil.getLogger().log(Level.WARNING, "World not found: world uuid: {0}", new Object[]{serialize.get("world")});
                 continue;
             }
             Location location = signSaver.getLocation();
@@ -51,14 +51,14 @@ public class Update {
                     serialize.put("Reason", "Sign does not exist anymore");
                     signDoesntExist++;
                     failed.add(serialize);
-                    PluginUtils.getLogger().log(Level.WARNING, "Sign does not exist anymore at: world={0}, x={1}, y={2}, z={3}", new Object[]{serialize.get("world"), location.getX(), location.getY(), location.getZ()});
+                    pluginUtil.getLogger().log(Level.WARNING, "Sign does not exist anymore at: world={0}, x={1}, y={2}, z={3}", new Object[]{serialize.get("world"), location.getX(), location.getY(), location.getZ()});
                     continue;
                 }
                 if (block.hasMetadata("XP_STORAGE_XPSIGN")) {
                     serialize.put("Reason", "XPSign was already created. Skipping");
                     xpSignAlreadyExists++;
                     failed.add(serialize);
-                    PluginUtils.getLogger().log(Level.WARNING, "XPSign was already created. Skipping");
+                    pluginUtil.getLogger().log(Level.WARNING, "XPSign was already created. Skipping");
                     continue;
                 }
                 try {
@@ -72,19 +72,19 @@ public class Update {
                     failedToParse++;
                     serialize.put("Reason", "Could not parse the xp amount on the sign");
                     failed.add(serialize);
-                    PluginUtils.getLogger().log(Level.WARNING, "Could not parse the xp amount on the sign");
+                    pluginUtil.getLogger().log(Level.WARNING, "Could not parse the xp amount on the sign");
                 }
 
             } else {
                 serialize.put("Reason", "Could not generate a location from file");
                 locationFailed++;
                 failed.add(serialize);
-                PluginUtils.getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) serialize.get("world"), (int) serialize.get("x"), (int) serialize.get("y"), (int) serialize.get("z")});
+                pluginUtil.getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) serialize.get("world"), (int) serialize.get("x"), (int) serialize.get("y"), (int) serialize.get("z")});
             }
         }
 
-        PluginUtils.getLogger().log(Level.INFO, "Updating complete. Stats: Succesfull ({0}), Location failed ({1}), Sign does not exist ({2})", new Object[]{signsCreated, locationFailed, signDoesntExist});
-        PluginUtils.getLogger().log(Level.INFO, "XPStorage already created ({0}), Failed to parse xp ({1}), World not found ({2})", new Object[]{xpSignAlreadyExists, failedToParse, worldNotFound});
+        pluginUtil.getLogger().log(Level.INFO, "Updating complete. Stats: Succesfull ({0}), Location failed ({1}), Sign does not exist ({2})", new Object[]{signsCreated, locationFailed, signDoesntExist});
+        pluginUtil.getLogger().log(Level.INFO, "XPStorage already created ({0}), Failed to parse xp ({1}), World not found ({2})", new Object[]{xpSignAlreadyExists, failedToParse, worldNotFound});
 
         config.set("Signs", null);
         if (!failed.isEmpty()) {

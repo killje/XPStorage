@@ -4,7 +4,7 @@ import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.character.AmountStorage;
 import me.killje.spigotgui.character.SetAmountButton;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -46,14 +46,14 @@ public class SetAmount extends SetAmountButton {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         ExperienceManager experienceManager = new ExperienceManager(this.player);
 
         int totalXp = xpSign.getCurrentXp() + experienceManager.getCurrentExp();
         int maxLVL = experienceManager.getLevelForExp(totalXp);
 
         if (maxLVL < amountStorage.getCurrent()) {
-            event.getWhoClicked().sendMessage(currentInventoryUtils.getGuiSettings().getText("amounthNotAvaialable"));
+            event.getWhoClicked().sendMessage(currentinventoryBase.getGuiSettings().getText("amounthNotAvaialable"));
             return;
         }
 
@@ -65,7 +65,7 @@ public class SetAmount extends SetAmountButton {
         } else {
             xpSign.increaseXp(player, currentLevel - levelSelected);
         }
-        currentInventoryUtils.closeInventory(player);
+        currentinventoryBase.closeInventory(player);
     }
 
 }

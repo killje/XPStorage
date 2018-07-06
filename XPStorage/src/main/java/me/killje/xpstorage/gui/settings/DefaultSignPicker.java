@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.settings;
 
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
@@ -39,13 +39,13 @@ public class DefaultSignPicker implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         if (playerInformation.getDefaultSign() == defaultSignPick) {
             return;
         }
         playerInformation.setDefaultSign(defaultSignPick);
-        player.sendMessage(currentInventoryUtils.getGuiSettings().getText("defaultSignSet"));
-        currentInventoryUtils.closeInventory(event.getWhoClicked());
+        player.sendMessage(currentinventoryBase.getGuiSettings().getText("defaultSignSet"));
+        currentinventoryBase.closeInventory(event.getWhoClicked());
     }
 
 }

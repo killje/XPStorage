@@ -2,7 +2,7 @@ package me.killje.xpstorage.gui.settings;
 
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.util.PlayerInformation;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -32,17 +32,17 @@ public class SetMessage implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         boolean currentGetMessage = playerInformation.isMessage();
         playerInformation.isMessage(!currentGetMessage);
 
         if (currentGetMessage) {
-            player.sendMessage(currentInventoryUtils.getGuiSettings().getText("message.remove"));
+            player.sendMessage(currentinventoryBase.getGuiSettings().getText("message.remove"));
         } else {
-            player.sendMessage(currentInventoryUtils.getGuiSettings().getText("message.add"));
+            player.sendMessage(currentinventoryBase.getGuiSettings().getText("message.add"));
         }
 
-        currentInventoryUtils.closeInventory(player);
+        currentinventoryBase.closeInventory(player);
     }
 
 }

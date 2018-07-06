@@ -1,7 +1,5 @@
 package me.killje.xpstorage;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.eventListeners.OnBlockBreak;
@@ -18,19 +16,14 @@ import me.killje.xpstorage.eventListeners.OnSignChange;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.util.PluginUtils;
+import me.killje.xpstorage.util.PluginUtil;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.GroupSign;
 import me.killje.xpstorage.xpsign.NormalSign;
 import me.killje.xpstorage.xpsign.PlayerSign;
 import me.killje.xpstorage.xpsign.SharedSign;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -40,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class XPStorage extends JavaPlugin {
 
     private static GuiSetting guiSettings;
+    private static PluginUtil pluginUtil;
     private static clsConfiguration signs;
 
     private boolean init = true;
@@ -52,6 +46,10 @@ public class XPStorage extends JavaPlugin {
         return guiSettings;
     }
 
+    public static PluginUtil getPluginUtil() {
+        return pluginUtil;
+    }    
+    
     public boolean isInit() {
         return init;
     }
@@ -59,7 +57,7 @@ public class XPStorage extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        PluginUtils.setPlugin(this);
+        pluginUtil = new PluginUtil(this);
 
         guiSettings = new GuiSetting(this, "GUI.yml");
         signs = new clsConfiguration(this, "Signs.yml");

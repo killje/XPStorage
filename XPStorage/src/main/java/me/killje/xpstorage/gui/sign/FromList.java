@@ -4,7 +4,7 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.list.PlayerList;
 import me.killje.spigotgui.list.PlayerListElementFetcher;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.gui.addplayer.AddPlayer;
 import me.killje.xpstorage.xpsign.AbstractSharedSign;
 import org.bukkit.OfflinePlayer;
@@ -30,15 +30,15 @@ public class FromList implements GuiElement, PlayerListElementFetcher {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
 
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
 
         Player player = (Player) event.getWhoClicked();
-        PlayerList playerList = new PlayerList(currentInventoryUtils.getGuiSettings(), player, this);
-        currentInventoryUtils.openNewInventory(player, playerList);
+        PlayerList playerList = new PlayerList(currentinventoryBase.getGuiSettings(), player, this);
+        currentinventoryBase.openNewInventory(player, playerList);
 
     }
 

@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.settings;
 import me.killje.spigotgui.guielement.Exit;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
-import me.killje.spigotgui.util.InventoryUtil;
+import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.xpsign.NormalSign;
 import me.killje.xpstorage.xpsign.PlayerSign;
@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class DefaultSign extends InventoryUtil implements GuiElement {
+public class DefaultSign extends InventoryBase implements GuiElement {
 
     private final Player player;
 
@@ -31,8 +31,8 @@ public class DefaultSign extends InventoryUtil implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryUtil currentInventoryUtils, InventoryClickEvent event) {
-        currentInventoryUtils.openNewInventory(event.getWhoClicked(), this);
+    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+        currentinventoryBase.openNewInventory(event.getWhoClicked(), this);
     }
 
     @Override
