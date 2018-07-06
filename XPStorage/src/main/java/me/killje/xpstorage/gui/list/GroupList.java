@@ -26,7 +26,7 @@ public class GroupList extends GuiElementList {
     private final Map<String, GuiElement> groups = new HashMap<>();
     
     public GroupList(Player player, GroupListGuiElement groupListGuiElement, AbstractXpSign xpSign) {
-        super(XPStorage.getGuiSettings(), player, XPStorage.getGuiSettings().getText("choseGroup"));
+        super(XPStorage.getGuiSettings(), player);
         this.player = player;
         this.xpSign = xpSign;
         
@@ -55,6 +55,11 @@ public class GroupList extends GuiElementList {
     @Override
     protected Map<String, ? extends GuiElement> getElementMap() {
         return groups;
+    }
+
+    @Override
+    protected String getInventoryName() {
+        return XPStorage.getGuiSettings().getText("choseGroup");
     }
 
 }
