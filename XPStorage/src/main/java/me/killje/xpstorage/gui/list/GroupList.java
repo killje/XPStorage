@@ -53,7 +53,7 @@ public class GroupList extends GuiElementList {
     }
 
     @Override
-    protected Map<String, ? extends GuiElement> getElementMap() {
+    public Map<String, ? extends GuiElement> getElementMap() {
         return groups;
     }
 
