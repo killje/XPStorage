@@ -31,7 +31,7 @@ public class ChangeOwner implements GuiElement {
 
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
-        ItemStack itemStack = HeadUtil.getPlayerHead(player);
+        ItemStack itemStack = HeadUtil.getPlayerHead(player, guiSettings.getPluginUtil().getPlugin());
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.WHITE + player.getName());

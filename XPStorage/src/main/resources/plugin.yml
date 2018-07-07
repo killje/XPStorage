@@ -2,20 +2,21 @@ name: ${project.artifactId}
 authors: ${project.authors}
 version: ${major.version}.b${buildNumber}
 main: ${project.main}
+load: POSTWORLD
 permissions:
     xpStorage.createXpGroup:
         description: Gives the ability to create groups
         default: true
-    xpStorage.openGuiOthers:
+    xpstorage.openGuiOthers:
         description: Gives a player to open the gui of a sign from other players. Owner specific items and abilities are still hidden.
         default: false
-    xpStorage.changeOwner:
+    xpstorage.changeOwner:
         description: Intended for moderators. This to change a sign from one owner to another. For groups and shared signs this is an default option in the edit player list.
         default: op
-    xpStorage.xpreloadgui:
+    xpstorage.xpreloadgui:
         description: Reloads the plugin GUI
         default: op
-    xpStorage.showuuid:
+    xpstorage.showuuid:
         description: Shows the uuid of the owner and sign on the head
         default: op
     xpStorage.xpstorage:

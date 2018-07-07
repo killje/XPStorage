@@ -18,12 +18,10 @@ import org.bukkit.entity.Player;
  */
 public class CurrentList extends GuiElementList {
 
-    private final AbstractSharedSign sign;
     private final Map<String, GuiElement> elementMap = new HashMap<>();
 
     public CurrentList(Player currentPlayer, AbstractSharedSign sign) {
         super(XPStorage.getGuiSettings(), currentPlayer);
-        this.sign = sign;
         ArrayList<PlayerInformation> players = new ArrayList(sign.getGroup().getPlayers());
         for (PlayerInformation player : players) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getUUID());
@@ -37,7 +35,7 @@ public class CurrentList extends GuiElementList {
     }
 
     @Override
-    protected Map<String, ? extends GuiElement> getElementMap() {
+    public Map<String, ? extends GuiElement> getElementMap() {
         return elementMap;
     }
 

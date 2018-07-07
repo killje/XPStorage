@@ -41,7 +41,7 @@ public class Owner implements GuiElement {
         replacement.put("SIGN_TYPE", xpSign.signType());
         replacement.put("OWNER_UUID", xpSign.getOwner().toString());
 
-        ItemStack itemStack = HeadUtil.getPlayerHead(player);
+        ItemStack itemStack = HeadUtil.getPlayerHead(player, guiSettings.getPluginUtil().getPlugin());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(guiSettings.getText("information"));
         List<String> lore = new ArrayList<>();
