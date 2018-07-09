@@ -35,7 +35,7 @@ public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
     @Override
     public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
 
-        if (!player.hasPermission(Permission.CHANGE_OWNER.getPermission())) {
+        if (!Permission.CHANGE_OWNER.hasPermission(player)) {
             return;
         }
 

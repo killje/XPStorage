@@ -4,7 +4,7 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.gui.editplayer.CurrentList;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class EditList implements GuiElement {
 
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
 
-    public EditList(AbstractSharedSign sign) {
+    public EditList(AbstractGroupSign sign) {
         this.sign = sign;
     }
 

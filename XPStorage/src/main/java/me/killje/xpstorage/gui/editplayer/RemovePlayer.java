@@ -4,7 +4,7 @@ import java.util.UUID;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
 public class RemovePlayer implements GuiElement {
 
     private final UUID player;
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
 
-    public RemovePlayer(UUID player, AbstractSharedSign sign) {
+    public RemovePlayer(UUID player, AbstractGroupSign sign) {
         this.player = player;
         this.sign = sign;
     }

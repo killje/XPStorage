@@ -18,17 +18,17 @@ import org.bukkit.entity.Player;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public abstract class AbstractSharedSign extends AbstractXpSign {
+public abstract class AbstractGroupSign extends AbstractXpSign {
 
     private final Group group;
 
-    public AbstractSharedSign(Sign sign, Group group) {
+    public AbstractGroupSign(Sign sign, Group group) {
         super(sign);
         this.group = group;
         group.addSignToGroup(this);
     }
 
-    public AbstractSharedSign(Map<String, Object> sign) {
+    public AbstractGroupSign(Map<String, Object> sign) {
         super(sign);
         if (getError() != LoadError.NONE) {
             this.group = null;

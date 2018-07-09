@@ -20,19 +20,19 @@ import org.bukkit.entity.Player;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class GroupSign extends AbstractSharedSign {
+public class EnderGroupSign extends AbstractGroupSign {
 
-    public GroupSign(Sign sign, UUID groupId) {
+    public EnderGroupSign(Sign sign, UUID groupId) {
         super(sign, Group.getGroupFromUUID(groupId));
     }
 
-    public GroupSign(Map<String, Object> sign) {
+    public EnderGroupSign(Map<String, Object> sign) {
         super(sign);
     }
 
     @Override
     protected String getSignText() {
-        return XPStorage.getGuiSettings().getText("groupSignText");
+        return XPStorage.getGuiSettings().getText("enderGroupSignText");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GroupSign extends AbstractSharedSign {
 
     @Override
     public String signType() {
-        return XPStorage.getGuiSettings().getText("groupSignType");
+        return XPStorage.getGuiSettings().getText("enderGroupSignType");
     }
 
     @Override

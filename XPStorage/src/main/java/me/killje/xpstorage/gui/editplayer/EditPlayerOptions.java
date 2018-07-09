@@ -11,7 +11,7 @@ import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.Bukkit;
 
 /**
@@ -20,11 +20,11 @@ import org.bukkit.Bukkit;
  */
 public class EditPlayerOptions extends InventoryBase {
 
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
     private final UUID playerToEdit;
     private final UUID playerEditing;
 
-    public EditPlayerOptions(AbstractSharedSign sign, UUID playerToEdit, UUID playerEditing) {
+    public EditPlayerOptions(AbstractGroupSign sign, UUID playerToEdit, UUID playerEditing) {
         super(XPStorage.getGuiSettings());
         this.sign = sign;
         this.playerToEdit = playerToEdit;

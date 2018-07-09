@@ -5,7 +5,7 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.xpsign.GroupSign;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -18,8 +18,8 @@ public class SetName extends KeyBoard implements GuiElement {
 
     private final Player player;
 
-    public SetName(Player player, GroupSign groupSign) {
-        super(XPStorage.getGuiSettings(), player, new SetNameButton(groupSign));
+    public SetName(Player player, EnderGroupSign enderGroupSign) {
+        super(XPStorage.getGuiSettings(), player, new SetNameButton(enderGroupSign));
         this.player = player;
     }
 

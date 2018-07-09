@@ -12,24 +12,24 @@ import org.bukkit.entity.Player;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class SharedSign extends AbstractSharedSign {
+public class LocalGroupSign extends AbstractGroupSign {
 
-    public SharedSign(Sign sign, UUID player) {
+    public LocalGroupSign(Sign sign, UUID player) {
         super(sign, new Group(player));
     }
 
-    public SharedSign(Map<String, Object> sign) {
+    public LocalGroupSign(Map<String, Object> sign) {
         super(sign);
     }
 
     @Override
     protected String getSignText() {
-        return XPStorage.getGuiSettings().getText("sharedSignText");
+        return XPStorage.getGuiSettings().getText("localGroupSignText");
     }
 
     @Override
     public String signType() {
-        return XPStorage.getGuiSettings().getText("sharedSignType");
+        return XPStorage.getGuiSettings().getText("localGroupSignType");
     }
 
     @Override

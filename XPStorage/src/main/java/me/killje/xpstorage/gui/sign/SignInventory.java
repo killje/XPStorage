@@ -8,10 +8,11 @@ import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.Owner;
 import me.killje.xpstorage.gui.customamount.CustomAmount;
 import me.killje.xpstorage.gui.settings.Settings;
+import me.killje.xpstorage.permission.Permission;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import me.killje.xpstorage.xpsign.NormalSign;
-import me.killje.xpstorage.xpsign.PlayerSign;
-import me.killje.xpstorage.xpsign.SharedSign;
+import me.killje.xpstorage.xpsign.LocalPlayerSign;
+import me.killje.xpstorage.xpsign.EnderPlayerSign;
+import me.killje.xpstorage.xpsign.LocalGroupSign;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -47,11 +48,18 @@ public class SignInventory extends InventoryBase {
                 .addGuiElement(new Owner(this.xpSign, player))
                 .addGuiElement(new Exit());
         if (this.xpSign.getOwner().equals(this.player.getUniqueId())) {
-            this
-                    .addGuiElement(new ChangeTo(player, this.xpSign, NormalSign.class, "normal"))
-                    .addGuiElement(new ChangeTo(player, this.xpSign, PlayerSign.class, "ender"))
-                    .addGuiElement(new ChangeTo(player, this.xpSign, SharedSign.class, "shared"))
-                    .addGuiElement(new ChangeToGroup(player, this.xpSign));
+            if (Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
+                this.addGuiElement(new ChangeTo(player, this.xpSign, LocalPlayerSign.class, "localPlayer"));
+            }
+            if (Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
+                this.addGuiElement(new ChangeTo(player, this.xpSign, EnderPlayerSign.class, "enderPlayer"));
+            }
+            if (Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
+                this.addGuiElement(new ChangeTo(player, this.xpSign, LocalGroupSign.class, "localGroup"));
+            }
+            if (Permission.CREATE_ENDER_GROUP.hasPermission(player)) {
+                this.addGuiElement(new ChangeToGroup(player, this.xpSign));
+            }
         }
 
         ArrayList<GuiElement> guiElements = xpSign.getAdditionalGuiElements(player);

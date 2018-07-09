@@ -16,6 +16,8 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.Update;
 import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.permission.Permission;
+import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.util.PluginUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +26,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitTask;
@@ -62,11 +65,66 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
 
     }
+    
+    
+    static {
+        new XpSignPeriodSaver();
+    }
 
-    public static AbstractXpSign createSign(Class<? extends AbstractXpSign> signClass, Sign sign, UUID player) {
+    private static class XpSignPeriodSaver {
+
+        public XpSignPeriodSaver() {
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(new AbstractXpSignSaver(), XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") * 1200);
+        }
+
+    }
+
+    private static Class<? extends AbstractXpSign> getDefaultSign(HumanEntity player) {
+        PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(player);
+
+        Class<? extends AbstractXpSign> signClass = playerInformation.getDefaultSign();
+        if (signClass == LocalPlayerSign.class && Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
+            signClass = null;
+        } else if (signClass == EnderPlayerSign.class && Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
+            signClass = null;
+        } else if (signClass == LocalGroupSign.class && Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
+            signClass = null;
+        }
+
+        if (signClass == null) {
+            if (Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
+                signClass = LocalPlayerSign.class;
+            } else if (Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
+                signClass = EnderPlayerSign.class;
+            } else if (Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
+                signClass = LocalGroupSign.class;
+            } else {
+                return null;
+            }
+        }
+        return signClass;
+    }
+
+    public static AbstractXpSign createSign(Sign sign, HumanEntity player) {
+        Class<? extends AbstractXpSign> signClass = getDefaultSign(player);
+        return createSign(signClass, sign, player);
+    }
+
+    public static AbstractXpSign createSign(Class<? extends AbstractXpSign> signClass, Sign sign, HumanEntity player) {
+
+        if (signClass == null) {
+            return null;
+        } else if (signClass == LocalPlayerSign.class && !Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
+            return null;
+        } else if (signClass == EnderPlayerSign.class && !Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
+            return null;
+        } else if (signClass == LocalGroupSign.class && !Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
+            return null;
+        }
+        
         try {
             Constructor<? extends AbstractXpSign> constructor = signClass.getConstructor(Sign.class, UUID.class);
-            return constructor.newInstance(sign, player);
+            return constructor.newInstance(sign, player.getUniqueId());
         } catch (NoSuchMethodException
                 | SecurityException
                 | InstantiationException
@@ -75,7 +133,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                 | InvocationTargetException ex) {
             XPStorage.getPluginUtil().getLogger().log(Level.SEVERE, null, ex);
         }
-        return new NormalSign(sign, player);
+        return new LocalPlayerSign(sign, player.getUniqueId());
     }
 
     /**
@@ -499,7 +557,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     public abstract void setOwner(UUID newOwner);
 
     /**
-     * Whether or not this is a group sign. This is so the AbstractSharedSign
+     * Whether or not this is a group sign. This is so the AbstractGroupSign
      * can add additional functions
      *
      * @return
@@ -683,7 +741,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @return
      */
     public boolean destroySign(Player playerWhoDestroys) {
-        
+
         if (!canDestroySign(playerWhoDestroys)) {
             return false;
         }

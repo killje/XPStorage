@@ -7,7 +7,7 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.list.GuiElementList;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ public class CurrentList extends GuiElementList {
 
     private final Map<String, GuiElement> elementMap = new HashMap<>();
 
-    public CurrentList(Player currentPlayer, AbstractSharedSign sign) {
+    public CurrentList(Player currentPlayer, AbstractGroupSign sign) {
         super(XPStorage.getGuiSettings(), currentPlayer);
         ArrayList<PlayerInformation> players = new ArrayList(sign.getGroup().getPlayers());
         for (PlayerInformation player : players) {

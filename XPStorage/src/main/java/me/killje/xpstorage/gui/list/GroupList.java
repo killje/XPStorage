@@ -42,7 +42,7 @@ public class GroupList extends GuiElementList {
     protected int initInventory(int startIndex, int stopIndex, int maxItemsOnPage) {
 
         int initInventory = super.initInventory(startIndex, stopIndex, maxItemsOnPage);
-        if (player.hasPermission(Permission.CREATE_XP_GROUP.getPermission())) {
+        if (Permission.CREATE_NEW_GROUP.hasPermission(player)) {
             this.addGuiElement(new CreateNewGroup(player, xpSign), 1);
         } else {
             this.addGuiElement(new SimpleGuiElement(guiSettings.getItemStack("newGroup.noacces")), 1);

@@ -6,7 +6,7 @@ import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,9 +17,9 @@ import org.bukkit.inventory.ItemStack;
 public class AddPlayerGroupCreateRights implements GuiElement {
 
     private final UUID player;
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
 
-    public AddPlayerGroupCreateRights(UUID player, AbstractSharedSign sign) {
+    public AddPlayerGroupCreateRights(UUID player, AbstractGroupSign sign) {
         this.player = player;
         this.sign = sign;
     }

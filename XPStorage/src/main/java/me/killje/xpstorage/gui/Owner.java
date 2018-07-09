@@ -8,7 +8,8 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.HeadUtil;
 import me.killje.spigotgui.util.InventoryBase;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.permission.Permission;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -48,22 +49,22 @@ public class Owner implements GuiElement {
         lore.add(guiSettings.getText("player", replacement));
         lore.add(guiSettings.getText("signType", replacement));
 
-        if (playerViewing.hasPermission("xpStorage.showuuid")) {
+        if (Permission.SHOW_UUID.hasPermission(playerViewing)) {
 
             lore.add(guiSettings.getText("ownerUUID", replacement));
 
         }
 
-        if (xpSign instanceof AbstractSharedSign) {
+        if (xpSign instanceof AbstractGroupSign) {
 
-            AbstractSharedSign sign = (AbstractSharedSign) xpSign;
+            AbstractGroupSign sign = (AbstractGroupSign) xpSign;
 
             replacement.put("GROUP_NAME", sign.getGroup().getGroupName());
             replacement.put("GROUP_UUID", sign.getGroup().getGroupUuid().toString());
 
             lore.add(guiSettings.getText("groupNameOwner", replacement));
 
-            if (playerViewing.hasPermission("xpStorage.showuuid")) {
+            if (Permission.SHOW_UUID.hasPermission(playerViewing)) {
                 lore.add(guiSettings.getText("groupUUID", replacement));
             }
 
@@ -77,12 +78,12 @@ public class Owner implements GuiElement {
     @Override
     public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
         HumanEntity humanEntity = event.getWhoClicked();
-        if (!humanEntity.hasPermission("xpStorage.showuuid")) {
+        if (!Permission.SHOW_UUID.hasPermission(humanEntity)) {
             return;
         }
         humanEntity.sendMessage("Owner: " + xpSign.getOwner().toString());
-        if (xpSign instanceof AbstractSharedSign) {
-            AbstractSharedSign sign = (AbstractSharedSign) xpSign;
+        if (xpSign instanceof AbstractGroupSign) {
+            AbstractGroupSign sign = (AbstractGroupSign) xpSign;
             humanEntity.sendMessage("Group: " + sign.getGroup().getGroupUuid().toString());
         }
     }

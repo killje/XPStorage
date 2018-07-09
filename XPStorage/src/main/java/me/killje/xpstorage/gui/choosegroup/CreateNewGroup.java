@@ -5,6 +5,7 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
+import me.killje.xpstorage.permission.Permission;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -30,6 +31,9 @@ public class CreateNewGroup extends KeyBoard implements GuiElement {
 
     @Override
     public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+        if(!Permission.CREATE_NEW_GROUP.hasPermission(event.getWhoClicked())) {
+            return;
+        }
         currentinventoryBase.openNewInventory(player, this);
 
     }

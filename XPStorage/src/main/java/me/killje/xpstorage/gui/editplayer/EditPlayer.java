@@ -5,7 +5,7 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.HeadUtil;
 import me.killje.spigotgui.util.InventoryBase;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -21,9 +21,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class EditPlayer implements GuiElement {
 
     private final UUID player;
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
 
-    public EditPlayer(UUID player, AbstractSharedSign sign) {
+    public EditPlayer(UUID player, AbstractGroupSign sign) {
         this.player = player;
         this.sign = sign;
     }

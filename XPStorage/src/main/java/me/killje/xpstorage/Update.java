@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import me.killje.xpstorage.util.PluginUtil;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import me.killje.xpstorage.xpsign.NormalSign;
+import me.killje.xpstorage.xpsign.LocalPlayerSign;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -66,8 +66,8 @@ public class Update {
                     int xpInStorage = Integer.parseInt(sign.getLine(1));
                     signsCreated++;
 
-                    NormalSign normalSign = new NormalSign(sign, UUID.fromString(signSaver.getOwnerUuid()));
-                    normalSign.setXP(xpInStorage);
+                    LocalPlayerSign localPlayerSign = new LocalPlayerSign(sign, UUID.fromString(signSaver.getOwnerUuid()));
+                    localPlayerSign.setXP(xpInStorage);
                 } catch (NumberFormatException ex) {
                     failedToParse++;
                     serialize.put("Reason", "Could not parse the xp amount on the sign");

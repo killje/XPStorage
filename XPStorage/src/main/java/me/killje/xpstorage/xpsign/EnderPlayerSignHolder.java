@@ -8,11 +8,11 @@ import java.util.UUID;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class PlayerSignHolder {
+public class EnderPlayerSignHolder {
 
-    private static final HashMap<String, ArrayList<PlayerSign>> SIGNS = new HashMap<>();
+    private static final HashMap<String, ArrayList<EnderPlayerSign>> SIGNS = new HashMap<>();
 
-    public static void addSignToPlayer(UUID player, final PlayerSign sign) {
+    public static void addSignToPlayer(UUID player, final EnderPlayerSign sign) {
         UUID playerUUID = player;
         if (!SIGNS.containsKey(playerUUID.toString())) {
             SIGNS.put(playerUUID.toString(), new ArrayList<>());
@@ -21,12 +21,12 @@ public class PlayerSignHolder {
 
     }
 
-    public static ArrayList<PlayerSign> getSignsForPlayer(UUID player) {
+    public static ArrayList<EnderPlayerSign> getSignsForPlayer(UUID player) {
         return SIGNS.get(player.toString());
     }
 
-    static void removeSignFromPlayer(UUID owner, PlayerSign sign) {
-        ArrayList<PlayerSign> currentSigns = SIGNS.get(owner.toString());
+    static void removeSignFromPlayer(UUID owner, EnderPlayerSign sign) {
+        ArrayList<EnderPlayerSign> currentSigns = SIGNS.get(owner.toString());
         if (currentSigns == null) {
             return;
         }

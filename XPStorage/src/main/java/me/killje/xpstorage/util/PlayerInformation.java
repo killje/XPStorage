@@ -12,8 +12,9 @@ import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.group.GroupRights.Right;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import me.killje.xpstorage.xpsign.NormalSign;
+import me.killje.xpstorage.xpsign.LocalPlayerSign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.HumanEntity;
 
 /**
  *
@@ -29,7 +30,7 @@ public class PlayerInformation implements ConfigurationSerializable {
     private static class PlayerInformationPeriodSaver implements Runnable {
 
         public PlayerInformationPeriodSaver() {
-            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, 100, 12000);
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") * 1200);
         }
 
         @Override
@@ -47,7 +48,7 @@ public class PlayerInformation implements ConfigurationSerializable {
     private final HashMap<UUID, GroupRights> groupRights = new HashMap<>();
     private static final clsConfiguration PLAYER_INFORMATION_CONFIG = new clsConfiguration(XPStorage.getPluginUtil().getPlugin(), "playerInformation.yml");
     private boolean getMessage = true;
-    private Class<? extends AbstractXpSign> defaultSign = NormalSign.class;
+    private Class<? extends AbstractXpSign> defaultSign = LocalPlayerSign.class;
 
     public PlayerInformation(UUID player) {
         this.player = player;
@@ -75,11 +76,11 @@ public class PlayerInformation implements ConfigurationSerializable {
 
         playerInformation.isMessage((boolean) player.getOrDefault("getMessage", true));
         try {
-            Class<? extends AbstractXpSign> defaultSign = (Class<? extends AbstractXpSign>) Class.forName((String) player.getOrDefault("defaultSign", "me.killje.xpstorage.xpsign.NormalSign"));
+            Class<? extends AbstractXpSign> defaultSign = (Class<? extends AbstractXpSign>) Class.forName((String) player.get("defaultSign"));
             playerInformation.setDefaultSign(defaultSign);
         } catch (ClassNotFoundException ex) {
             XPStorage.getPluginUtil().getLogger().log(Level.SEVERE, null, ex);
-            playerInformation.setDefaultSign(NormalSign.class);
+            playerInformation.setDefaultSign(LocalPlayerSign.class);
         }
 
         return playerInformation;
@@ -106,6 +107,9 @@ public class PlayerInformation implements ConfigurationSerializable {
     }
 
     public Class<? extends AbstractXpSign> getDefaultSign() {
+        if (defaultSign == null) {
+            defaultSign = LocalPlayerSign.class;
+        }
         return defaultSign;
     }
 
@@ -143,6 +147,10 @@ public class PlayerInformation implements ConfigurationSerializable {
         playerInformation.put("getMessage", getMessage);
         playerInformation.put("defaultSign", defaultSign.getCanonicalName());
         return playerInformation;
+    }
+    
+    public static PlayerInformation getPlayerInformation(HumanEntity player) {
+        return getPlayerInformation(player.getUniqueId());
     }
 
     public static PlayerInformation getPlayerInformation(UUID player) {

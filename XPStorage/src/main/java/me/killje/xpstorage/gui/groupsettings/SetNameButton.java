@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.groupsettings;
 import me.killje.spigotgui.character.SetStringButton;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
-import me.killje.xpstorage.xpsign.GroupSign;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,10 +13,10 @@ import org.bukkit.inventory.ItemStack;
  */
 public class SetNameButton extends SetStringButton {
 
-    private final GroupSign groupSign;
+    private final EnderGroupSign enderGroupSign;
 
-    public SetNameButton(GroupSign groupSign) {
-        this.groupSign = groupSign;
+    public SetNameButton(EnderGroupSign enderGroupSign) {
+        this.enderGroupSign = enderGroupSign;
     }
 
     @Override
@@ -36,10 +36,10 @@ public class SetNameButton extends SetStringButton {
 
     @Override
     protected void executeSet(InventoryBase currentinventoryBase, InventoryClickEvent event) {
-        groupSign.getGroup().setGroupName(getKeyBoardStringStorage().getCurrent());
+        enderGroupSign.getGroup().setGroupName(getKeyBoardStringStorage().getCurrent());
         currentinventoryBase.closeInventory(event.getWhoClicked());
         event.getWhoClicked().sendMessage(currentinventoryBase.getGuiSettings().getText("nameSet"));
-        groupSign.updateSign();
+        enderGroupSign.updateSign();
     }
 
 }

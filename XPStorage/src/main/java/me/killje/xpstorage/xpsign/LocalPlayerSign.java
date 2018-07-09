@@ -1,11 +1,10 @@
 package me.killje.xpstorage.xpsign;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.util.PlayerInformation;
+import static me.killje.xpstorage.xpsign.AbstractXpSign.getSaveName;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -14,65 +13,62 @@ import org.bukkit.entity.Player;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class PlayerSign extends AbstractXpSign {
+public class LocalPlayerSign extends AbstractXpSign {
 
-    private PlayerInformation playerInformation;
+    private int xpInStorage;
     private UUID owner;
 
-    public PlayerSign(Sign sign, UUID player) {
+    public LocalPlayerSign(Sign sign, UUID player) {
         super(sign);
-        owner = player;
-        PlayerSignHolder.addSignToPlayer(player, this);
-        playerInformation = PlayerInformation.getPlayerInformation(player);
+        this.owner = player;
+        // Check if the owner is real
+        if (player == null) {
+            loadError = LoadError.NO_PLAYER;
+        }
+        this.xpInStorage = 0;
     }
 
-    public PlayerSign(Map<String, Object> sign) {
+    public LocalPlayerSign(Map<String, Object> sign) {
         super(sign);
         this.owner = UUID.fromString((String) sign.get("ownerUuid"));
         if (this.owner == null) {
-            playerInformation = null;
             this.loadError = LoadError.NO_PLAYER;
             return;
         }
         if (getError() != LoadError.NONE) {
-            playerInformation = null;
             return;
         }
-        if (getOwner() != null) {
-            PlayerSignHolder.addSignToPlayer(getOwner(), this);
-            playerInformation = PlayerInformation.getPlayerInformation(getOwner());
+        if (sign.containsKey("xpStored")) {
+            this.xpInStorage = (int) sign.get("xpStored");
         } else {
-            playerInformation = null;
+            this.xpInStorage = 0;
         }
     }
 
     @Override
     protected void setNewXp(int xpInStorage) {
-        playerInformation.setPlayerXpAmount(xpInStorage);
-        ArrayList<PlayerSign> playerSigns = PlayerSignHolder.getSignsForPlayer(getOwner());
-        for (PlayerSign playerSign : playerSigns) {
-            if (playerSign.equals(this)) {
-                continue;
-            }
-            playerSign.updateSign();
-        }
+        this.xpInStorage = xpInStorage;
     }
 
     @Override
     public int getCurrentXp() {
-        return playerInformation.getPlayerXpAmount();
+        return xpInStorage;
+    }
+
+    public void onSignWrite() {
+        updateSign();
     }
 
     @Override
     protected String getSignText() {
         Map<String, String> replacement = new HashMap<>();
         replacement.put("PLAYER_NAME", getSaveName(Bukkit.getOfflinePlayer(getOwner()).getName()));
-        return XPStorage.getGuiSettings().getText("playerSignText", replacement);
+        return XPStorage.getGuiSettings().getText("localPlayerSignText", replacement);
     }
 
     @Override
     public String signType() {
-        return XPStorage.getGuiSettings().getText("playerSignType");
+        return XPStorage.getGuiSettings().getText("localPlayerSignType");
     }
 
     @Override
@@ -85,19 +81,40 @@ public class PlayerSign extends AbstractXpSign {
         if (!super.destroySign(playerWhoDestroys)) {
             return false;
         }
-        PlayerSignHolder.removeSignFromPlayer(getOwner(), this);
+        allXpOut(playerWhoDestroys);
         return true;
     }
 
     @Override
-    public final UUID getOwner() {
-        return this.owner;
+    public UUID getOwner() {
+        return owner;
     }
 
     @Override
     public void setOwner(UUID newOwner) {
         this.owner = newOwner;
-        playerInformation = PlayerInformation.getPlayerInformation(newOwner);
+    }
+
+    /**
+     * Function to save this class to YAML
+     *
+     * @return
+     */
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> saveMap = super.serialize();
+
+        saveMap.put("xpStored", this.xpInStorage);
+        return saveMap;
+    }
+
+    /**
+     * SHOULD ONLY BE USED FOR CONVERTING FROM OLD SIGNS
+     *
+     * @param xp
+     */
+    public void setXP(int xp) {
+        this.xpInStorage = xp;
     }
 
 }

@@ -5,14 +5,34 @@ main: ${project.main}
 load: POSTWORLD
 softdepend: [Multiverse-Core]
 permissions:
-    xpStorage.createXpGroup:
-        description: Gives the ability to create groups
+    xpstorage.create.*:
+        description: Ability to create xpsigns
         default: true
-    xpstorage.openGuiOthers:
+        children: 
+            xpstorage.create.localplayer: true
+            xpstorage.create.enderplayer: true
+            xpstorage.create.localgroup: true
+            xpstorage.create.endergroup: true
+    xpstorage.create.localplayer:
+        description: Ability to create local player signs
+        default: true
+    xpstorage.create.enderplayer:
+        description: Ability to create ender player signs
+        default: true
+    xpstorage.create.localgroup:
+        description: Ability to create local group signs
+        default: true
+    xpstorage.create.endergroup:
+        description: Ability to create ender group signs (players can only change into this sign so they need at least one other create pemission to use this one)
+        default: true
+    xpstorage.createnewgroup:
+        description: Gives the ability to create a new group
+        default: true
+    xpstorage.openguiothers:
         description: Gives a player to open the gui of a sign from other players. Owner specific items and abilities are still hidden.
         default: false
-    xpstorage.changeOwner:
-        description: Intended for moderators. This to change a sign from one owner to another. For groups and shared signs this is an default option in the edit player list.
+    xpstorage.changeowner:
+        description: Intended for moderators. This to change a sign from one owner to another. For group sings this is already an option in the edit player list.
         default: op
     xpstorage.xpreloadgui:
         description: Reloads the plugin GUI
@@ -20,7 +40,7 @@ permissions:
     xpstorage.showuuid:
         description: Shows the uuid of the owner and sign on the head
         default: op
-    xpStorage.xpstorage:
+    xpstorage.xpstorage:
         description: Access to the help page of XPStorage
         default: true
 commands:

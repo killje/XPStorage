@@ -44,7 +44,11 @@ public class OnSignChange implements Listener {
                 Map<String, String> interactMatiral = new HashMap<>();
                 interactMatiral.put("SIGN_INTERACT_MATERIAL", SignInventory.INTERACT_MATERIAL.toString());
                 PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(event.getPlayer().getUniqueId());
-                AbstractXpSign sign = AbstractXpSign.createSign(playerInformation.getDefaultSign(), (Sign) event.getBlock().getState(), event.getPlayer().getUniqueId());
+                AbstractXpSign sign = AbstractXpSign.createSign((Sign) event.getBlock().getState(), event.getPlayer());
+                if (sign == null) {
+                    event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("noCreatePermmissions"));
+                    return;
+                }
                 sign.updateSign();
                 if (playerInformation.isMessage()) {
                     event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("signCreated", interactMatiral));

@@ -6,7 +6,7 @@ import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import me.killje.xpstorage.xpsign.GroupSign;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -44,7 +44,7 @@ public class ChooseGroup implements GuiElement {
         if (!xpSign.destroySign(player)) {
             return;
         }
-        xpSign = new GroupSign(xpSign.getSign(), groupId);
+        xpSign = new EnderGroupSign(xpSign.getSign(), groupId);
         xpSign.changeSign();
 
         currentinventoryBase.closeInventory(entity);

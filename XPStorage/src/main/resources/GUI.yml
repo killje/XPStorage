@@ -690,7 +690,7 @@ GUIElements:
         type: item
         value: SKULL_ITEM
         displayName: '&WHITEChange owner'
-    changeTo.normal:
+    changeTo.localPlayer:
         type: item
         value: CHEST
         displayName: '&WHITELocal player sign'
@@ -698,15 +698,7 @@ GUIElements:
             - 'Change the sign to a location bound player sign.'
             - 'The XP on this sign will only'
             - 'be available on this location for you.'
-    changeTo.shared:
-        type: item
-        value: BEACON
-        displayName: '&WHITELocal group sign'
-        lore: 
-            - 'Change the sign to a local group sign.'
-            - 'With this the XP will be available to you'
-            - 'and people you share it with on this location.'
-    changeTo.ender:
+    changeTo.enderPlayer:
         type: item
         value: ENDER_CHEST
         displayName: '&WHITEEnder player sign'
@@ -714,7 +706,15 @@ GUIElements:
             - 'Change the sign to a ender bound player sign.'
             - 'With this the XP will be'
             - 'available on other signs for you.'
-    changeTo.group:
+    changeTo.localGroup:
+        type: item
+        value: BEACON
+        displayName: '&WHITELocal group sign'
+        lore: 
+            - 'Change the sign to a local group sign.'
+            - 'With this the XP will be available to you'
+            - 'and people you share it with on this location.'
+    changeTo.enderGroup:
         type: item
         value: END_CRYSTAL
         displayName: '&WHITEEnder group sign'
@@ -726,26 +726,26 @@ GUIElements:
         type: item
         value: STAINED_GLASS_PANE
         color: GREEN
-    selected.group:
+    selected.localPlayer:
         use: 
             - selected
-            - changeTo.group
-        displayName: '&YELLOWCurrently selected &WHITE Ender group sign'
-    selected.shared:
-        use: 
-            - selected
-            - changeTo.shared
-        displayName: '&YELLOWCurrently selected &WHITE Local group sign'
-    selected.ender:
-        use: 
-            - selected
-            - changeTo.ender
-        displayName: '&YELLOWCurrently selected &WHITE Ender player sign'
-    selected.normal:
-        use: 
-            - selected
-            - changeTo.normal
+            - changeTo.localPlayer
         displayName: '&YELLOWCurrently selected &WHITE Local player sign'
+    selected.enderPlayer:
+        use: 
+            - selected
+            - changeTo.enderPlayer
+        displayName: '&YELLOWCurrently selected &WHITE Ender player sign'
+    selected.localGroup:
+        use: 
+            - selected
+            - changeTo.localGroup
+        displayName: '&YELLOWCurrently selected &WHITE Local group sign'
+    selected.enderGroup:
+        use: 
+            - selected
+            - changeTo.enderGroup
+        displayName: '&YELLOWCurrently selected &WHITE Ender group sign'
     selected.owner:
         use: selected
         displayName: 'You can''t edit the owner'
@@ -764,14 +764,14 @@ texts:
     editPlayers: 'Edit players'
     choseGroup: 'Choose group'
     addPlayer: 'Add player'
-    normalSignType: 'Local player sign'
-    normalSignText: '%PLAYER_NAME'
-    playerSignType: 'Ender player sign'
-    playerSignText: '&DARK_PURPLE%PLAYER_NAME'
-    sharedSignType: 'Local group sign'
-    sharedSignText: '&DARK_PURPLELocal group'
-    groupSignType: 'Ender group sign'
-    groupSignText: '&GREENEnder group'
+    localPlayerSignType: 'Local player sign'
+    localPlayerSignText: '%PLAYER_NAME'
+    enderPlayerSignType: 'Ender player sign'
+    enderPlayerSignText: '&DARK_PURPLE%PLAYER_NAME'
+    localGroupSignType: 'Local group sign'
+    localGroupSignText: '&DARK_PURPLELocal group'
+    enderGroupSignType: 'Ender group sign'
+    enderGroupSignText: '&GREENEnder group'
     amounthNotAvaialable: 'That amount is not available'
     maximumStorageMessage: '&DARK_REDMaximum of storage reached'
     information: '&WHITEInformation'
@@ -798,3 +798,4 @@ texts:
     newGroupName.empty: 'Please specify a group name'
     signCreated: 'XP sign has been created, you can edit sign settings by using "%SIGN_INTERACT_MATERIAL" on this sign. There you can also disable this message.'
     noXPLeft: 'You don''t have any experience left. If you want to access the sign, interact with a "%SIGN_INTERACT_MATERIAL" to open the GUI'
+    noCreatePermmissions: 'You don''t have any permmisions to create XPStorage signs.'

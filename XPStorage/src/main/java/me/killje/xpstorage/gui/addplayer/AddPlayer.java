@@ -4,7 +4,7 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.HeadUtil;
 import me.killje.spigotgui.util.InventoryBase;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -19,12 +19,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class AddPlayer implements GuiElement {
 
     private final OfflinePlayer player;
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
     private final String displayName;
 
     public AddPlayer(OfflinePlayer player, AbstractXpSign sign, String displayName) {
         this.player = player;
-        this.sign = (AbstractSharedSign) sign;
+        this.sign = (AbstractGroupSign) sign;
         this.displayName = displayName;
     }
 

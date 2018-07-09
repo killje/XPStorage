@@ -1,6 +1,5 @@
 package me.killje.xpstorage;
 
-import java.util.logging.Level;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.eventListeners.OnBlockBreak;
@@ -19,11 +18,10 @@ import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.util.PluginUtil;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import me.killje.xpstorage.xpsign.GroupSign;
-import me.killje.xpstorage.xpsign.NormalSign;
-import me.killje.xpstorage.xpsign.PlayerSign;
-import me.killje.xpstorage.xpsign.SharedSign;
-import org.bukkit.Bukkit;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
+import me.killje.xpstorage.xpsign.LocalPlayerSign;
+import me.killje.xpstorage.xpsign.EnderPlayerSign;
+import me.killje.xpstorage.xpsign.LocalGroupSign;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -91,10 +89,14 @@ public class XPStorage extends JavaPlugin {
         ConfigurationSerialization.registerClass(GroupRights.class);
         ConfigurationSerialization.registerClass(Group.class);
         ConfigurationSerialization.registerClass(SignSaver.class);
-        ConfigurationSerialization.registerClass(PlayerSign.class);
-        ConfigurationSerialization.registerClass(NormalSign.class);
-        ConfigurationSerialization.registerClass(SharedSign.class);
-        ConfigurationSerialization.registerClass(GroupSign.class);
+        ConfigurationSerialization.registerClass(LocalPlayerSign.class, "me.killje.xpstorage.xpsign.NormalSign");
+        ConfigurationSerialization.registerClass(LocalPlayerSign.class);
+        ConfigurationSerialization.registerClass(EnderPlayerSign.class, "me.killje.xpstorage.xpsign.PlayerSign");
+        ConfigurationSerialization.registerClass(EnderPlayerSign.class);
+        ConfigurationSerialization.registerClass(LocalGroupSign.class, "me.killje.xpstorage.xpsign.SharedSign");
+        ConfigurationSerialization.registerClass(LocalGroupSign.class);
+        ConfigurationSerialization.registerClass(EnderGroupSign.class, "me.killje.xpstorage.xpsign.GroupSign");
+        ConfigurationSerialization.registerClass(EnderGroupSign.class);
 
         PlayerInformation.loadPlayerInformation();
         Group.loadGroups();

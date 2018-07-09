@@ -6,6 +6,7 @@ import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.permission.Permission;
+import static me.killje.xpstorage.permission.Permission.*;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -30,10 +31,11 @@ public class Settings extends InventoryBase implements GuiElement {
     protected void initInventory() {
         this
                 .setInventoryName(getGuiSettings().getText("settings"))
-                .addGuiElement(new SetMessage(player))
-                .addGuiElement(new DefaultSign(player));
-
-        if (player.hasPermission(Permission.CHANGE_OWNER.getPermission())) {
+                .addGuiElement(new SetMessage(player));
+        if (Permission.hasAnyPermission(player, CREATE_LOCAL_PLAYER, CREATE_ENDER_PLAYER, CREATE_LOCAL_GROUP)) {
+            this.addGuiElement(new DefaultSign(player));
+        }
+        if (Permission.CHANGE_OWNER.hasPermission(player)) {
             this.addGuiElement(new ChangeOwnerList(player, xpSign));
         }
         this.addGuiElement(new Exit(), 8);

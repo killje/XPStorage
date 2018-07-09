@@ -6,7 +6,7 @@ import me.killje.spigotgui.list.PlayerListElementFetcher;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.gui.addplayer.AddPlayer;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class FromList implements GuiElement, PlayerListElementFetcher {
 
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
 
-    public FromList(AbstractSharedSign sign) {
+    public FromList(AbstractGroupSign sign) {
         this.sign = sign;
     }
 

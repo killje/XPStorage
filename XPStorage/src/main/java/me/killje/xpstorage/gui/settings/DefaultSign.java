@@ -5,9 +5,10 @@ import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
-import me.killje.xpstorage.xpsign.NormalSign;
-import me.killje.xpstorage.xpsign.PlayerSign;
-import me.killje.xpstorage.xpsign.SharedSign;
+import me.killje.xpstorage.permission.Permission;
+import me.killje.xpstorage.xpsign.LocalPlayerSign;
+import me.killje.xpstorage.xpsign.EnderPlayerSign;
+import me.killje.xpstorage.xpsign.LocalGroupSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -37,12 +38,17 @@ public class DefaultSign extends InventoryBase implements GuiElement {
 
     @Override
     protected void initInventory() {
-        this
-                .setInventoryName(getGuiSettings().getText("pickDefaultSign"))
-                .addGuiElement(new DefaultSignPicker(player, NormalSign.class, "normal"))
-                .addGuiElement(new DefaultSignPicker(player, PlayerSign.class, "ender"))
-                .addGuiElement(new DefaultSignPicker(player, SharedSign.class, "shared"))
-                .addGuiElement(new Exit(), 8);
+        this.setInventoryName(getGuiSettings().getText("pickDefaultSign"));
+        if (Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
+            this.addGuiElement(new DefaultSignPicker(player, LocalPlayerSign.class, "localPlayer"));
+        }
+        if (Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
+            this.addGuiElement(new DefaultSignPicker(player, EnderPlayerSign.class, "enderPlayer"));
+        }
+        if (Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
+            this.addGuiElement(new DefaultSignPicker(player, LocalGroupSign.class, "localGroup"));
+        }
+        this.addGuiElement(new Exit(), 8);
     }
 
 }

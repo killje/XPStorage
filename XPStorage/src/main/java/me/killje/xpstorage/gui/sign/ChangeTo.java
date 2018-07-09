@@ -48,7 +48,7 @@ public class ChangeTo implements GuiElement {
             return;
         }
 
-        xpSign = AbstractXpSign.createSign(signClass, xpSign.getSign(), entity.getUniqueId());
+        xpSign = AbstractXpSign.createSign(signClass, xpSign.getSign(), entity);
         xpSign.changeSign();
 
         currentinventoryBase.closeInventory(entity);

@@ -8,7 +8,7 @@ import me.killje.xpstorage.gui.choosegroup.ChooseGroup;
 import me.killje.xpstorage.gui.list.GroupList;
 import me.killje.xpstorage.gui.list.GroupListGuiElement;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
-import me.killje.xpstorage.xpsign.GroupSign;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +30,7 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
 
     public ChangeToGroup(Player player, AbstractXpSign xpSign, boolean fromGroup) {
         this.xpSign = xpSign;
-        this.isSelected = xpSign instanceof GroupSign;
+        this.isSelected = xpSign instanceof EnderGroupSign;
         this.fromGroup = fromGroup;
         this.player = player;
     }
@@ -41,9 +41,9 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
             return guiSettings.getItemStack("diffrentGroup");
         }
         if (isSelected) {
-            return guiSettings.getItemStack("selected.group");
+            return guiSettings.getItemStack("selected.enderGroup");
         }
-        return guiSettings.getItemStack("changeTo.group");
+        return guiSettings.getItemStack("changeTo.enderGroup");
     }
 
     @Override

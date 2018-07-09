@@ -5,7 +5,7 @@ import java.util.UUID;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 
 /**
  *
@@ -13,11 +13,11 @@ import me.killje.xpstorage.xpsign.AbstractSharedSign;
  */
 public class EditPlayerOptionsGroup extends EditPlayerOptions {
 
-    private final AbstractSharedSign sign;
+    private final AbstractGroupSign sign;
     private final UUID playerToEdit;
     private final UUID playerEditing;
 
-    public EditPlayerOptionsGroup(AbstractSharedSign sign, UUID playerToEdit, UUID playerEditing) {
+    public EditPlayerOptionsGroup(AbstractGroupSign sign, UUID playerToEdit, UUID playerEditing) {
         super(sign, playerToEdit, playerEditing);
         this.sign = sign;
         this.playerToEdit = playerToEdit;

@@ -48,7 +48,7 @@ public class OnPlayerInteract implements Listener {
 
         xpSign.updateSign();
 
-        boolean openGuiOther = player.hasPermission(Permission.OPEN_GUI_OTHERS.getPermission());
+        boolean openGuiOther = Permission.OPEN_GUI_OTHERS.hasPermission(player);
         boolean hasAccess = xpSign.hasAccess(player.getUniqueId());
 
         if (!hasAccess && !openGuiOther) {

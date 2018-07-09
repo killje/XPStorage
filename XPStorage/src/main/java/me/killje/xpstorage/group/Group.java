@@ -10,7 +10,7 @@ import me.desht.dhutils.ExperienceManager;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.util.PlayerInformation;
-import me.killje.xpstorage.xpsign.AbstractSharedSign;
+import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.XpSignFacingBlock;
 import org.bukkit.Material;
@@ -33,7 +33,7 @@ public class Group implements ConfigurationSerializable {
     private static class groupPeriodSaver implements Runnable {
 
         public groupPeriodSaver() {
-            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, 100, 12000);
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") * 1200);
         }
 
         @Override
@@ -44,7 +44,7 @@ public class Group implements ConfigurationSerializable {
     }
 
     private final HashMap<String, PlayerInformation> playerInformationMap = new HashMap<>();
-    private final ArrayList<AbstractSharedSign> signs = new ArrayList<>();
+    private final ArrayList<AbstractGroupSign> signs = new ArrayList<>();
     private final static HashMap<String, Group> GROUPS = new HashMap<>();
 
     private int xpStored = 0;
@@ -124,11 +124,11 @@ public class Group implements ConfigurationSerializable {
         playerInformationMap.remove(player.toString());
     }
 
-    public void addSignToGroup(AbstractSharedSign sign) {
+    public void addSignToGroup(AbstractGroupSign sign) {
         signs.add(sign);
     }
 
-    public void removeSignFromGroup(AbstractSharedSign sign) {
+    public void removeSignFromGroup(AbstractGroupSign sign) {
         if (!signs.contains(sign)) {
             return;
         }
@@ -167,7 +167,7 @@ public class Group implements ConfigurationSerializable {
     public void setXp(int xpAmount) {
         xpStored = xpAmount;
 
-        for (AbstractSharedSign sign : signs) {
+        for (AbstractGroupSign sign : signs) {
             sign.updateSign();
         }
     }
@@ -178,7 +178,7 @@ public class Group implements ConfigurationSerializable {
 
     public void destoryGroup(Player playerWhoDestroys) {
 
-        for (AbstractSharedSign sign : signs) {
+        for (AbstractGroupSign sign : signs) {
             if (!sign.canDestroySign(playerWhoDestroys)) {
                 return;
             }
@@ -193,7 +193,7 @@ public class Group implements ConfigurationSerializable {
 
         playerInformationMap.clear();
 
-        for (AbstractSharedSign xpSign : signs) {
+        for (AbstractGroupSign xpSign : signs) {
             AbstractXpSign.removeSign(xpSign);
             Sign sign = xpSign.getSign();
             if (xpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {

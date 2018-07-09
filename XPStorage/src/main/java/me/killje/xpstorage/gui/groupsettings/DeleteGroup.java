@@ -3,7 +3,7 @@ package me.killje.xpstorage.gui.groupsettings;
 import me.killje.spigotgui.guielement.GuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
-import me.killje.xpstorage.xpsign.GroupSign;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,11 +15,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class DeleteGroup implements GuiElement {
 
-    private final GroupSign groupSign;
+    private final EnderGroupSign enderGroupSign;
     private final Player player;
 
-    public DeleteGroup(GroupSign groupSign, Player player) {
-        this.groupSign = groupSign;
+    public DeleteGroup(EnderGroupSign enderGroupSign, Player player) {
+        this.enderGroupSign = enderGroupSign;
         this.player = player;
     }
 
@@ -35,13 +35,13 @@ public class DeleteGroup implements GuiElement {
         if (!(entity instanceof Player)) {
             return;
         }
-        if (!groupSign.canDestroySign(player)) {
+        if (!enderGroupSign.canDestroySign(player)) {
             return;
         }
 
         currentinventoryBase.closeInventory(entity);
 
-        groupSign.getGroup().destoryGroup(player);
+        enderGroupSign.getGroup().destoryGroup(player);
 
     }
 

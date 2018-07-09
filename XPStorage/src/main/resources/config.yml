@@ -3,3 +3,4 @@ interactMaterial: TORCH
 creationTags:
     - '[xp]'
     - '[xp storage]'
+backupSaveInterfallMinutes: 10
