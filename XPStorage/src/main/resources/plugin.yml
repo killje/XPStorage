@@ -30,7 +30,7 @@ permissions:
         default: true
     xpstorage.openguiothers:
         description: Gives a player to open the gui of a sign from other players. Owner specific items and abilities are still hidden.
-        default: false
+        default: op
     xpstorage.changeowner:
         description: Intended for moderators. This to change a sign from one owner to another. For group sings this is already an option in the edit player list.
         default: op
