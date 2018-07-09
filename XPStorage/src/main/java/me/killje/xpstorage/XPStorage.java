@@ -1,168 +1,116 @@
 package me.killje.xpstorage;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.logging.Level;
-import org.bukkit.Bukkit;
+import me.killje.spigotgui.util.GuiSetting;
+import me.killje.spigotgui.util.clsConfiguration;
+import me.killje.xpstorage.eventListeners.OnBlockBreak;
+import me.killje.xpstorage.eventListeners.OnBlockBurn;
+import me.killje.xpstorage.eventListeners.OnBlockExplode;
+import me.killje.xpstorage.eventListeners.OnBlockIgnite;
+import me.killje.xpstorage.eventListeners.OnBlockPistonExtend;
+import me.killje.xpstorage.eventListeners.OnBlockPistonRetract;
+import me.killje.xpstorage.eventListeners.OnEntityBreakDoor;
+import me.killje.xpstorage.eventListeners.OnEntityChangeBlock;
+import me.killje.xpstorage.eventListeners.OnLeavesDecay;
+import me.killje.xpstorage.eventListeners.OnPlayerInteract;
+import me.killje.xpstorage.eventListeners.OnSignChange;
+import me.killje.xpstorage.group.Group;
+import me.killje.xpstorage.group.GroupRights;
+import me.killje.xpstorage.util.PlayerInformation;
+import me.killje.xpstorage.util.PluginUtil;
+import me.killje.xpstorage.xpsign.AbstractXpSign;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
+import me.killje.xpstorage.xpsign.LocalPlayerSign;
+import me.killje.xpstorage.xpsign.EnderPlayerSign;
+import me.killje.xpstorage.xpsign.LocalGroupSign;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockEvent;
-import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  *
- * @author Patrick Beuks (killje)
+ * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-public class XPStorage extends JavaPlugin implements Listener {
+public class XPStorage extends JavaPlugin {
 
-    private final clsConfiguration signs = new clsConfiguration(this, "Signs.yml");
-    private List<SignSaver> signsList;
+    private static GuiSetting guiSettings;
+    private static PluginUtil pluginUtil;
+    private static clsConfiguration signs;
+
+    private boolean init = true;
+
+    public static clsConfiguration getSignConfig() {
+        return signs;
+    }
+
+    public static GuiSetting getGuiSettings() {
+        return guiSettings;
+    }
+
+    public static PluginUtil getPluginUtil() {
+        return pluginUtil;
+    }
+
+    public boolean isInit() {
+        return init;
+    }
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(this, this);
+        saveDefaultConfig();
+        pluginUtil = new PluginUtil(this);
+
+        guiSettings = new GuiSetting(this, "GUI.yml");
+        signs = new clsConfiguration(this, "Signs.yml");
+
+        getServer().getPluginManager().registerEvents(new OnSignChange(), this);
+        getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockBreak(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockBurn(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockExplode(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockIgnite(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockPistonExtend(), this);
+        getServer().getPluginManager().registerEvents(new OnBlockPistonRetract(), this);
+        getServer().getPluginManager().registerEvents(new OnLeavesDecay(), this);
+        getServer().getPluginManager().registerEvents(new OnEntityBreakDoor(), this);
+        getServer().getPluginManager().registerEvents(new OnEntityChangeBlock(), this);
+
+        getCommand("xpreloadgui").setExecutor((sender, command, label, args) -> {
+            guiSettings.reloadConfig();
+            sender.sendMessage("The GUI of XPStorage has been reloaded");
+            return true;
+        });
+
+        getCommand("xpstorage").setExecutor((sender, command, label, args) -> {
+            sender.sendMessage("Visit " + ChatColor.UNDERLINE + "https://github.com/killje/XPStorage/wiki/" + ChatColor.RESET + " for information on how to use XPStorage");
+            return true;
+        });
+
+        ConfigurationSerialization.registerClass(PlayerInformation.class);
+        ConfigurationSerialization.registerClass(GroupRights.class);
+        ConfigurationSerialization.registerClass(Group.class);
         ConfigurationSerialization.registerClass(SignSaver.class);
-        signsList = (List<SignSaver>) signs.GetConfig().getList("Signs");
-        if (signsList == null) {
-            signsList = new Stack<>();
-        }
-        boolean dirty = false;
-        for (Iterator<SignSaver> it = signsList.iterator(); it.hasNext();) {
-            SignSaver signSaver = it.next();
-            Location location = signSaver.getLocation();
-            if (location != null) {
-                Block block = location.getBlock();
-                if (block == null || !isSign(block.getType())) {
-                    this.getLogger().log(Level.WARNING, "Sign does not exsist anymore at: x={0}, y={1}, z={2}", new Object[]{location.getX(), location.getY(), location.getZ()});
-                    it.remove();
-                    dirty = true;
-                    continue;
-                }
-                block.setMetadata("OwnerUUID", new FixedMetadataValue(this, signSaver.getOwnerUuid()));
-            } else {
-                Map<String, Object> sign = signSaver.serialize();
-                this.getLogger().log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) sign.get("world"), (int) sign.get("x"), (int) sign.get("y"), (int) sign.get("z")});
-            }
-        }
-        if (dirty) {
-            signs.GetConfig().set("Signs", signsList);
-            signs.SaveConfig();
-        }
+        ConfigurationSerialization.registerClass(LocalPlayerSign.class, "me.killje.xpstorage.xpsign.NormalSign");
+        ConfigurationSerialization.registerClass(LocalPlayerSign.class);
+        ConfigurationSerialization.registerClass(EnderPlayerSign.class, "me.killje.xpstorage.xpsign.PlayerSign");
+        ConfigurationSerialization.registerClass(EnderPlayerSign.class);
+        ConfigurationSerialization.registerClass(LocalGroupSign.class, "me.killje.xpstorage.xpsign.SharedSign");
+        ConfigurationSerialization.registerClass(LocalGroupSign.class);
+        ConfigurationSerialization.registerClass(EnderGroupSign.class, "me.killje.xpstorage.xpsign.GroupSign");
+        ConfigurationSerialization.registerClass(EnderGroupSign.class);
+
+        PlayerInformation.loadPlayerInformation();
+        Group.loadGroups();
+        AbstractXpSign.loadSigns();
+        init = false;
+
     }
 
-    @EventHandler
-    public void onSignWrite(SignChangeEvent event) {
-        if (event.getLine(0).toLowerCase().equals("[xp storage]") || event.getLine(0).toLowerCase().equals("[xp]")) {
-            event.setLine(0, ChatColor.BLUE + "[XP Storage]");
-            event.setLine(1, "0");
-            event.setLine(2, "[5] 20 100 500");
-            String playername = getSaveName(event.getPlayer());
-            event.setLine(3, playername);
-            Block block = event.getBlock();
-            String uuid = event.getPlayer().getUniqueId().toString();
-            block.setMetadata("OwnerUUID", new FixedMetadataValue(this, uuid));
-            signsList.add(new SignSaver(block, uuid));
-            signs.GetConfig().set("Signs", signsList);
-            signs.SaveConfig();
-        }
+    @Override
+    public void onDisable() {
+        PlayerInformation.savePlayerInformation();
+        Group.saveGroups();
+        AbstractXpSign.saveSigns(true);
+        AbstractXpSign.destroyMetaDatas();
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onInteract(PlayerInteractEvent event) {
-        if (isSign(event.getClickedBlock().getType())) {
-            Sign sign = (Sign) event.getClickedBlock().getState();
-            if (sign.getLine(0).equals(ChatColor.BLUE + "[XP Storage]")) {
-                final Player player = event.getPlayer();
-                if (sign.getMetadata("OwnerUUID").isEmpty()) {
-                    if (getSaveName(player).equals(sign.getLine(3))) {
-                        String uuid = player.getUniqueId().toString();
-                        sign.setMetadata("OwnerUUID", new FixedMetadataValue(this, uuid));
-                        signsList.add(new SignSaver(sign.getBlock(), uuid));
-                        signs.GetConfig().set("Signs", signsList);
-                        signs.SaveConfig();
-                    } else {
-                        event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are not authorized to access someone else's xp Storage");
-                        return;
-                    }
-                }
-                if (!player.getUniqueId().toString().equals(sign.getMetadata("OwnerUUID").get(0).asString())) {
-                    event.getPlayer().sendMessage(ChatColor.DARK_RED + "You are not authorized to access someone else's xp Storage");
-                    return;
-                }
-                SignUtil su = new SignUtil(sign, player);
-                if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                    event.setCancelled(true);
-                    if (player.isSneaking()) {
-                        su.decreaseXp();
-                    } else {
-                        su.increaseXp();
-                    }
-                } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                    if (player.isSneaking()) {
-                        su.prevItem();
-                    } else {
-                        su.nextItem();
-                    }
-                }
-                sign.update();
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBreak(BlockBreakEvent event) {
-        destroyEvent(event);
-    }
-
-    @EventHandler
-    public void onBurn(BlockBurnEvent event) {
-        destroyEvent(event);
-    }
-
-    private void destroyEvent(BlockEvent event) {
-        if (isSign(event.getBlock().getType())) {
-            Sign sign = (Sign) event.getBlock().getState();
-            if (sign.getLine(0).equals(ChatColor.BLUE + "[XP Storage]")) {
-                for (Iterator<SignSaver> it = signsList.iterator(); it.hasNext();) {
-                    SignSaver signSaver = it.next();
-                    if (signSaver.getLocation().equals(event.getBlock().getLocation())) {
-                        it.remove();
-                        signs.GetConfig().set("Signs", signsList);
-                        signs.SaveConfig();
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private String getSaveName(Player player) {
-        if (player.getName().length() > 15) {
-            return player.getName().substring(0, 15);
-        } else {
-            return player.getName();
-        }
-    }
-
-    private boolean isSign(Material material) {
-        return material == Material.WALL_SIGN
-                || material == Material.SIGN_POST
-                || material == Material.SIGN;
-    }
 }

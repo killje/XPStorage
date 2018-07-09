@@ -2,7 +2,6 @@ package me.desht.dhutils;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 
@@ -77,9 +76,9 @@ public class ExperienceManager {
 
         for (int i = 0; i < xpTotalToReachLevel.length; i++) {
             xpTotalToReachLevel[i]
-                    = i >= 30 ? (int) (3.5 * i * i - 151.5 * i + 2220)
-                    : i >= 16 ? (int) (1.5 * i * i - 29.5 * i + 360)
-                    : 17 * i;
+                    = i >= 32 ? (int) ((4.5 * i * i - 162.5 * i) + 2220)
+                            : i >= 17 ? (int) ((2.5 * i * i - 40.5 * i) + 360)
+                                    : 6 * i + i * i;
         }
     }
 
@@ -176,6 +175,7 @@ public class ExperienceManager {
 
         double pct = (base - getXpForLevel(newLvl) + amt) / (double) (getXpNeededToLevelUp(newLvl));
         player.setExp((float) pct);
+        
     }
 
     /**
@@ -185,9 +185,9 @@ public class ExperienceManager {
      */
     public int getCurrentExp() {
         Player player = getPlayer();
-
+        
         int lvl = player.getLevel();
-        int cur = getXpForLevel(lvl) + (int) Math.round(getXpNeededToLevelUp(lvl) * player.getExp());
+        int cur = getXpForLevel(lvl) + (int) Math.floor(getXpNeededToLevelUp(lvl) * player.getExp());
         return cur;
     }
 
@@ -255,7 +255,7 @@ public class ExperienceManager {
      */
     public int getXpNeededToLevelUp(int level) {
         Validate.isTrue(level >= 0, "Level may not be negative.");
-        return level > 30 ? 62 + (level - 30) * 7 : level >= 16 ? 17 + (level - 15) * 3 : 17;
+        return level >= 32 ? 9 * level - 158 : level >= 17 ? 5 * level - 38 : 2 * level + 7;
     }
 
     /**

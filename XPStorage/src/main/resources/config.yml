@@ -1,0 +1,6 @@
+interactMaterial: TORCH
+# tags in lower case!
+creationTags:
+    - '[xp]'
+    - '[xp storage]'
+backupSaveInterfallMinutes: 10
