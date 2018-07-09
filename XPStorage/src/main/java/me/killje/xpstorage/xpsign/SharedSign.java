@@ -37,6 +37,7 @@ public class SharedSign extends AbstractSharedSign {
         if (!super.destroySign(playerWhoDestroys)) {
             return false;
         }
+        allXpOut(playerWhoDestroys);
         Group group = getGroup();
         if (group != null) {
             group.destoryGroup(playerWhoDestroys);

@@ -81,7 +81,7 @@ public abstract class AbstractSharedSign extends AbstractXpSign {
         if (!super.destroySign(playerWhoDestroys)) {
             return false;
         }
-        allXpOut(playerWhoDestroys);
+        
         group.removeSignFromGroup(this);
         return true;
     }

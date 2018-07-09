@@ -3,6 +3,7 @@ authors: ${project.authors}
 version: ${major.version}.b${buildNumber}
 main: ${project.main}
 load: POSTWORLD
+softdepend: [Multiverse-Core]
 permissions:
     xpStorage.createXpGroup:
         description: Gives the ability to create groups

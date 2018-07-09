@@ -1,5 +1,6 @@
 package me.killje.xpstorage;
 
+import java.util.logging.Level;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.clsConfiguration;
 import me.killje.xpstorage.eventListeners.OnBlockBreak;
@@ -22,6 +23,7 @@ import me.killje.xpstorage.xpsign.GroupSign;
 import me.killje.xpstorage.xpsign.NormalSign;
 import me.killje.xpstorage.xpsign.PlayerSign;
 import me.killje.xpstorage.xpsign.SharedSign;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,8 +50,8 @@ public class XPStorage extends JavaPlugin {
 
     public static PluginUtil getPluginUtil() {
         return pluginUtil;
-    }    
-    
+    }
+
     public boolean isInit() {
         return init;
     }
@@ -98,6 +100,7 @@ public class XPStorage extends JavaPlugin {
         Group.loadGroups();
         AbstractXpSign.loadSigns();
         init = false;
+
     }
 
     @Override

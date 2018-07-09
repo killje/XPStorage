@@ -683,6 +683,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @return
      */
     public boolean destroySign(Player playerWhoDestroys) {
+        
         if (!canDestroySign(playerWhoDestroys)) {
             return false;
         }

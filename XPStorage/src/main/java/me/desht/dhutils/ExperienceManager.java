@@ -175,6 +175,7 @@ public class ExperienceManager {
 
         double pct = (base - getXpForLevel(newLvl) + amt) / (double) (getXpNeededToLevelUp(newLvl));
         player.setExp((float) pct);
+        
     }
 
     /**
@@ -184,9 +185,9 @@ public class ExperienceManager {
      */
     public int getCurrentExp() {
         Player player = getPlayer();
-
+        
         int lvl = player.getLevel();
-        int cur = getXpForLevel(lvl) + (int) Math.round(getXpNeededToLevelUp(lvl) * player.getExp());
+        int cur = getXpForLevel(lvl) + (int) Math.floor(getXpNeededToLevelUp(lvl) * player.getExp());
         return cur;
     }
 

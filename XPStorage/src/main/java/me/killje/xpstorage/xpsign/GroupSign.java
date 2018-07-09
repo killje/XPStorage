@@ -75,4 +75,6 @@ public class GroupSign extends AbstractSharedSign {
     public EditPlayerOptions getEditList(UUID playerToEdit, UUID playerEditing) {
         return new EditPlayerOptionsGroup(this, playerToEdit, playerEditing);
     }
+    
+    
 }
