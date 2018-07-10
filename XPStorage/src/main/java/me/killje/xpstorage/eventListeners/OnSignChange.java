@@ -15,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
 /**
+ * Listener for signs being changed. Notably when a player enters the text after
+ * it has been placed.
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
@@ -22,9 +24,11 @@ public class OnSignChange implements Listener {
 
     private final static FileConfiguration config = XPStorage.getPluginUtil().getConfig();
 
-    public OnSignChange() {
-    }
-
+    /**
+     * This is called when a sign text changes
+     *
+     * @param event The event that belongs to the sign changing
+     */
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
 

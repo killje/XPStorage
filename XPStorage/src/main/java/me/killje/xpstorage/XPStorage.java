@@ -25,6 +25,7 @@ import me.killje.xpstorage.xpsign.LocalGroupSign;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -34,6 +35,7 @@ public class XPStorage extends JavaPlugin {
 
     private static GuiSetting guiSettings;
     private static PluginUtil pluginUtil;
+    private static Plugin plugin_;
     private static clsConfiguration signs;
 
     private boolean init = true;
@@ -49,6 +51,10 @@ public class XPStorage extends JavaPlugin {
     public static PluginUtil getPluginUtil() {
         return pluginUtil;
     }
+    
+    public static Plugin getPlugin() {
+        return plugin_;
+    }
 
     public boolean isInit() {
         return init;
@@ -58,6 +64,7 @@ public class XPStorage extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         pluginUtil = new PluginUtil(this);
+        plugin_ = this;
 
         guiSettings = new GuiSetting(this, "GUI.yml");
         signs = new clsConfiguration(this, "Signs.yml");
@@ -99,7 +106,6 @@ public class XPStorage extends JavaPlugin {
         ConfigurationSerialization.registerClass(EnderGroupSign.class);
 
         PlayerInformation.loadPlayerInformation();
-        Group.loadGroups();
         AbstractXpSign.loadSigns();
         init = false;
 

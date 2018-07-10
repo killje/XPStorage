@@ -14,28 +14,55 @@ import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.XpSignFacingBlock;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Serializable group object
+ *
+ * This group object handles the groups for group signs. It tracks the owner,
+ * players connected to the group and the permissions as well as the xp, group
+ * name and signs
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 @SuppressWarnings("ResultOfObjectAllocationIgnored")
 public class Group implements ConfigurationSerializable {
 
+    /*------------------------Static-methodes---------------------------------*/
+    /**
+     * Create the backup saver
+     */
     static {
-        new groupPeriodSaver();
+        new groupPeriodSaver().init();
     }
 
+    /**
+     * Saves the group every specified amount of time
+     */
     private static class groupPeriodSaver implements Runnable {
 
-        public groupPeriodSaver() {
-            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") * 1200);
+        /**
+         * Initializes the period saver
+         */
+        private void init() {
+            int interval = XPStorage.getPluginUtil().getConfig()
+                    .getInt("backupSaveIntervalMinutes") * 1200;
+
+            if (interval == 0) {
+                return;
+            }
+
+            XPStorage.getPluginUtil()
+                    .runTaskTimerAsynchronously(this, interval, interval);
         }
 
+        /**
+         * Saves all the groups
+         */
         @Override
         public void run() {
             Group.saveGroups();
@@ -43,34 +70,128 @@ public class Group implements ConfigurationSerializable {
 
     }
 
-    private final HashMap<String, PlayerInformation> playerInformationMap = new HashMap<>();
-    private final ArrayList<AbstractGroupSign> signs = new ArrayList<>();
-    private final static HashMap<String, Group> GROUPS = new HashMap<>();
+    /*------------------------Static-variables--------------------------------*/
+    /**
+     * List of all the groups created
+     *
+     * This is used to keep track for saving purposes
+     */
+    private final static Map<String, Group> GROUPS = new HashMap<>();
 
-    private int xpStored = 0;
+    /**
+     *
+     */
+    private static final clsConfiguration GROUP_CONFIG
+            = new clsConfiguration(XPStorage.getPlugin(), "groups.yml");
+
+    /*------------------------Static-functions--------------------------------*/
+    /**
+     * Saves the currently defined groups to the group config
+     */
+    public static void saveGroups() {
+        GROUP_CONFIG.GetConfig()
+                .set("groups", new ArrayList<>(GROUPS.values()));
+        GROUP_CONFIG.SaveConfig();
+    }
+
+    /**
+     * Gets a group by the uuid of the group
+     *
+     * If the uuid is not found null will be returned
+     *
+     * @param groupUUID The uuid of the group you want to get
+     * @return The group with the groupUUID or null if not found
+     */
+    public static Group getGroupFromUUID(UUID groupUUID) {
+        if (!GROUPS.containsKey(groupUUID.toString())) {
+            return null;
+        }
+        return GROUPS.get(groupUUID.toString());
+    }
+
+    /*------------------------Object-final-variables--------------------------*/
+    /**
+     * List of players in the group
+     */
+    private final Map<String, PlayerInformation> playerInformationMap
+            = new HashMap<>();
+
+    /**
+     * List of signs connected to the group
+     */
+    private final List<AbstractGroupSign> signs = new ArrayList<>();
+
+    /**
+     * The UUID of the group
+     */
     private final UUID groupId;
-    private static final clsConfiguration GROUP_CONFIG = new clsConfiguration(XPStorage.getPluginUtil().getPlugin(), "groups.yml");
+
+    /*------------------------Object-variables--------------------------------*/
+    /**
+     * The xp stored in the group
+     */
+    private int xpStored = 0;
+
+    /**
+     * The owner of the group
+     */
     private UUID owner;
+
+    /**
+     * Group name of the group
+     *
+     * This mainly for Ender group storage
+     */
     private String groupName = null;
+
+    /**
+     * Group icon of the group
+     *
+     * This mainly for Ender group storage
+     */
     private Material groupIcon;
 
-    public Group(UUID player) {
+    /*------------------------Object-constructors-----------------------------*/
+    /**
+     * Constructs a group without a group name
+     *
+     * @param owner The owner of the group
+     */
+    @SuppressWarnings("LeakingThisInConstructor")
+    public Group(UUID owner) {
         groupId = UUID.randomUUID();
         GROUPS.put(groupId.toString(), this);
-        addPlayerToGroup(player);
-        this.owner = player;
-
+        addPlayerToGroup(owner);
+        this.owner = owner;
     }
 
-    public Group(UUID player, String groupName) {
+    /**
+     * Constructs a group with a group name
+     *
+     * @param owner The owner of the group
+     * @param groupName The group name for the group
+     */
+    @SuppressWarnings("LeakingThisInConstructor")
+    public Group(UUID owner, String groupName) {
         groupId = UUID.randomUUID();
         GROUPS.put(groupId.toString(), this);
-        addPlayerToGroup(player);
-        this.owner = player;
+        addPlayerToGroup(owner);
+        this.owner = owner;
         this.groupName = groupName;
-        PlayerInformation.getPlayerInformation(player).getGroupRights(groupId).addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
+        PlayerInformation.getPlayerInformation(owner)
+                .getGroupRights(groupId)
+                .addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
     }
 
+    /**
+     * Constructs a group from a map.
+     *
+     * This constructor should only be used when initialing the groups from
+     * file. It should not be used for creating groups from code.
+     *
+     * @param group Group map with all the data for th group
+     */
+    @SuppressWarnings("LeakingThisInConstructor")
     public Group(Map<String, Object> group) {
         groupId = UUID.fromString((String) group.get("uuidGroup"));
         if (group.containsKey("amount")) {
@@ -86,71 +207,25 @@ public class Group implements ConfigurationSerializable {
             this.groupName = (String) group.get("groupName");
         }
         if (group.containsKey("groupIcon")) {
-            this.groupIcon = Material.getMaterial((String) group.get("groupIcon"));
+            this.groupIcon
+                    = Material.getMaterial((String) group.get("groupIcon"));
         }
         this.owner = UUID.fromString((String) group.get("ownerUuid"));
         GROUPS.put(groupId.toString(), this);
     }
 
-    public static void saveGroups() {
-        GROUP_CONFIG.GetConfig().set("groups", new ArrayList<>(GROUPS.values()));
-        GROUP_CONFIG.SaveConfig();
-    }
-
-    public static void loadGroups() {
-        List<Group> groupList = (List<Group>) GROUP_CONFIG.GetConfig().getList("groups");
-        if (groupList == null) {
-            return;
-        }
-    }
-
-    public static Group getGroupFromUUID(UUID groupUUID) {
-        if (!GROUPS.containsKey(groupUUID.toString())) {
-            return null;
-        }
-        return GROUPS.get(groupUUID.toString());
-    }
-
-    public void addPlayerToGroup(UUID player) {
-        PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(player);
-        playerInformationMap.put(player.toString(), playerInformation);
-        playerInformation.addGroup(this);
-    }
-
-    public void removePlayerFromGroup(UUID player) {
-        if (!playerInformationMap.containsKey(player.toString())) {
-            return;
-        }
-        playerInformationMap.remove(player.toString());
-    }
-
-    public void addSignToGroup(AbstractGroupSign sign) {
-        signs.add(sign);
-    }
-
-    public void removeSignFromGroup(AbstractGroupSign sign) {
-        if (!signs.contains(sign)) {
-            return;
-        }
-        signs.remove(sign);
-    }
-
-    public boolean hasPlayer(UUID player) {
-        return playerInformationMap.containsKey(player.toString());
-
-    }
-
-    public Collection<PlayerInformation> getPlayers() {
-        return playerInformationMap.values();
-    }
-
+    /*------------------------Implemented-methodes----------------------------*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Object> serialize() {
         HashMap<String, Object> returnMap = new HashMap<>();
         returnMap.put("uuidGroup", groupId.toString());
         returnMap.put("ownerUuid", owner.toString());
         returnMap.put("amount", xpStored);
-        returnMap.put("players", new ArrayList<>(playerInformationMap.keySet()));
+        returnMap.put("players",
+                new ArrayList<>(playerInformationMap.keySet()));
         if (this.groupName != null) {
             returnMap.put("groupName", this.groupName);
         }
@@ -160,10 +235,96 @@ public class Group implements ConfigurationSerializable {
         return returnMap;
     }
 
+    /*------------------------private-methodes--------------------------------*/
+    /**
+     * Adds a player to the group
+     *
+     * @param player The player to add
+     */
+    private void addPlayerToGroup(UUID player) {
+        PlayerInformation playerInformation
+                = PlayerInformation.getPlayerInformation(player);
+
+        playerInformationMap.put(player.toString(), playerInformation);
+        playerInformation.addGroup(this);
+    }
+
+    /*------------------------private-methodes--------------------------------*/
+    /**
+     * Adds a player to the group
+     *
+     * @param player The player to add
+     */
+    public void addPlayerToGroup(OfflinePlayer player) {
+        this.addPlayerToGroup(player.getUniqueId());
+    }
+
+    /**
+     * Removes a player from the group
+     *
+     * @param player The player to remove
+     */
+    public void removePlayerFromGroup(UUID player) {
+        if (!playerInformationMap.containsKey(player.toString())) {
+            return;
+        }
+        playerInformationMap.remove(player.toString());
+    }
+
+    /**
+     * Adds a sign to the group
+     *
+     * @param sign The sign to add to the group
+     */
+    public void addSignToGroup(AbstractGroupSign sign) {
+        signs.add(sign);
+    }
+
+    /**
+     * Removes a sign from the group
+     *
+     * @param sign The sign to remove from the group
+     */
+    public void removeSignFromGroup(AbstractGroupSign sign) {
+        if (!signs.contains(sign)) {
+            return;
+        }
+        signs.remove(sign);
+    }
+
+    /**
+     * Returns if this group contains the player
+     *
+     * @param player The player you want to check
+     * @return True if this group contains the player, false otherwise.
+     */
+    public boolean hasPlayer(UUID player) {
+        return playerInformationMap.containsKey(player.toString());
+    }
+
+    /**
+     * Gets the players in this group
+     *
+     * @return The player in this group as PlayerInformation
+     */
+    public Collection<PlayerInformation> getPlayers() {
+        return playerInformationMap.values();
+    }
+
+    /**
+     * Gets the UUID for the group
+     *
+     * @return The UUID
+     */
     public UUID getGroupUuid() {
         return groupId;
     }
 
+    /**
+     * Sets the amount of xp in this group
+     *
+     * @param xpAmount The xp this group should have
+     */
     public void setXp(int xpAmount) {
         xpStored = xpAmount;
 
@@ -172,10 +333,22 @@ public class Group implements ConfigurationSerializable {
         }
     }
 
+    /**
+     * Gets the xp stored in this group
+     *
+     * @return The amount of xp
+     */
     public int getXp() {
         return xpStored;
     }
 
+    /**
+     * Tries to destroy this group.
+     *
+     * If it fails it will not notify you
+     *
+     * @param playerWhoDestroys The player destroying the group
+     */
     public void destoryGroup(Player playerWhoDestroys) {
 
         for (AbstractGroupSign sign : signs) {
@@ -187,7 +360,8 @@ public class Group implements ConfigurationSerializable {
             player.removeGroupRights(groupId);
         }
 
-        ExperienceManager experienceManager = new ExperienceManager(playerWhoDestroys);
+        ExperienceManager experienceManager
+                = new ExperienceManager(playerWhoDestroys);
         experienceManager.changeExp(getXp());
         setXp(0);
 
@@ -196,9 +370,15 @@ public class Group implements ConfigurationSerializable {
         for (AbstractGroupSign xpSign : signs) {
             AbstractXpSign.removeSign(xpSign);
             Sign sign = xpSign.getSign();
+            
             if (xpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-                xpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
+                xpSign.getSign().getBlock()
+                        .removeMetadata(
+                                "XP_STORAGE_XPSIGN",
+                                XPStorage.getPlugin()
+                        );
             }
+            
             XpSignFacingBlock.removeFacingBlock(xpSign.getSignFacingBlock());
             sign.setLine(0, "");
             sign.setLine(1, "");
@@ -210,32 +390,67 @@ public class Group implements ConfigurationSerializable {
         GROUPS.remove(groupId.toString());
     }
 
+    /**
+     * Sets a new owner for the group
+     *
+     * @param newOwner The new owner for the group
+     */
     public void setOwner(UUID newOwner) {
         this.owner = newOwner;
     }
 
+    /**
+     * Gets the owner for the group
+     *
+     * @return The owner for the group
+     */
     public UUID getOwner() {
         return this.owner;
     }
 
+    /**
+     * Gets the group name of the group
+     *
+     * @return The group name for the group
+     */
     public String getGroupName() {
-        return groupName == null ? "{ERROR: Unable to load group name}" : groupName;
+        return groupName == null
+                ? "{ERROR: Unable to load group name}"
+                : groupName;
     }
 
+    /**
+     * Sets the group name for the group
+     *
+     * @param groupName The group name for the group
+     */
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
+    /**
+     * Gets the group icon for the group
+     *
+     * @return The group icon for the group
+     */
     public ItemStack getGroupIcon() {
         Map<String, String> replaceMap = new HashMap<>();
         replaceMap.put("GROUP_NAME", getGroupName());
-        ItemStack parsedIcon = XPStorage.getGuiSettings().getItemStack("groupDefault", replaceMap);
+        
+        ItemStack parsedIcon = XPStorage.getGuiSettings()
+                .getItemStack("groupDefault", replaceMap);
+        
         if (groupIcon != null) {
             parsedIcon.setType(groupIcon);
         }
         return parsedIcon;
     }
 
+    /**
+     * Sets the group icon for the group
+     *
+     * @param groupIcon The group icon for the group
+     */
     public void setGroupIcon(Material groupIcon) {
         this.groupIcon = groupIcon;
     }

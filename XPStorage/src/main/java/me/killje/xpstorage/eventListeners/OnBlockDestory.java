@@ -9,14 +9,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 /**
+ * Abstract class for listeners that deal with blocks that are destroyed in the
+ * game
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public abstract class OnBlockDestory implements Listener {
 
-    protected boolean isDestroyable(List<Block> blockBeingDestroyed, Player playerDestroying) {
+    /**
+     * Checks if there is a block in the list that is protected
+     *
+     * @param blocksBeingDestroyed The list of blocks that are destroyed
+     * @param playerDestroying The player destroying the block if present
+     * @return False if a block is protected by this plugin
+     */
+    protected boolean isDestroyable(List<Block> blocksBeingDestroyed, Player playerDestroying) {
 
-        for (Block block : blockBeingDestroyed) {
+        for (Block block : blocksBeingDestroyed) {
             if (!isDestroyable(block, playerDestroying)) {
                 return false;
             }
@@ -25,6 +34,14 @@ public abstract class OnBlockDestory implements Listener {
         return true;
     }
 
+    /**
+     * Checks if the block can just be destroyed without a problem
+     *
+     * @param blockBeingDestroyed The block we want to check if it gives a
+     * problem or not
+     * @param playerDestroying The player destroying the block, if present
+     * @return False if the block is protected by this plugin, true otherwise
+     */
     protected boolean isDestroyable(Block blockBeingDestroyed, Player playerDestroying) {
         if (!blockBeingDestroyed.hasMetadata("XP_STORAGE_XPSIGN")) {
 

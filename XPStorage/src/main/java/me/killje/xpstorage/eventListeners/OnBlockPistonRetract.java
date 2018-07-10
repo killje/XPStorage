@@ -4,11 +4,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
 /**
+ * Listener for pistons retracting events
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class OnBlockPistonRetract extends OnBlockDestory {
 
+    /**
+     * This is called when a piston retracts in the game
+     *
+     * This cancels the event if a block is protected by this plugin
+     *
+     * @param event The event that belongs to the piston retracts
+     */
     @EventHandler
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (!isDestroyable(event.getBlock(), null)) {

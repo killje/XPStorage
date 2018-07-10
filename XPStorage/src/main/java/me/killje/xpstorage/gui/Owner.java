@@ -11,6 +11,7 @@ import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.permission.Permission;
 import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
+import me.killje.xpstorage.xpsign.EnderGroupSign;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
@@ -42,7 +43,7 @@ public class Owner implements GuiElement {
         replacement.put("SIGN_TYPE", xpSign.signType());
         replacement.put("OWNER_UUID", xpSign.getOwner().toString());
 
-        ItemStack itemStack = HeadUtil.getPlayerHead(player, guiSettings.getPluginUtil().getPlugin());
+        ItemStack itemStack = HeadUtil.getPlayerHead(player);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(guiSettings.getText("information"));
         List<String> lore = new ArrayList<>();
@@ -54,12 +55,21 @@ public class Owner implements GuiElement {
             lore.add(guiSettings.getText("ownerUUID", replacement));
 
         }
-
+        if (xpSign instanceof EnderGroupSign) {
+            EnderGroupSign sign = (EnderGroupSign) xpSign;
+            
+        }
         if (xpSign instanceof AbstractGroupSign) {
 
             AbstractGroupSign sign = (AbstractGroupSign) xpSign;
-
-            replacement.put("GROUP_NAME", sign.getGroup().getGroupName());
+            
+            String groupName;
+            if (xpSign instanceof EnderGroupSign) {
+                groupName = sign.getGroup().getGroupName();
+            } else {
+                groupName = sign.signType();
+            }
+            replacement.put("GROUP_NAME", groupName);
             replacement.put("GROUP_UUID", sign.getGroup().getGroupUuid().toString());
 
             lore.add(guiSettings.getText("groupNameOwner", replacement));

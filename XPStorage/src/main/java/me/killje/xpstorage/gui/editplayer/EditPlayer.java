@@ -31,7 +31,7 @@ public class EditPlayer implements GuiElement {
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
-        ItemStack itemStack = HeadUtil.getPlayerHead(offlinePlayer, guiSettings.getPluginUtil().getPlugin());
+        ItemStack itemStack = HeadUtil.getPlayerHead(offlinePlayer);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.WHITE + offlinePlayer.getName());

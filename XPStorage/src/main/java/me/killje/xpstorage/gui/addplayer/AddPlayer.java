@@ -34,8 +34,8 @@ public class AddPlayer implements GuiElement {
 
     @Override
     public ItemStack getItemStack(GuiSetting guiSettings) {
-        ItemStack itemStack = HeadUtil.getPlayerHead(player, guiSettings.getPluginUtil().getPlugin());
-
+        ItemStack itemStack = HeadUtil.getPlayerHead(player);
+        
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         String headName;
@@ -54,7 +54,7 @@ public class AddPlayer implements GuiElement {
     @Override
     public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
 
-        sign.getGroup().addPlayerToGroup(player.getUniqueId());
+        sign.getGroup().addPlayerToGroup(player);
         currentInventoryBase.closeInventory(event.getWhoClicked());
     }
 

@@ -74,7 +74,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     private static class XpSignPeriodSaver {
 
         public XpSignPeriodSaver() {
-            XPStorage.getPluginUtil().runTaskTimerAsynchronously(new AbstractXpSignSaver(), XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveInterfallMinutes") * 1200);
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(new AbstractXpSignSaver(), XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200);
         }
 
     }

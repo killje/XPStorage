@@ -18,11 +18,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Listener for players interacting events
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class OnPlayerInteract implements Listener {
 
+    /**
+     * This is called when a player interacts in the game 
+     * 
+     * @param event The event that belongs to the player interacting
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
 
