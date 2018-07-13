@@ -95,10 +95,10 @@ public class GroupRights implements ConfigurationSerializable {
         this.groupId = groupId;
     }
 
+    @Override
     /**
      * {@inheritDoc}
      */
-    @Override
     public Map<String, Object> serialize() {
         HashMap<String, Object> returnMap = new HashMap<>();
         returnMap.put("uuidGroup", groupId.toString());
@@ -112,16 +112,17 @@ public class GroupRights implements ConfigurationSerializable {
 
     /**
      * Deserialize's the given map
-     * 
+     *
      * This is only used for loading from a config file
-     * 
+     *
      * @param groupRightsMap The group right information
-     * 
+     *
      * @return The constructed group right
      */
     public static GroupRights deserialize(Map<String, Object> groupRightsMap) {
 
-        UUID groupId = UUID.fromString((String) groupRightsMap.get("uuidGroup"));
+        UUID groupId
+                = UUID.fromString((String) groupRightsMap.get("uuidGroup"));
 
         GroupRights groupRights = new GroupRights(groupId);
 
@@ -141,7 +142,7 @@ public class GroupRights implements ConfigurationSerializable {
 
     /**
      * Add a rigth to the group right
-     * 
+     *
      * @param right The right to add
      */
     public void addRight(Right right) {
@@ -153,7 +154,7 @@ public class GroupRights implements ConfigurationSerializable {
 
     /**
      * Removes a group right to the rights
-     * 
+     *
      * @param right The right to remove
      */
     public void removeRight(Right right) {
@@ -165,7 +166,7 @@ public class GroupRights implements ConfigurationSerializable {
 
     /**
      * Checks if this right is present
-     * 
+     *
      * @param right The right to check for
      * @return True if this contains the right, false otherwise
      */
@@ -175,7 +176,7 @@ public class GroupRights implements ConfigurationSerializable {
 
     /**
      * Gets the group UUID that these rights belong to
-     * 
+     *
      * @return The UUID
      */
     public UUID getGroupId() {

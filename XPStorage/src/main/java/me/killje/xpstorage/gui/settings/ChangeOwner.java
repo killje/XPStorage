@@ -16,20 +16,36 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
+ * Icon for changing the owner of the sign
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class ChangeOwner implements GuiElement {
 
+    /**
+     * The player editing the sign
+     */
     private final OfflinePlayer player;
+    /**
+     * The sign being edited
+     */
     private final AbstractXpSign sign;
 
+    /**
+     * Icon for selecting a new owner
+     *
+     * @param player The player editing the sign
+     * @param sign The sign being edited
+     */
     public ChangeOwner(OfflinePlayer player, AbstractXpSign sign) {
         this.player = player;
         this.sign = sign;
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         ItemStack itemStack = HeadUtil.getPlayerHead(player);
 
@@ -41,13 +57,31 @@ public class ChangeOwner implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
         if (sign instanceof AbstractGroupSign) {
+
             AbstractGroupSign abstractGroupSign = (AbstractGroupSign) sign;
-            PlayerInformation.getPlayerInformation(sign.getOwner()).getGroupRights(abstractGroupSign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_EDIT_PLAYERS);
-            PlayerInformation.getPlayerInformation(player.getUniqueId()).getGroupRights(abstractGroupSign.getGroup().getGroupUuid()).removeRight(GroupRights.Right.CAN_EDIT_PLAYERS);
+
+            PlayerInformation.getPlayerInformation(sign.getOwner())
+                    .getGroupRights(abstractGroupSign.getGroup().getGroupUuid())
+                    .addRight(GroupRights.Right.CAN_EDIT_PLAYERS);
+
+            PlayerInformation.getPlayerInformation(player.getUniqueId())
+                    .getGroupRights(abstractGroupSign.getGroup().getGroupUuid())
+                    .removeRight(GroupRights.Right.CAN_EDIT_PLAYERS);
+
             if (sign instanceof EnderGroupSign) {
-                PlayerInformation.getPlayerInformation(player.getUniqueId()).getGroupRights(abstractGroupSign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
+
+                PlayerInformation.getPlayerInformation(player.getUniqueId())
+                        .getGroupRights(
+                                abstractGroupSign.getGroup().getGroupUuid()
+                        ).addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
+
             }
         }
         sign.setOwner(player.getUniqueId());

@@ -10,30 +10,49 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon for removing all xp out of the current player
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class GetAllXp implements GuiElement {
 
+    /**
+     * The sign being edited
+     */
     private final AbstractXpSign xpSign;
 
+    /**
+     * Icon for removing all xp from the editing player and storing them in the
+     * sign
+     *
+     * @param xpSign The current sign being edited
+     */
     public GetAllXp(AbstractXpSign xpSign) {
         this.xpSign = xpSign;
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("getAllXP");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)) {
             return;
         }
+
         xpSign.allXpOut((Player) entity);
-        currentinventoryBase.closeInventory(entity);
+        currentInventoryBase.closeInventory(entity);
     }
 
 }

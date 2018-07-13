@@ -13,14 +13,27 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon and inventory for settings for XPStorage
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class Settings extends InventoryBase implements GuiElement {
 
+    /**
+     * The player to set the settings for
+     */
     private final Player player;
+    /**
+     * The sign being edited
+     */
     private final AbstractXpSign xpSign;
 
+    /**
+     * Icon and inventory for setting settings for the player
+     *
+     * @param xpSign The sign being edited
+     * @param player The player to set the settings for
+     */
     public Settings(AbstractXpSign xpSign, Player player) {
         super(XPStorage.getGuiSettings());
         this.player = player;
@@ -28,6 +41,9 @@ public class Settings extends InventoryBase implements GuiElement {
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     protected void initInventory() {
         this
                 .setInventoryName(getGuiSettings().getText("settings"))
@@ -42,13 +58,19 @@ public class Settings extends InventoryBase implements GuiElement {
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("settings");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
-        currentinventoryBase.openNewInventory(event.getWhoClicked(), this);
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
+        currentInventoryBase.openNewInventory(event.getWhoClicked(), this);
     }
 
 }

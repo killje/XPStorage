@@ -26,15 +26,15 @@ public enum Permission {
     public org.bukkit.permissions.Permission getPermission() {
         return permission;
     }
-    
+
     public boolean hasPermission(Permissible permissible) {
         if (permissible == null) {
             return false;
         }
         return permissible.hasPermission(permission);
     }
-    
-    public static boolean hasAnyPermission(Permissible permissible, Permission ... permissions) {
+
+    public static boolean hasAnyPermission(Permissible permissible, Permission... permissions) {
         for (Permission permission : permissions) {
             if (permissible.hasPermission(permission.getPermission())) {
                 return true;
@@ -42,7 +42,8 @@ public enum Permission {
         }
         return false;
     }
-    public static boolean hasAllPermissions(Permissible permissible, Permission ... permissions) {
+
+    public static boolean hasAllPermissions(Permissible permissible, Permission... permissions) {
         for (Permission permission : permissions) {
             if (!permissible.hasPermission(permission.getPermission())) {
                 return false;

@@ -10,30 +10,48 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon to open a list of players in the current group
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class EditList implements GuiElement {
 
+    /**
+     * The current sign being edited
+     */
     private final AbstractGroupSign sign;
 
+    /**
+     * Icon for editing the current players in the group
+     *
+     * @param sign The sign being edited
+     */
     public EditList(AbstractGroupSign sign) {
         this.sign = sign;
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("editList");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
         Player player = (Player) event.getWhoClicked();
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
+
         CurrentList currentList = new CurrentList(player, sign);
-        currentinventoryBase.openNewInventory(player, currentList);
+        currentInventoryBase.openNewInventory(player, currentList);
 
     }
 }

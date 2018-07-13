@@ -81,7 +81,7 @@ public abstract class AbstractGroupSign extends AbstractXpSign {
         if (!super.destroySign(playerWhoDestroys)) {
             return false;
         }
-        
+
         group.removeSignFromGroup(this);
         return true;
     }

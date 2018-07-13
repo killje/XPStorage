@@ -75,6 +75,5 @@ public class EnderGroupSign extends AbstractGroupSign {
     public EditPlayerOptions getEditList(UUID playerToEdit, UUID playerEditing) {
         return new EditPlayerOptionsGroup(this, playerToEdit, playerEditing);
     }
-    
-    
+
 }

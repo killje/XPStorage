@@ -10,26 +10,46 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon for deleting the Ender group
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class DeleteGroup implements GuiElement {
 
+    /**
+     * The sign currently being edited
+     */
     private final EnderGroupSign enderGroupSign;
+    /**
+     * The player editing the sign
+     */
     private final Player player;
 
+    /**
+     * Icon for deleting the entire group
+     *
+     * @param enderGroupSign The sign being edited
+     * @param player The player editing the sign
+     */
     public DeleteGroup(EnderGroupSign enderGroupSign, Player player) {
         this.enderGroupSign = enderGroupSign;
         this.player = player;
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("deleteGroup");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
 
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)) {
@@ -39,7 +59,7 @@ public class DeleteGroup implements GuiElement {
             return;
         }
 
-        currentinventoryBase.closeInventory(entity);
+        currentInventoryBase.closeInventory(entity);
 
         enderGroupSign.getGroup().destoryGroup(player);
 

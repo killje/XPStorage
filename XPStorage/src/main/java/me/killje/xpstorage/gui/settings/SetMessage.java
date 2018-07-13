@@ -9,20 +9,37 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon for (un)setting to receive messages from XPStorage
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class SetMessage implements GuiElement {
 
+    /**
+     * The player being edited
+     */
     private final Player player;
+    /**
+     * Player information of the player to set the message variable to
+     */
     private final PlayerInformation playerInformation;
 
+    /**
+     * Icon for setting to receive messages from XPStorage about interaction
+     * material and no xp left
+     *
+     * @param player The player being edited
+     */
     public SetMessage(Player player) {
         this.player = player;
-        playerInformation = PlayerInformation.getPlayerInformation(player.getUniqueId());
+        playerInformation
+                = PlayerInformation.getPlayerInformation(player.getUniqueId());
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         if (playerInformation.isMessage()) {
             return guiSettings.getItemStack("message.remove");
@@ -32,17 +49,26 @@ public class SetMessage implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
         boolean currentGetMessage = playerInformation.isMessage();
         playerInformation.isMessage(!currentGetMessage);
 
         if (currentGetMessage) {
-            player.sendMessage(currentinventoryBase.getGuiSettings().getText("message.remove"));
+            player.sendMessage(currentInventoryBase.getGuiSettings()
+                    .getText("message.remove"));
+
         } else {
-            player.sendMessage(currentinventoryBase.getGuiSettings().getText("message.add"));
+            player.sendMessage(currentInventoryBase.getGuiSettings()
+                    .getText("message.add"));
+
         }
 
-        currentinventoryBase.closeInventory(player);
+        currentInventoryBase.closeInventory(player);
     }
 
 }

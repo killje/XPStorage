@@ -23,7 +23,8 @@ public abstract class OnBlockDestory implements Listener {
      * @param playerDestroying The player destroying the block if present
      * @return False if a block is protected by this plugin
      */
-    protected boolean isDestroyable(List<Block> blocksBeingDestroyed, Player playerDestroying) {
+    protected boolean isDestroyable(
+            List<Block> blocksBeingDestroyed, Player playerDestroying) {
 
         for (Block block : blocksBeingDestroyed) {
             if (!isDestroyable(block, playerDestroying)) {
@@ -42,20 +43,28 @@ public abstract class OnBlockDestory implements Listener {
      * @param playerDestroying The player destroying the block, if present
      * @return False if the block is protected by this plugin, true otherwise
      */
-    protected boolean isDestroyable(Block blockBeingDestroyed, Player playerDestroying) {
+    protected boolean isDestroyable(
+            Block blockBeingDestroyed, Player playerDestroying) {
+
         if (!blockBeingDestroyed.hasMetadata("XP_STORAGE_XPSIGN")) {
 
-            if (!blockBeingDestroyed.hasMetadata("XP_STORAGE_XPSIGNFACEBLOCK")) {
+            if (!blockBeingDestroyed
+                    .hasMetadata("XP_STORAGE_XPSIGNFACEBLOCK")) {
                 return true;
             }
             if (playerDestroying == null) {
                 return false;
             }
 
-            ArrayList<XpSignFacingBlock> xpSign = (ArrayList<XpSignFacingBlock>) blockBeingDestroyed.getMetadata("XP_STORAGE_XPSIGNFACEBLOCK").get(0).value();
+            ArrayList<XpSignFacingBlock> xpSign
+                    = (ArrayList<XpSignFacingBlock>) blockBeingDestroyed
+                            .getMetadata("XP_STORAGE_XPSIGNFACEBLOCK")
+                            .get(0).value();
 
             for (XpSignFacingBlock xpSignFacingBlock : xpSign) {
-                if (!xpSignFacingBlock.getSign().canDestroySign(playerDestroying)) {
+                if (!xpSignFacingBlock.getSign()
+                        .canDestroySign(playerDestroying)) {
+
                     return false;
                 }
             }
@@ -76,7 +85,9 @@ public abstract class OnBlockDestory implements Listener {
             return false;
         }
 
-        AbstractXpSign xpSign = (AbstractXpSign) blockBeingDestroyed.getMetadata("XP_STORAGE_XPSIGN").get(0).value();
+        AbstractXpSign xpSign = (AbstractXpSign) blockBeingDestroyed
+                .getMetadata("XP_STORAGE_XPSIGN").get(0).value();
+
         return xpSign.destroySign(playerDestroying);
     }
 }

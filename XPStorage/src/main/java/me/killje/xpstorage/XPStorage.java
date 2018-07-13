@@ -51,7 +51,7 @@ public class XPStorage extends JavaPlugin {
     public static PluginUtil getPluginUtil() {
         return pluginUtil;
     }
-    
+
     public static Plugin getPlugin() {
         return plugin_;
     }

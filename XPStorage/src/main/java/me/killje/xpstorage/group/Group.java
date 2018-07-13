@@ -20,6 +20,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings("ResultOfObjectAllocationIgnored")
 /**
  * Serializable group object
  *
@@ -29,7 +30,6 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-@SuppressWarnings("ResultOfObjectAllocationIgnored")
 public class Group implements ConfigurationSerializable {
 
     /*------------------------Static-methodes---------------------------------*/
@@ -152,12 +152,12 @@ public class Group implements ConfigurationSerializable {
     private Material groupIcon;
 
     /*------------------------Object-constructors-----------------------------*/
+    @SuppressWarnings("LeakingThisInConstructor")
     /**
      * Constructs a group without a group name
      *
      * @param owner The owner of the group
      */
-    @SuppressWarnings("LeakingThisInConstructor")
     public Group(UUID owner) {
         groupId = UUID.randomUUID();
         GROUPS.put(groupId.toString(), this);
@@ -165,13 +165,13 @@ public class Group implements ConfigurationSerializable {
         this.owner = owner;
     }
 
+    @SuppressWarnings("LeakingThisInConstructor")
     /**
      * Constructs a group with a group name
      *
      * @param owner The owner of the group
      * @param groupName The group name for the group
      */
-    @SuppressWarnings("LeakingThisInConstructor")
     public Group(UUID owner, String groupName) {
         groupId = UUID.randomUUID();
         GROUPS.put(groupId.toString(), this);
@@ -183,6 +183,7 @@ public class Group implements ConfigurationSerializable {
                 .addRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
     }
 
+    @SuppressWarnings("LeakingThisInConstructor")
     /**
      * Constructs a group from a map.
      *
@@ -191,7 +192,6 @@ public class Group implements ConfigurationSerializable {
      *
      * @param group Group map with all the data for th group
      */
-    @SuppressWarnings("LeakingThisInConstructor")
     public Group(Map<String, Object> group) {
         groupId = UUID.fromString((String) group.get("uuidGroup"));
         if (group.containsKey("amount")) {
@@ -215,10 +215,10 @@ public class Group implements ConfigurationSerializable {
     }
 
     /*------------------------Implemented-methodes----------------------------*/
+    @Override
     /**
      * {@inheritDoc}
      */
-    @Override
     public Map<String, Object> serialize() {
         HashMap<String, Object> returnMap = new HashMap<>();
         returnMap.put("uuidGroup", groupId.toString());
@@ -370,7 +370,7 @@ public class Group implements ConfigurationSerializable {
         for (AbstractGroupSign xpSign : signs) {
             AbstractXpSign.removeSign(xpSign);
             Sign sign = xpSign.getSign();
-            
+
             if (xpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
                 xpSign.getSign().getBlock()
                         .removeMetadata(
@@ -378,7 +378,7 @@ public class Group implements ConfigurationSerializable {
                                 XPStorage.getPlugin()
                         );
             }
-            
+
             XpSignFacingBlock.removeFacingBlock(xpSign.getSignFacingBlock());
             sign.setLine(0, "");
             sign.setLine(1, "");
@@ -436,10 +436,10 @@ public class Group implements ConfigurationSerializable {
     public ItemStack getGroupIcon() {
         Map<String, String> replaceMap = new HashMap<>();
         replaceMap.put("GROUP_NAME", getGroupName());
-        
+
         ItemStack parsedIcon = XPStorage.getGuiSettings()
                 .getItemStack("groupDefault", replaceMap);
-        
+
         if (groupIcon != null) {
             parsedIcon.setType(groupIcon);
         }

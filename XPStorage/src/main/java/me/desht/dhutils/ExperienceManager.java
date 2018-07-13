@@ -31,7 +31,8 @@ public class ExperienceManager {
 
     static {
         // 25 is an arbitrary value for the initial table size - the actual
-        // value isn't critically important since the table is resized as needed.
+        // value isn't critically important since the table is resized as
+        // needed.
         initLookupTables(25);
     }
 
@@ -112,7 +113,8 @@ public class ExperienceManager {
     public Player getPlayer() {
         Player p = player.get();
         if (p == null) {
-            throw new IllegalStateException("Player " + playerName + " is not online");
+            throw new IllegalStateException("Player "
+                    + playerName + " is not online");
         }
         return p;
     }
@@ -168,14 +170,18 @@ public class ExperienceManager {
         if (curLvl != newLvl) {
             player.setLevel(newLvl);
         }
-        // Increment total experience - this should force the server to send an update packet
+        // Increment total experience - this should force the server to send an 
+        // update packet
         if (xp > base) {
-            player.setTotalExperience(player.getTotalExperience() + xp - (int) base);
+            player.setTotalExperience(
+                    player.getTotalExperience() + xp - (int) base);
         }
 
-        double pct = (base - getXpForLevel(newLvl) + amt) / (double) (getXpNeededToLevelUp(newLvl));
+        double pct = (base - getXpForLevel(newLvl) + amt)
+                / (double) (getXpNeededToLevelUp(newLvl));
+
         player.setExp((float) pct);
-        
+
     }
 
     /**
@@ -185,9 +191,10 @@ public class ExperienceManager {
      */
     public int getCurrentExp() {
         Player player = getPlayer();
-        
+
         int lvl = player.getLevel();
-        int cur = getXpForLevel(lvl) + (int) Math.floor(getXpNeededToLevelUp(lvl) * player.getExp());
+        int cur = getXpForLevel(lvl)
+                + (int) Math.floor(getXpNeededToLevelUp(lvl) * player.getExp());
         return cur;
     }
 
@@ -200,7 +207,8 @@ public class ExperienceManager {
         Player player = getPlayer();
 
         int lvl = player.getLevel();
-        double cur = getXpForLevel(lvl) + (double) (getXpNeededToLevelUp(lvl) * player.getExp());
+        double cur = getXpForLevel(lvl)
+                + (double) (getXpNeededToLevelUp(lvl) * player.getExp());
         return cur;
     }
 
@@ -238,7 +246,11 @@ public class ExperienceManager {
         if (exp > xpTotalToReachLevel[xpTotalToReachLevel.length - 1]) {
             // need to extend the lookup tables
             int newMax = calculateLevelForExp(exp) * 2;
-            Validate.isTrue(newMax <= hardMaxLevel, "Level for exp " + exp + " > hard max level " + hardMaxLevel);
+
+            Validate.isTrue(newMax <= hardMaxLevel,
+                    "Level for exp " + exp + " > hard max level "
+                    + hardMaxLevel);
+
             initLookupTables(newMax);
         }
         int pos = Arrays.binarySearch(xpTotalToReachLevel, exp);
@@ -255,7 +267,9 @@ public class ExperienceManager {
      */
     public int getXpNeededToLevelUp(int level) {
         Validate.isTrue(level >= 0, "Level may not be negative.");
-        return level >= 32 ? 9 * level - 158 : level >= 17 ? 5 * level - 38 : 2 * level + 7;
+        return level >= 32 ? 9 * level - 158
+                : level >= 17 ? 5 * level - 38
+                        : 2 * level + 7;
     }
 
     /**
@@ -267,7 +281,9 @@ public class ExperienceManager {
      * than the current hard maximum
      */
     public int getXpForLevel(int level) {
-        Validate.isTrue(level >= 0 && level <= hardMaxLevel, "Invalid level " + level + "(must be in range 0.." + hardMaxLevel + ")");
+        Validate.isTrue(level >= 0 && level <= hardMaxLevel,
+                "Invalid level " + level
+                + "(must be in range 0.." + hardMaxLevel + ")");
         if (level >= xpTotalToReachLevel.length) {
             initLookupTables(level * 2);
         }

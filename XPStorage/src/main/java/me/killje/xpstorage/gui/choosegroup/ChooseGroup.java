@@ -13,15 +13,35 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon for selecting a group from a list of groups
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class ChooseGroup implements GuiElement {
 
+    /**
+     * The group that will be selected when clicked on
+     */
     private final UUID groupId;
+
+    /**
+     * The sign that will become the new group sign when selected
+     */
     private AbstractXpSign xpSign;
+
+    /**
+     * The player selecting the group
+     */
     private final Player player;
 
+    /**
+     * Creates a icon for a group that when selected converts the sign into that
+     * group
+     *
+     * @param groupId The group id for witch to convert into
+     * @param xpSign The sign that will be converted
+     * @param player The player changing the group
+     */
     public ChooseGroup(UUID groupId, AbstractXpSign xpSign, Player player) {
         this.groupId = groupId;
         this.xpSign = xpSign;
@@ -29,13 +49,20 @@ public class ChooseGroup implements GuiElement {
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         Group group = Group.getGroupFromUUID(groupId);
         return group.getGroupIcon();
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
 
         HumanEntity entity = event.getWhoClicked();
         if (!(entity instanceof Player)) {
@@ -47,7 +74,7 @@ public class ChooseGroup implements GuiElement {
         xpSign = new EnderGroupSign(xpSign.getSign(), groupId);
         xpSign.changeSign();
 
-        currentinventoryBase.closeInventory(entity);
+        currentInventoryBase.closeInventory(entity);
     }
 
 }

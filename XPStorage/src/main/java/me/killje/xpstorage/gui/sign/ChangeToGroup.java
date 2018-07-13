@@ -14,20 +14,50 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Change the sign to a ender group sign
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class ChangeToGroup implements GuiElement, GroupListGuiElement {
 
+    /**
+     * The sign being changed
+     */
     private AbstractXpSign xpSign;
+    /**
+     * Check if this option is already selected
+     */
     private final boolean isSelected;
+    /**
+     * Check if this is changed from the group elements, not the default row of
+     * items
+     */
     private final boolean fromGroup;
+    /**
+     * The player editing the sign
+     */
     private final Player player;
 
+    /**
+     * Icon for changing the sign to a ender group sign This will assume it is
+     * not change form a group list and will not be selectable when the sign is
+     * already of this type
+     *
+     * @param player The player editing the sign
+     * @param xpSign The sign being edited
+     */
     public ChangeToGroup(Player player, AbstractXpSign xpSign) {
         this(player, xpSign, false);
     }
 
+    /**
+     * Icon for changing the sign to a different Ender group sign.
+     *
+     * @param player The player editing the sign
+     * @param xpSign The sign being edited
+     * @param fromGroup When true this can be selected even if the sign is
+     * already of a ender group type
+     */
     public ChangeToGroup(Player player, AbstractXpSign xpSign, boolean fromGroup) {
         this.xpSign = xpSign;
         this.isSelected = xpSign instanceof EnderGroupSign;
@@ -36,6 +66,9 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         if (fromGroup) {
             return guiSettings.getItemStack("diffrentGroup");
@@ -47,7 +80,12 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
         if (isSelected && !fromGroup) {
             return;
         }
@@ -58,10 +96,13 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
 
         InventoryBase groupList = new GroupList(player, this, xpSign);
 
-        currentinventoryBase.openNewInventory(player, groupList);
+        currentInventoryBase.openNewInventory(player, groupList);
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public GuiElement getGuiElement(UUID groupUUID, AbstractXpSign sign) {
         return new ChooseGroup(groupUUID, sign, player);
     }

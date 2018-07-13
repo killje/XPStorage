@@ -14,38 +14,62 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon and inventory for changing the owner of a sign
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
 
+    /**
+     * The player editing the sign
+     */
     private final Player player;
+    /**
+     * The sign being edited
+     */
     private final AbstractXpSign sign;
 
+    /**
+     * Icon and inventory for changing the owner of a sign
+     *
+     * @param player The player editing the sign
+     * @param sign The sign being edited
+     */
     public ChangeOwnerList(Player player, AbstractXpSign sign) {
         this.player = player;
         this.sign = sign;
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("changeOwner");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
 
         if (!Permission.CHANGE_OWNER.hasPermission(player)) {
             return;
         }
 
-        InventoryBase inventoryBase = new PlayerList(XPStorage.getGuiSettings(), player, this);
+        InventoryBase inventoryBase
+                = new PlayerList(XPStorage.getGuiSettings(), player, this);
 
         currentInventoryBase.openNewInventory(player, inventoryBase);
 
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
         return new ChangeOwner(offlinePlayer, sign);
     }

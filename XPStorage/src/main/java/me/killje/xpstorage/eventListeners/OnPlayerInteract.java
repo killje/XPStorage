@@ -25,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 public class OnPlayerInteract implements Listener {
 
     /**
-     * This is called when a player interacts in the game 
-     * 
+     * This is called when a player interacts in the game
+     *
      * @param event The event that belongs to the player interacting
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -36,7 +36,9 @@ public class OnPlayerInteract implements Listener {
             return;
         }
 
-        Object signObject = event.getClickedBlock().getMetadata("XP_STORAGE_XPSIGN").get(0).value();
+        Object signObject = event.getClickedBlock()
+                .getMetadata("XP_STORAGE_XPSIGN").get(0).value();
+
         AbstractXpSign xpSign = (AbstractXpSign) signObject;
 
         Sign sign = xpSign.getSign();
@@ -58,13 +60,17 @@ public class OnPlayerInteract implements Listener {
         boolean hasAccess = xpSign.hasAccess(player.getUniqueId());
 
         if (!hasAccess && !openGuiOther) {
-            event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("notAuthorized"));
+            event.getPlayer().sendMessage(XPStorage.getGuiSettings()
+                    .getText("notAuthorized"));
+
             return;
         }
 
         ItemStack interactItem = event.getItem();
 
-        if (interactItem != null && interactItem.getType().equals(SignInventory.INTERACT_MATERIAL)) {
+        if (interactItem != null && interactItem.getType()
+                .equals(SignInventory.INTERACT_MATERIAL)) {
+
             new SignInventory(player, xpSign).openInventory(player);
             event.setCancelled(true);
             player.updateInventory();
@@ -72,18 +78,30 @@ public class OnPlayerInteract implements Listener {
         }
 
         if (!hasAccess) {
-            event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("notAuthorized"));
+            event.getPlayer().sendMessage(XPStorage.getGuiSettings()
+                    .getText("notAuthorized"));
+
             return;
         }
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(player.getUniqueId());
+            PlayerInformation playerInformation
+                    = PlayerInformation.getPlayerInformation(
+                            player.getUniqueId()
+                    );
+
             if (playerInformation == null || playerInformation.isMessage()) {
                 ExperienceManager expMan = new ExperienceManager(player);
                 if (expMan.getCurrentExp() == 0) {
+
                     HashMap<String, String> replaceMap = new HashMap<>();
-                    replaceMap.put("SIGN_INTERACT_MATERIAL", SignInventory.INTERACT_MATERIAL.toString());
-                    String message = XPStorage.getGuiSettings().getText("noXPLeft", replaceMap);
+
+                    replaceMap.put("SIGN_INTERACT_MATERIAL",
+                            SignInventory.INTERACT_MATERIAL.toString());
+
+                    String message = XPStorage.getGuiSettings()
+                            .getText("noXPLeft", replaceMap);
+
                     player.sendMessage(message);
                 }
             }

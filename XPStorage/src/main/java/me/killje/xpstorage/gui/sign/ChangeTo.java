@@ -10,17 +10,41 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon for setting the sign to a new type by the type given
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class ChangeTo implements GuiElement {
 
+    /**
+     * The sign being edited
+     */
     private AbstractXpSign xpSign;
+    /**
+     * The setting name in the GUI.yml file for the text
+     */
     private final String guiSettingsName;
+    /**
+     * The type to set the sign to when clicked
+     */
     private final Class<? extends AbstractXpSign> signClass;
+    /**
+     * The player editing the sign
+     */
     private final Player player;
 
-    public ChangeTo(Player player, AbstractXpSign xpSign, Class<? extends AbstractXpSign> signClass, String guiSettingsName) {
+    /**
+     * Icon for changing the sign to a given type of sign
+     *
+     * @param player The player editing the sign
+     * @param xpSign The sign being edited
+     * @param signClass The type to set the sign to
+     * @param guiSettingsName The settings name in the GUI.yml for texts
+     */
+    public ChangeTo(Player player,
+            AbstractXpSign xpSign, Class<? extends AbstractXpSign> signClass,
+            String guiSettingsName) {
+
         this.xpSign = xpSign;
         this.guiSettingsName = guiSettingsName;
         this.signClass = signClass;
@@ -28,6 +52,9 @@ public class ChangeTo implements GuiElement {
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         if (xpSign.getClass().equals(signClass)) {
             return guiSettings.getItemStack("selected." + guiSettingsName);
@@ -36,7 +63,12 @@ public class ChangeTo implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
         if (xpSign.getClass().equals(signClass)) {
             return;
         }
@@ -51,7 +83,7 @@ public class ChangeTo implements GuiElement {
         xpSign = AbstractXpSign.createSign(signClass, xpSign.getSign(), entity);
         xpSign.changeSign();
 
-        currentinventoryBase.closeInventory(entity);
+        currentInventoryBase.closeInventory(entity);
     }
 
 }

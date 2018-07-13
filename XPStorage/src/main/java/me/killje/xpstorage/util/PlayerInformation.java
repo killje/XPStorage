@@ -16,11 +16,11 @@ import me.killje.xpstorage.xpsign.LocalPlayerSign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.HumanEntity;
 
+@SuppressWarnings("ResultOfObjectAllocationIgnored")
 /**
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
-@SuppressWarnings("ResultOfObjectAllocationIgnored")
 public class PlayerInformation implements ConfigurationSerializable {
 
     static {
@@ -30,7 +30,7 @@ public class PlayerInformation implements ConfigurationSerializable {
     private static class PlayerInformationPeriodSaver implements Runnable {
 
         public PlayerInformationPeriodSaver() {
-            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200);
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(this, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200);
         }
 
         @Override
@@ -148,7 +148,7 @@ public class PlayerInformation implements ConfigurationSerializable {
         playerInformation.put("defaultSign", defaultSign.getCanonicalName());
         return playerInformation;
     }
-    
+
     public static PlayerInformation getPlayerInformation(HumanEntity player) {
         return getPlayerInformation(player.getUniqueId());
     }

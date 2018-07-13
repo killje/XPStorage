@@ -36,7 +36,9 @@ public class OnBlockExplode extends OnBlockDestory {
     public void onEntityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
-            event.setCancelled(!isDestroyable(event.blockList(), (Player) event.getEntity()));
+            event.setCancelled(!isDestroyable(event.blockList(),
+                    (Player) event.getEntity()
+            ));
         } else {
             event.setCancelled(!isDestroyable(event.blockList(), null));
         }

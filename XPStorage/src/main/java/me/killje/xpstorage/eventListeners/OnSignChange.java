@@ -10,6 +10,7 @@ import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
@@ -22,7 +23,8 @@ import org.bukkit.event.block.SignChangeEvent;
  */
 public class OnSignChange implements Listener {
 
-    private final static FileConfiguration config = XPStorage.getPluginUtil().getConfig();
+    private final static FileConfiguration config
+            = XPStorage.getPluginUtil().getConfig();
 
     /**
      * This is called when a sign text changes
@@ -45,17 +47,31 @@ public class OnSignChange implements Listener {
         XPStorage.getPluginUtil().runTask(new Runnable() {
             @Override
             public void run() {
-                Map<String, String> interactMatiral = new HashMap<>();
-                interactMatiral.put("SIGN_INTERACT_MATERIAL", SignInventory.INTERACT_MATERIAL.toString());
-                PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(event.getPlayer().getUniqueId());
-                AbstractXpSign sign = AbstractXpSign.createSign((Sign) event.getBlock().getState(), event.getPlayer());
+                Player player = event.getPlayer();
+
+                AbstractXpSign sign = AbstractXpSign.createSign(
+                        (Sign) event.getBlock().getState(), player);
+
                 if (sign == null) {
-                    event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("noCreatePermmissions"));
+                    player.sendMessage(XPStorage.getGuiSettings()
+                            .getText("noCreatePermmissions"));
                     return;
                 }
+
                 sign.updateSign();
+
+                Map<String, String> interactMaterial = new HashMap<>();
+                interactMaterial.put("SIGN_INTERACT_MATERIAL",
+                        SignInventory.INTERACT_MATERIAL.toString());
+
+                PlayerInformation playerInformation
+                        = PlayerInformation.getPlayerInformation(
+                                player.getUniqueId()
+                        );
+
                 if (playerInformation.isMessage()) {
-                    event.getPlayer().sendMessage(XPStorage.getGuiSettings().getText("signCreated", interactMatiral));
+                    player.sendMessage(XPStorage.getGuiSettings()
+                            .getText("signCreated", interactMaterial));
                 }
 
             }

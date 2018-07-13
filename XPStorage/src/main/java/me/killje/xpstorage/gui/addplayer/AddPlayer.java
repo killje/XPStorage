@@ -13,38 +13,43 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
+ * Icon for selecting a player to be added to a group
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class AddPlayer implements GuiElement {
 
+    /**
+     * The player this icon represents
+     */
     private final OfflinePlayer player;
-    private final AbstractGroupSign sign;
-    private final String displayName;
 
-    public AddPlayer(OfflinePlayer player, AbstractXpSign sign, String displayName) {
+    /**
+     * The group sign that this player will be added to
+     */
+    private final AbstractGroupSign sign;
+
+    /**
+     * Create a new icon element for adding a player to a group
+     *
+     * @param player The player this icon represents
+     * @param sign The sign the player will be added to when clicked on
+     */
+    public AddPlayer(OfflinePlayer player, AbstractXpSign sign) {
         this.player = player;
         this.sign = (AbstractGroupSign) sign;
-        this.displayName = displayName;
-    }
-
-    public AddPlayer(OfflinePlayer player, AbstractXpSign sign) {
-        this(player, sign, null);
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         ItemStack itemStack = HeadUtil.getPlayerHead(player);
-        
+
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        String headName;
-        if (displayName == null) {
-            headName = player.getName();
-        } else {
-            headName = displayName;
-        }
-        itemMeta.setDisplayName(ChatColor.WHITE + headName);
+        itemMeta.setDisplayName(ChatColor.WHITE + player.getName());
 
         itemStack.setItemMeta(itemMeta);
 
@@ -52,8 +57,11 @@ public class AddPlayer implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
-
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
         sign.getGroup().addPlayerToGroup(player);
         currentInventoryBase.closeInventory(event.getWhoClicked());
     }

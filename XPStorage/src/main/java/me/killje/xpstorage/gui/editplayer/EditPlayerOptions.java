@@ -15,41 +15,93 @@ import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import org.bukkit.Bukkit;
 
 /**
+ * Inventory that shows options for editing a player
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class EditPlayerOptions extends InventoryBase {
 
+    /**
+     * The sign that this player is being edited from
+     */
     private final AbstractGroupSign sign;
+    /**
+     * The player to edit
+     */
     private final UUID playerToEdit;
+    /**
+     * The player editing
+     */
     private final UUID playerEditing;
 
-    public EditPlayerOptions(AbstractGroupSign sign, UUID playerToEdit, UUID playerEditing) {
+    /**
+     * Creates a inventory that shows a list of actions to take on the selected
+     * player
+     *
+     * @param sign The sign that the player is being edited from
+     * @param playerToEdit The player being edited
+     * @param playerEditing The player doing the editing
+     */
+    public EditPlayerOptions(
+            AbstractGroupSign sign, UUID playerToEdit, UUID playerEditing) {
+
         super(XPStorage.getGuiSettings());
         this.sign = sign;
         this.playerToEdit = playerToEdit;
         this.playerEditing = playerEditing;
+
     }
 
+    /**
+     * The options available to edit
+     *
+     * @return A list of icons that act as editable options
+     */
     protected ArrayList<GuiElement> getElements() {
         ArrayList<GuiElement> guiElements = new ArrayList<>();
 
         if (playerToEdit.equals(sign.getOwner())) {
-            this.addGuiElement(new SimpleGuiElement(getGuiSettings().getItemStack("selected.owner")));
+
+            this.addGuiElement(new SimpleGuiElement(
+                    getGuiSettings().getItemStack("selected.owner")
+            ));
+
         } else if (playerToEdit.equals(playerEditing)) {
-            this.addGuiElement(new SimpleGuiElement(getGuiSettings().getItemStack("selected.yourself")));
+
+            this.addGuiElement(new SimpleGuiElement(
+                    getGuiSettings().getItemStack("selected.yourself")
+            ));
+
         } else {
-            PlayerInformation playerInformationPlayerEditing = PlayerInformation.getPlayerInformation(playerEditing);
+
+            PlayerInformation playerInformationPlayerEditing
+                    = PlayerInformation.getPlayerInformation(playerEditing);
+
             if (playerEditing.equals(sign.getOwner())) {
                 this.addGuiElement(new SetNewOwner(playerToEdit, sign));
             }
+
             if (playerEditing.equals(sign.getOwner())
                     || (playerInformationPlayerEditing != null
-                    && playerInformationPlayerEditing.getGroupRights(sign.getGroup().getGroupUuid()).hasRight(GroupRights.Right.CAN_EDIT_PLAYERS))) {
-                if (PlayerInformation.getPlayerInformation(playerToEdit).getGroupRights(sign.getGroup().getGroupUuid()).hasRight(GroupRights.Right.CAN_EDIT_PLAYERS)) {
-                    this.addGuiElement(new RemovePlayerEditRights(playerToEdit, sign));
+                    && playerInformationPlayerEditing.getGroupRights(
+                            sign.getGroup().getGroupUuid()
+                    ).hasRight(GroupRights.Right.CAN_EDIT_PLAYERS))) {
+
+                if (PlayerInformation.getPlayerInformation(playerToEdit)
+                        .getGroupRights(
+                                sign.getGroup().getGroupUuid()
+                        ).hasRight(GroupRights.Right.CAN_EDIT_PLAYERS)) {
+
+                    this.addGuiElement(
+                            new RemovePlayerEditRights(playerToEdit, sign)
+                    );
+
                 } else {
-                    this.addGuiElement(new AddPlayerEditRights(playerToEdit, sign));
+
+                    this.addGuiElement(
+                            new AddPlayerEditRights(playerToEdit, sign)
+                    );
+
                 }
             }
 
@@ -59,6 +111,9 @@ public class EditPlayerOptions extends InventoryBase {
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     protected void initInventory() {
 
         ArrayList<GuiElement> guiElements = getElements();
@@ -69,7 +124,9 @@ public class EditPlayerOptions extends InventoryBase {
             }
         }
 
-        if (!playerToEdit.equals(sign.getOwner()) && !playerToEdit.equals(playerEditing)) {
+        if (!playerToEdit.equals(sign.getOwner())
+                && !playerToEdit.equals(playerEditing)) {
+
             this.addGuiElement(new RemovePlayer(playerToEdit, sign));
         }
 
@@ -77,9 +134,13 @@ public class EditPlayerOptions extends InventoryBase {
 
         Map<String, String> replaceList = new HashMap<>();
 
-        replaceList.put("PLAYER_NAME", Bukkit.getOfflinePlayer(playerToEdit).getName());
+        replaceList.put("PLAYER_NAME",
+                Bukkit.getOfflinePlayer(playerToEdit).getName()
+        );
 
-        this.setInventoryName(getGuiSettings().getText("editPlayer", replaceList));
+        this.setInventoryName(getGuiSettings()
+                .getText("editPlayer", replaceList)
+        );
 
     }
 

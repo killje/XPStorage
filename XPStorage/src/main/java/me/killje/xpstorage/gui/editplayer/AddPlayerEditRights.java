@@ -11,27 +11,54 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * Icon for setting the the rights to a player to add and remove players to a
+ * sign
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class AddPlayerEditRights implements GuiElement {
 
+    /**
+     * The player being edited
+     */
     private final UUID player;
+
+    /**
+     * The sign the player is being edited on
+     */
     private final AbstractGroupSign sign;
 
+    /**
+     * Creates a icon for adding the rights to a player for adding and removing
+     * players from the group
+     *
+     * @param player The player being edited
+     * @param sign The sign the player will be added to
+     */
     public AddPlayerEditRights(UUID player, AbstractGroupSign sign) {
         this.player = player;
         this.sign = sign;
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("addPlayerEditRights");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
-        PlayerInformation.getPlayerInformation(player).getGroupRights(sign.getGroup().getGroupUuid()).addRight(GroupRights.Right.CAN_EDIT_PLAYERS);
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
+        PlayerInformation.getPlayerInformation(player).getGroupRights(
+                sign.getGroup().getGroupUuid()
+        ).addRight(GroupRights.Right.CAN_EDIT_PLAYERS);
+
         currentInventoryBase.closeInventory(event.getWhoClicked());
     }
 

@@ -12,29 +12,51 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
+ * A icon and inventory for creating a new group
+ *
+ * Then clicked on will show a keyboard to enter a new for the new group.
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class CreateNewGroup extends KeyBoard implements GuiElement {
 
+    /**
+     * The player making a new group
+     */
     private final Player player;
 
+    /**
+     * Icon and inventory to create a new group
+     *
+     * @param player The player creating the new group
+     * @param xpSign The sign where the new group will be put on
+     */
     public CreateNewGroup(Player player, AbstractXpSign xpSign) {
-        super(XPStorage.getGuiSettings(), player, new SetNewGroupNameButton(player, xpSign));
+        super(XPStorage.getGuiSettings(), player,
+                new SetNewGroupNameButton(player, xpSign));
+
         this.player = player;
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("newGroup");
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
-        if(!Permission.CREATE_NEW_GROUP.hasPermission(event.getWhoClicked())) {
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
+        if (!Permission.CREATE_NEW_GROUP.hasPermission(event.getWhoClicked())) {
             return;
         }
-        currentinventoryBase.openNewInventory(player, this);
+        currentInventoryBase.openNewInventory(player, this);
 
     }
 

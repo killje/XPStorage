@@ -21,14 +21,30 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
+ * Icon for the owner of the sign.
+ *
+ * This will also show some information about the sign
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class Owner implements GuiElement {
 
+    /**
+     * The sign being edited
+     */
     private final AbstractXpSign xpSign;
+    /**
+     * The player editing the sign
+     */
     private final Player playerViewing;
 
+    /**
+     * Icon for the owner of the group. This will also show some information
+     * about the sign
+     *
+     * @param xpSign The sign being edited
+     * @param playerViewing The player editing the sign
+     */
     public Owner(AbstractXpSign xpSign, Player playerViewing) {
         this.xpSign = xpSign;
         this.playerViewing = playerViewing;
@@ -57,12 +73,12 @@ public class Owner implements GuiElement {
         }
         if (xpSign instanceof EnderGroupSign) {
             EnderGroupSign sign = (EnderGroupSign) xpSign;
-            
+
         }
         if (xpSign instanceof AbstractGroupSign) {
 
             AbstractGroupSign sign = (AbstractGroupSign) xpSign;
-            
+
             String groupName;
             if (xpSign instanceof EnderGroupSign) {
                 groupName = sign.getGroup().getGroupName();
@@ -70,7 +86,8 @@ public class Owner implements GuiElement {
                 groupName = sign.signType();
             }
             replacement.put("GROUP_NAME", groupName);
-            replacement.put("GROUP_UUID", sign.getGroup().getGroupUuid().toString());
+            replacement.put("GROUP_UUID",
+                    sign.getGroup().getGroupUuid().toString());
 
             lore.add(guiSettings.getText("groupNameOwner", replacement));
 
@@ -86,15 +103,22 @@ public class Owner implements GuiElement {
     }
 
     @Override
-    public void onInventoryClickEvent(InventoryBase currentinventoryBase, InventoryClickEvent event) {
+    public void onInventoryClickEvent(
+            InventoryBase currentInventoryBase, InventoryClickEvent event) {
+
         HumanEntity humanEntity = event.getWhoClicked();
         if (!Permission.SHOW_UUID.hasPermission(humanEntity)) {
             return;
         }
+
         humanEntity.sendMessage("Owner: " + xpSign.getOwner().toString());
         if (xpSign instanceof AbstractGroupSign) {
             AbstractGroupSign sign = (AbstractGroupSign) xpSign;
-            humanEntity.sendMessage("Group: " + sign.getGroup().getGroupUuid().toString());
+
+            humanEntity.sendMessage(
+                    "Group: " + sign.getGroup().getGroupUuid().toString()
+            );
+
         }
     }
 

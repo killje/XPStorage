@@ -65,8 +65,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         }
 
     }
-    
-    
+
     static {
         new XpSignPeriodSaver();
     }
@@ -74,7 +73,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     private static class XpSignPeriodSaver {
 
         public XpSignPeriodSaver() {
-            XPStorage.getPluginUtil().runTaskTimerAsynchronously(new AbstractXpSignSaver(), XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") *  1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200);
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(new AbstractXpSignSaver(), XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200);
         }
 
     }
@@ -121,7 +120,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         } else if (signClass == LocalGroupSign.class && !Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
             return null;
         }
-        
+
         try {
             Constructor<? extends AbstractXpSign> constructor = signClass.getConstructor(Sign.class, UUID.class);
             return constructor.newInstance(sign, player.getUniqueId());
@@ -292,13 +291,13 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         return location;
     }
 
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     /**
      * Save the signs, when initializing the signs will not be directly saved
      *
      * @param overrideInitCheck When initializing the signs are saved once, this
      * boolean allows that, should not be used in normal saving
      */
-    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public static void saveSigns(boolean overrideInitCheck) {
         if (!overrideInitCheck && XPStorage.getPluginUtil().getPlugin().isEnabled()) {
             return;
@@ -557,8 +556,8 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     public abstract void setOwner(UUID newOwner);
 
     /**
-     * Whether or not this is a group sign. This is so the AbstractGroupSign
-     * can add additional functions
+     * Whether or not this is a group sign. This is so the AbstractGroupSign can
+     * add additional functions
      *
      * @return
      */
