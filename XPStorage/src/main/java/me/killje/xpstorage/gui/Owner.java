@@ -30,19 +30,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Owner implements GuiElement {
 
     /**
-     * The sign being edited
-     */
-    private final AbstractXpSign xpSign;
-    /**
      * The player editing the sign
      */
     private final Player playerViewing;
+    /**
+     * The sign being edited
+     */
+    private final AbstractXpSign xpSign;
 
     /**
      * Icon for the owner of the group. This will also show some information
      * about the sign
      *
-     * @param xpSign The sign being edited
+     * @param xpSign        The sign being edited
      * @param playerViewing The player editing the sign
      */
     public Owner(AbstractXpSign xpSign, Player playerViewing) {

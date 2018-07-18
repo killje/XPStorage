@@ -15,7 +15,8 @@ public interface GroupListGuiElement {
      * The icon for the given group
      *
      * @param groupUUID The group provided
-     * @param sign The sign being edited
+     * @param sign      The sign being edited
+     *
      * @return The icon for the group specified
      */
     public GuiElement getGuiElement(UUID groupUUID, AbstractXpSign sign);

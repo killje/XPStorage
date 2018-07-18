@@ -25,22 +25,21 @@ public class ChooseGroup implements GuiElement {
     private final UUID groupId;
 
     /**
-     * The sign that will become the new group sign when selected
-     */
-    private AbstractXpSign xpSign;
-
-    /**
      * The player selecting the group
      */
     private final Player player;
+    /**
+     * The sign that will become the new group sign when selected
+     */
+    private AbstractXpSign xpSign;
 
     /**
      * Creates a icon for a group that when selected converts the sign into that
      * group
      *
      * @param groupId The group id for witch to convert into
-     * @param xpSign The sign that will be converted
-     * @param player The player changing the group
+     * @param xpSign  The sign that will be converted
+     * @param player  The player changing the group
      */
     public ChooseGroup(UUID groupId, AbstractXpSign xpSign, Player player) {
         this.groupId = groupId;

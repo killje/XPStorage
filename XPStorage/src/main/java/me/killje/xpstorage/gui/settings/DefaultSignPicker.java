@@ -21,13 +21,13 @@ public class DefaultSignPicker implements GuiElement {
      */
     private final Class<? extends AbstractXpSign> defaultSignPick;
     /**
-     * The player information for the current player to set the default sign for
-     */
-    private final PlayerInformation playerInformation;
-    /**
      * The player to set the default sign for
      */
     private final Player player;
+    /**
+     * The player information for the current player to set the default sign for
+     */
+    private final PlayerInformation playerInformation;
     /**
      * The GUI.yml name to use for the text
      */
@@ -36,9 +36,9 @@ public class DefaultSignPicker implements GuiElement {
     /**
      * Icon for setting the default sign of the player to the given type
      *
-     * @param player The player to set the default sign type for
+     * @param player          The player to set the default sign type for
      * @param defaultSignPick The sign type to set it to
-     * @param settingsName The GUI.yml name for text
+     * @param settingsName    The GUI.yml name for text
      */
     public DefaultSignPicker(Player player,
             Class<? extends AbstractXpSign> defaultSignPick,

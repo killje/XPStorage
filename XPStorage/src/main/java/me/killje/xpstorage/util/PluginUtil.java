@@ -41,6 +41,28 @@ public class PluginUtil {
     }
 
     /**
+     * @see Plugin#getConfig()
+     *
+     * Returns the config file of the plugin.
+     *
+     * @return The config of the plugin
+     */
+    public FileConfiguration getConfig() {
+        return getPlugin().getConfig();
+    }
+
+    /**
+     * Get the logger of the plugin
+     *
+     * @see Plugin#getLogger()
+     *
+     * @return The logger
+     */
+    public Logger getLogger() {
+        return getPlugin().getLogger();
+    }
+
+    /**
      * Returns the plugin instance itself
      *
      * @return
@@ -56,83 +78,6 @@ public class PluginUtil {
     }
 
     /**
-     * Get the logger of the plugin
-     *
-     * @see Plugin#getLogger()
-     *
-     * @return The logger
-     */
-    public Logger getLogger() {
-        return getPlugin().getLogger();
-    }
-
-    /**
-     * @see BukkitScheduler#runTask(Plugin, Runnable)
-     *
-     * @param runnable The runnable class to run
-     * @return The task created
-     */
-    public BukkitTask runTask(Runnable runnable) {
-        return Bukkit.getScheduler().runTask(getPlugin(), runnable);
-    }
-
-    /**
-     * @see BukkitScheduler#runTaskAsynchronously(Plugin, Runnable)
-     *
-     * @param runnable The runnable class to run asynchronous
-     * @return The task created
-     */
-    public BukkitTask runTaskAsynchronously(Runnable runnable) {
-        return Bukkit.getScheduler()
-                .runTaskAsynchronously(getPlugin(), runnable);
-    }
-
-    /**
-     * @see BukkitScheduler#runTaskLater(Plugin, Runnable, long)
-     *
-     * @param runnable The runnable class to run after a period
-     * @param delay The delay in server ticks. On normal tps a second is equal
-     * to 20 delay
-     * @return The task created
-     */
-    public BukkitTask runTaskLater(Runnable runnable, long delay) {
-        return Bukkit.getScheduler().runTaskLater(getPlugin(), runnable, delay);
-    }
-
-    /**
-     * @see BukkitScheduler#runTaskTimer(Plugin, Runnable, long, long)
-     *
-     * @param runnable The runnable class to run after a period periodically
-     * @param delay The delay in server ticks. On normal tps a second is equal
-     * to 20 delay
-     * @param period The period to wait before running again. On a normal tps a
-     * second is to to a period of 20
-     * @return The task created
-     */
-    public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {
-        return Bukkit.getScheduler()
-                .runTaskTimer(getPlugin(), runnable, delay, period);
-    }
-
-    /**
-     * @see BukkitScheduler#runTaskTimerAsynchronously(Plugin, Runnable, long,
-     * long)
-     *
-     * @param runnable The runnable class to run after a period periodically
-     * asynchronously
-     * @param delay The delay in server ticks. On normal tps a second is equal
-     * to 20 delay
-     * @param period The period to wait before running again. On a normal tps a
-     * second is to to a period of 20
-     * @return The task created
-     */
-    public BukkitTask runTaskTimerAsynchronously(Runnable runnable, long delay,
-            long period) {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(getPlugin(),
-                runnable, delay, period);
-    }
-
-    /**
      * @see PluginManager#registerEvents(Listener, Plugin)
      *
      * Register the events in a class to the bukkit plugin manager
@@ -145,20 +90,81 @@ public class PluginUtil {
     }
 
     /**
-     * @see Plugin#getConfig()
+     * @see BukkitScheduler#runTask(Plugin, Runnable)
      *
-     * Returns the config file of the plugin.
+     * @param runnable The runnable class to run
      *
-     * @return The config of the plugin
+     * @return The task created
      */
-    public FileConfiguration getConfig() {
-        return getPlugin().getConfig();
+    public BukkitTask runTask(Runnable runnable) {
+        return Bukkit.getScheduler().runTask(getPlugin(), runnable);
+    }
+
+    /**
+     * @see BukkitScheduler#runTaskAsynchronously(Plugin, Runnable)
+     *
+     * @param runnable The runnable class to run asynchronous
+     *
+     * @return The task created
+     */
+    public BukkitTask runTaskAsynchronously(Runnable runnable) {
+        return Bukkit.getScheduler()
+                .runTaskAsynchronously(getPlugin(), runnable);
+    }
+
+    /**
+     * @see BukkitScheduler#runTaskLater(Plugin, Runnable, long)
+     *
+     * @param runnable The runnable class to run after a period
+     * @param delay    The delay in server ticks. On normal tps a second is
+     *                 equal to 20 delay
+     *
+     * @return The task created
+     */
+    public BukkitTask runTaskLater(Runnable runnable, long delay) {
+        return Bukkit.getScheduler().runTaskLater(getPlugin(), runnable, delay);
+    }
+
+    /**
+     * @see BukkitScheduler#runTaskTimer(Plugin, Runnable, long, long)
+     *
+     * @param runnable The runnable class to run after a period periodically
+     * @param delay    The delay in server ticks. On normal tps a second is
+     *                 equal to 20 delay
+     * @param period   The period to wait before running again. On a normal tps
+     *                 a second is to to a period of 20
+     *
+     * @return The task created
+     */
+    public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {
+        return Bukkit.getScheduler()
+                .runTaskTimer(getPlugin(), runnable, delay, period);
+    }
+
+    /**
+     * @see BukkitScheduler#runTaskTimerAsynchronously(Plugin, Runnable, long,
+     * long)
+     *
+     * @param runnable The runnable class to run after a period periodically
+     *                 asynchronously
+     * @param delay    The delay in server ticks. On normal tps a second is
+     *                 equal to 20 delay
+     * @param period   The period to wait before running again. On a normal tps
+     *                 a second is to to a period of 20
+     *
+     * @return The task created
+     */
+    public BukkitTask runTaskTimerAsynchronously(Runnable runnable, long delay,
+            long period) {
+        return Bukkit.getScheduler().runTaskTimerAsynchronously(getPlugin(),
+                runnable, delay, period);
     }
 
     /**
      * Unloads the plugin from the server.
      *
      * @return True if the unloading was successful
+     *
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
      * @throws NullPointerException
@@ -196,11 +202,11 @@ public class PluginUtil {
                         = pluginManagerClass.getDeclaredField("listeners");
 
                 listenersField.setAccessible(true);
-                
+
                 Object field = listenersField.get(pluginManager);
-                
+
                 listeners = (Map<Event, SortedSet<RegisteredListener>>) field;
-                
+
             } catch (IllegalAccessException | IllegalArgumentException
                     | NoSuchFieldException | SecurityException e) {
                 reloadlisteners = false;

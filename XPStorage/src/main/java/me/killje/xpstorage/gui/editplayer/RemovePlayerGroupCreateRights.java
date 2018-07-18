@@ -32,7 +32,7 @@ public class RemovePlayerGroupCreateRights implements GuiElement {
      * this group
      *
      * @param player The player being edited
-     * @param sign The sign being edited
+     * @param sign   The sign being edited
      */
     public RemovePlayerGroupCreateRights(UUID player, AbstractGroupSign sign) {
         this.player = player;

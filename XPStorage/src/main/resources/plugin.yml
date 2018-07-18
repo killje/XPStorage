@@ -43,12 +43,19 @@ permissions:
     xpstorage.xpstorage:
         description: Access to the help page of XPStorage
         default: true
+    xpstorage.xpworlduuid:
+        description: Access to the /xpworlduuid command
+        default: op
 commands:
     xpreloadgui:
         description: Reloads the XPStorage GUI file
         usage: /xpreloadgui
-        permission: xpStorage.xpreloadgui
+        permission: xpstorage.xpreloadgui
     xpstorage:
         description: Get help page of XPStorage
         usage: /xpstorage
-        permission: xpStorage.xpstorage
+        permission: xpstorage.xpstorage
+    xpworlduuid:
+        description: Get the world name(s) or uuid(s) of (a) world(s)
+        usage: /xpworlduuid ['all'|worldName|uuid]
+        permission: xpstorage.xpworlduuid

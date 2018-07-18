@@ -17,24 +17,24 @@ import me.killje.xpstorage.xpsign.AbstractGroupSign;
 public class EditPlayerOptionsGroup extends EditPlayerOptions {
 
     /**
-     * The sign being edited
+     * The person opening the options
      */
-    private final AbstractGroupSign sign;
+    private final UUID playerEditing;
     /**
      * The player of who the options are shown for
      */
     private final UUID playerToEdit;
     /**
-     * The person opening the options
+     * The sign being edited
      */
-    private final UUID playerEditing;
+    private final AbstractGroupSign sign;
 
     /**
      * Creates a new inventory that shows a list of options for players from
      * ender group signs
      *
-     * @param sign The sign being edited
-     * @param playerToEdit The player selected
+     * @param sign          The sign being edited
+     * @param playerToEdit  The player selected
      * @param playerEditing The player editing the other player
      */
     public EditPlayerOptionsGroup(

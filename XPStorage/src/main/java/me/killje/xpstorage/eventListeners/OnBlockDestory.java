@@ -20,7 +20,8 @@ public abstract class OnBlockDestory implements Listener {
      * Checks if there is a block in the list that is protected
      *
      * @param blocksBeingDestroyed The list of blocks that are destroyed
-     * @param playerDestroying The player destroying the block if present
+     * @param playerDestroying     The player destroying the block if present
+     *
      * @return False if a block is protected by this plugin
      */
     protected boolean isDestroyable(
@@ -39,8 +40,9 @@ public abstract class OnBlockDestory implements Listener {
      * Checks if the block can just be destroyed without a problem
      *
      * @param blockBeingDestroyed The block we want to check if it gives a
-     * problem or not
-     * @param playerDestroying The player destroying the block, if present
+     *                            problem or not
+     * @param playerDestroying    The player destroying the block, if present
+     *
      * @return False if the block is protected by this plugin, true otherwise
      */
     protected boolean isDestroyable(

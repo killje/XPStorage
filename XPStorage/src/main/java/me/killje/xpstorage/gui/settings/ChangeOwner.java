@@ -35,7 +35,7 @@ public class ChangeOwner implements GuiElement {
      * Icon for selecting a new owner
      *
      * @param player The player editing the sign
-     * @param sign The sign being edited
+     * @param sign   The sign being edited
      */
     public ChangeOwner(OfflinePlayer player, AbstractXpSign sign) {
         this.player = player;

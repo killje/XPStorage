@@ -37,7 +37,7 @@ public class EditPlayer implements GuiElement {
      * edited
      *
      * @param player The player that can be edited
-     * @param sign The sign the player belongs to
+     * @param sign   The sign the player belongs to
      */
     public EditPlayer(UUID player, AbstractGroupSign sign) {
         this.player = player;
@@ -63,13 +63,15 @@ public class EditPlayer implements GuiElement {
     /**
      * {@inheritDoc}
      */
-    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentInventoryBase,
+            InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         Player playerWhoClicked = (Player) event.getWhoClicked();
 
-        EditPlayerOptions editList = sign.getEditList(this.player, playerWhoClicked.getUniqueId());
+        EditPlayerOptions editList = sign.getEditList(this.player,
+                playerWhoClicked.getUniqueId());
 
         currentInventoryBase.openNewInventory(playerWhoClicked, editList);
 

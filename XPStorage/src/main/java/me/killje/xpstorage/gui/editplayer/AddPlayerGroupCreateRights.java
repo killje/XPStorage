@@ -31,7 +31,7 @@ public class AddPlayerGroupCreateRights implements GuiElement {
      * a group and destroy existing signs
      *
      * @param player The player that is being edited
-     * @param sign The sign this is being added to
+     * @param sign   The sign this is being added to
      */
     public AddPlayerGroupCreateRights(UUID player, AbstractGroupSign sign) {
         this.player = player;

@@ -54,16 +54,16 @@ public class CurrentList extends GuiElementList {
     /**
      * {@inheritDoc}
      */
-    protected String getInventoryName() {
-        return getGuiSettings().getText("editPlayers");
+    public Map<String, ? extends GuiElement> getElementMap() {
+        return elementMap;
     }
 
     @Override
     /**
      * {@inheritDoc}
      */
-    public Map<String, ? extends GuiElement> getElementMap() {
-        return elementMap;
+    protected String getInventoryName() {
+        return getGuiSettings().getText("editPlayers");
     }
 
 }

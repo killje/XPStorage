@@ -50,22 +50,6 @@ public class SetNewGroupNameButton extends SetStringButton {
     @Override
     /**
      * {@inheritDoc}
-     */
-    protected ItemStack noNameYetItem(GuiSetting guiSettings) {
-        return guiSettings.getItemStack("newGroupName.noNameYet");
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    protected String textForEmpty(GuiSetting guiSettings) {
-        return guiSettings.getText("newGroupName.empty");
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
      *
      * Creates a new group with the typed in name
      */
@@ -88,6 +72,22 @@ public class SetNewGroupNameButton extends SetStringButton {
 
         sign.changeSign();
         currentInventoryBase.closeInventory(entity);
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    protected ItemStack noNameYetItem(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("newGroupName.noNameYet");
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    protected String textForEmpty(GuiSetting guiSettings) {
+        return guiSettings.getText("newGroupName.empty");
     }
 
 }

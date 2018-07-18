@@ -38,6 +38,23 @@ public class SetIcon extends InventoryBase implements GuiElement {
     /**
      * {@inheritDoc}
      */
+    public ItemStack getItemStack(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("setIcon");
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public void onInventoryClickEvent(InventoryBase currentInventoryBase,
+            InventoryClickEvent event) {
+        currentInventoryBase.openNewInventory(event.getWhoClicked(), this);
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
     protected void initInventory() {
 
         String iconInMiddle = getGuiSettings().getText("iconInMiddle");
@@ -53,22 +70,6 @@ public class SetIcon extends InventoryBase implements GuiElement {
                 .addInventoryElement(new SetIconElement(groupUUID))
                 .addGuiElement(new SimpleGuiElement(fillerItem, iconInMiddle))
                 .addGuiElement(new Exit());
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public ItemStack getItemStack(GuiSetting guiSettings) {
-        return guiSettings.getItemStack("setIcon");
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
-        currentInventoryBase.openNewInventory(event.getWhoClicked(), this);
     }
 
 }

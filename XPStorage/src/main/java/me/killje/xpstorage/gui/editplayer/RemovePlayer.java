@@ -28,7 +28,7 @@ public class RemovePlayer implements GuiElement {
      * Creates a icon for removing a player from a group
      *
      * @param player The player being edited
-     * @param sign The sign the player will be removed from
+     * @param sign   The sign the player will be removed from
      */
     public RemovePlayer(UUID player, AbstractGroupSign sign) {
         this.player = player;

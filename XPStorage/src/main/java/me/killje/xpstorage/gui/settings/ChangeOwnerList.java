@@ -33,11 +33,19 @@ public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
      * Icon and inventory for changing the owner of a sign
      *
      * @param player The player editing the sign
-     * @param sign The sign being edited
+     * @param sign   The sign being edited
      */
     public ChangeOwnerList(Player player, AbstractXpSign sign) {
         this.player = player;
         this.sign = sign;
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
+        return new ChangeOwner(offlinePlayer, sign);
     }
 
     @Override
@@ -64,14 +72,6 @@ public class ChangeOwnerList implements GuiElement, PlayerListElementFetcher {
 
         currentInventoryBase.openNewInventory(player, inventoryBase);
 
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
-        return new ChangeOwner(offlinePlayer, sign);
     }
 
 }

@@ -24,6 +24,11 @@ import org.bukkit.inventory.ItemStack;
 public class CustomAmount extends NumberBoard implements GuiElement {
 
     /**
+     * The manager that does the xp calculations
+     */
+    private final ExperienceManager experienceManager;
+
+    /**
      * The player settings its level
      */
     private final Player player;
@@ -32,11 +37,6 @@ public class CustomAmount extends NumberBoard implements GuiElement {
      * The sign the xp will be used from
      */
     private final AbstractXpSign xpSign;
-
-    /**
-     * The manager that does the xp calculations
-     */
-    private final ExperienceManager experienceManager;
 
     /**
      * Creates a Icon that when clicked on will open a number board to set your

@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -31,6 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitTask;
 
+@SuppressWarnings("ResultOfObjectAllocationIgnored")
 /**
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
@@ -38,13 +38,33 @@ import org.bukkit.scheduler.BukkitTask;
 public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     /**
-     *
+     * Sign config
+     */
+    private static final clsConfiguration XP_SIGN_CONFIG = new clsConfiguration(
+            XPStorage.getPluginUtil().getPlugin(), "xpSigns.yml");
+    /**
+     * List of all signs for saving purposes
+     */
+    private static List<AbstractXpSign> signsList = new Stack<>();
+
+    /**
+     * Creates a new periodic saver
+     */
+    static {
+        new XpSignPeriodSaver();
+    }
+
+    /**
      * Inner class in charge of periodically updating the save file
      */
     private static class AbstractXpSignSaver implements Runnable {
 
+        /**
+         * The last bukkit task that was created to save the signs
+         */
         private static BukkitTask lastTask = null;
 
+        @SuppressWarnings("LeakingThisInConstructor")
         /**
          * Making sure only one task is running
          */
@@ -55,10 +75,10 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             lastTask = XPStorage.getPluginUtil().runTaskAsynchronously(this);
         }
 
-        /**
-         * Save the signs to the config
-         */
         @Override
+        /**
+         * {@inheritDoc}
+         */
         public void run() {
             XP_SIGN_CONFIG.GetConfig().set("xpSigns", signsList);
             XP_SIGN_CONFIG.SaveConfig();
@@ -66,27 +86,56 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
 
     }
 
-    static {
-        new XpSignPeriodSaver();
-    }
-
+    /**
+     * Creates a saver to save the signs periodical
+     */
     private static class XpSignPeriodSaver {
 
         public XpSignPeriodSaver() {
-            XPStorage.getPluginUtil().runTaskTimerAsynchronously(new AbstractXpSignSaver(), XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200, XPStorage.getPluginUtil().getConfig().getInt("backupSaveIntervalMinutes") * 1200);
+            int interval = 1200 * XPStorage.getPluginUtil().
+                    getConfig().getInt("backupSaveIntervalMinutes");
+
+            XPStorage.getPluginUtil().runTaskTimerAsynchronously(
+                    new AbstractXpSignSaver(), interval, interval
+            );
         }
 
     }
 
-    private static Class<? extends AbstractXpSign> getDefaultSign(HumanEntity player) {
-        PlayerInformation playerInformation = PlayerInformation.getPlayerInformation(player);
+    /**
+     * Add sign to list of signs
+     *
+     * @param xpSign The created xpSign
+     */
+    private static void addSign(AbstractXpSign xpSign) {
+        signsList.add(xpSign);
+        // Save config
+        saveSigns();
+    }
 
-        Class<? extends AbstractXpSign> signClass = playerInformation.getDefaultSign();
-        if (signClass == LocalPlayerSign.class && Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
+    /**
+     * Gets the default sign the player uses when creating a new sign
+     *
+     * @param player The player the default sign is from
+     *
+     * @return The default sign class to use
+     */
+    private static Class<? extends AbstractXpSign> getDefaultSign(
+            HumanEntity player) {
+
+        PlayerInformation playerInformation
+                = PlayerInformation.getPlayerInformation(player);
+
+        Class<? extends AbstractXpSign> signClass = playerInformation.
+                getDefaultSign();
+        if (signClass == LocalPlayerSign.class
+                && Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
             signClass = null;
-        } else if (signClass == EnderPlayerSign.class && Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
+        } else if (signClass == EnderPlayerSign.class
+                && Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
             signClass = null;
-        } else if (signClass == LocalGroupSign.class && Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
+        } else if (signClass == LocalGroupSign.class
+                && Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
             signClass = null;
         }
 
@@ -104,25 +153,48 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         return signClass;
     }
 
+    /**
+     * Creates a new xp storage sign
+     *
+     * @param sign   The sign the storage sign is for
+     * @param player The player creating the sign
+     *
+     * @return The created storage sign
+     */
     public static AbstractXpSign createSign(Sign sign, HumanEntity player) {
         Class<? extends AbstractXpSign> signClass = getDefaultSign(player);
         return createSign(signClass, sign, player);
     }
 
-    public static AbstractXpSign createSign(Class<? extends AbstractXpSign> signClass, Sign sign, HumanEntity player) {
+    /**
+     * Creates a new xp storage sign given the type selected
+     *
+     * @param signClass The kind of sign to use
+     * @param sign      The sign the xp sign is created on
+     * @param player    The player creating the sign
+     *
+     * @return The created sign
+     */
+    public static AbstractXpSign createSign(
+            Class<? extends AbstractXpSign> signClass, Sign sign,
+            HumanEntity player) {
 
         if (signClass == null) {
             return null;
-        } else if (signClass == LocalPlayerSign.class && !Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
+        } else if (signClass == LocalPlayerSign.class
+                && !Permission.CREATE_LOCAL_PLAYER.hasPermission(player)) {
             return null;
-        } else if (signClass == EnderPlayerSign.class && !Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
+        } else if (signClass == EnderPlayerSign.class
+                && !Permission.CREATE_ENDER_PLAYER.hasPermission(player)) {
             return null;
-        } else if (signClass == LocalGroupSign.class && !Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
+        } else if (signClass == LocalGroupSign.class
+                && !Permission.CREATE_LOCAL_GROUP.hasPermission(player)) {
             return null;
         }
 
         try {
-            Constructor<? extends AbstractXpSign> constructor = signClass.getConstructor(Sign.class, UUID.class);
+            Constructor<? extends AbstractXpSign> constructor = signClass.
+                    getConstructor(Sign.class, UUID.class);
             return constructor.newInstance(sign, player.getUniqueId());
         } catch (NoSuchMethodException
                 | SecurityException
@@ -136,139 +208,250 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     }
 
     /**
-     * Enum for load errors
+     * Removes the metadatas on blocks that are used for the xp signs
      */
-    public enum LoadError {
-        NONE,
-        NO_SIGN,
-        BAD_LOCATION,
-        NO_PLAYER,
-        NO_GROUP;
-    }
-
-    /**
-     * Storing load error state
-     */
-    protected LoadError loadError;
-
-    /**
-     * List of all signs for saving purposes
-     */
-    private static List<AbstractXpSign> signsList = new Stack<>();
-
-    /**
-     * Current sign
-     */
-    private final Sign sign;
-
-    /**
-     * Current sign
-     */
-    private final XpSignFacingBlock signFacingBlock;
-
-    /**
-     * Sign config
-     */
-    private static final clsConfiguration XP_SIGN_CONFIG = new clsConfiguration(XPStorage.getPluginUtil().getPlugin(), "xpSigns.yml");
-
-    /**
-     * Location of the sign in the world
-     */
-    private Location location;
-
-    /**
-     * Load information, only used for debug purposes when sign could not be
-     * loaded
-     */
-    private final Map<String, Object> loadInformation;
-
-    /**
-     * Creating a sign from scratch
-     *
-     * @param sign The sign block that has been created
-     */
-    public AbstractXpSign(Sign sign) {
-
-        this.sign = sign;
-        this.loadInformation = null;
-        // Check if the sign is real
-        if (sign == null) {
-            loadError = LoadError.NO_SIGN;
-            this.signFacingBlock = null;
-            return;
-        }
-        BlockFace facingDirection = ((org.bukkit.material.Sign) sign.getData()).getAttachedFace();
-        this.signFacingBlock = new XpSignFacingBlock(sign.getBlock().getRelative(facingDirection), this);
-
-        loadError = LoadError.NONE;
-        // Dubble check if the block has not already initiated a XPSign that has not been removed properly
-        if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
-        }
-        // Set metadata of the sign
-        sign.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(XPStorage.getPluginUtil().getPlugin(), this));
-
-        // Add sign to list of signs
-        addSign(this);
-    }
-
-    /**
-     * Initiate sign from storage file
-     *
-     * Not for creating new signs!
-     *
-     * @param sign The sign information
-     */
-    public AbstractXpSign(Map<String, Object> sign) {
-        // Try to get world
-        World world = Bukkit.getWorld(UUID.fromString((String) sign.get("world")));
-        PluginUtil pluginUtil = XPStorage.getPluginUtil();
-        this.loadInformation = sign;
-        if (world == null) {
-            this.loadError = LoadError.BAD_LOCATION;
-            this.sign = null;
-            this.signFacingBlock = null;
-            return;
-        }
-        // Try to get location
-        Location location = new Location(world, (int) sign.get("x"), (int) sign.get("y"), (int) sign.get("z"));
-        if (location.getBlock() == null || !isSign(location.getBlock().getType())) {
-            if (location.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-                location.getBlock().removeMetadata("XP_STORAGE_XPSIGN", pluginUtil.getPlugin());
+    public static void destroyMetaDatas() {
+        for (AbstractXpSign abstractXpSign : signsList) {
+            if (abstractXpSign.getSign().getBlock().hasMetadata(
+                    "XP_STORAGE_XPSIGN")) {
+                abstractXpSign.getSign().getBlock().removeMetadata(
+                        "XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().
+                                getPlugin());
             }
-            this.loadError = LoadError.NO_SIGN;
-            this.sign = null;
-            this.location = location;
-            this.signFacingBlock = null;
-            return;
+            if (abstractXpSign.getSignFacingBlock().getFacingBlock().
+                    hasMetadata("XP_STORAGE_XPSIGNFACEBLOCK")) {
+                abstractXpSign.getSign().getBlock().removeMetadata(
+                        "XP_STORAGE_XPSIGNFACEBLOCK", XPStorage.getPluginUtil().
+                                getPlugin());
+            }
         }
-        // Try to get player and sign
-        Sign signBlock = (Sign) location.getBlock().getState();
-
-        BlockFace facingDirection = ((org.bukkit.material.Sign) signBlock.getData()).getAttachedFace();
-        this.signFacingBlock = new XpSignFacingBlock(signBlock.getBlock().getRelative(facingDirection), this);
-
-        this.sign = signBlock;
-        this.loadError = LoadError.NONE;
-        // Dubble check if the block has not already initiated a XPSign that has not been removed properly
-        if (signBlock.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-            signBlock.getBlock().removeMetadata("XP_STORAGE_XPSIGN", pluginUtil.getPlugin());
-        }
-        // Set metadata of the sign
-        signBlock.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(pluginUtil.getPlugin(), this));
-        // Add sign to list of signs
-        addSign(this);
     }
 
     /**
-     * Add sign to list of signs
+     * Get the name for the signs, max length is 15.
      *
-     * @param xpSign The created xpSign
+     * @param player The player to get the name from
+     *
+     * @return The signs ready name
      */
-    private static void addSign(AbstractXpSign xpSign) {
-        signsList.add(xpSign);
-        // Save config
-        saveSigns();
+    public static String getSaveName(Player player) {
+        return getSaveName(player.getName());
+    }
+
+    /**
+     * Get the name for the signs, max length is 15.
+     *
+     * @param name The name to make shorter
+     *
+     * @return The sign ready name
+     */
+    public static String getSaveName(String name) {
+        if (name == null) {
+            name = "";
+        }
+        if (name.length() > 15) {
+            return name.substring(0, 15);
+        } else {
+            return name;
+        }
+    }
+
+    /**
+     * Returns if a material is a sign
+     *
+     * @param material The material the sign is made of
+     *
+     * @return True if it is a sign, false otherwise
+     */
+    public static boolean isSign(Material material) {
+        return material == Material.WALL_SIGN
+                || material == Material.SIGN_POST
+                || material == Material.SIGN;
+    }
+
+    /**
+     * Load signs from config. Should only be done while initializing the plugin
+     */
+    public static void loadSigns() {
+        Logger logger = XPStorage.getPluginUtil().getLogger();
+        // Boolean to keep track if all signs have been converted
+        boolean dirty = false;
+
+        List<AbstractXpSign> signsToLoad = null;
+
+        // Check if there is a signs file (old format)
+        if (XPStorage.getSignConfig().GetConfig().contains("Signs")) {
+
+            if (!XP_SIGN_CONFIG.GetConfig().contains("xpSigns")) {
+                // Update to new format
+                new Update(XPStorage.getSignConfig().GetConfig());
+                XPStorage.getSignConfig().SaveConfig();
+                // Save file after completion
+                dirty = true;
+            } else {
+                List<?> oldSigns = XPStorage.getSignConfig().GetConfig().
+                        getList("Signs");
+
+                if (oldSigns != null && !oldSigns.isEmpty()) {
+                    XPStorage.getSignConfig().GetConfig().
+                            set("skiped", oldSigns);
+                }
+                // Unset the old signs file
+                XPStorage.getSignConfig().GetConfig().set("Signs", null);
+
+                // Load the signs
+                signsToLoad = (List<AbstractXpSign>) XP_SIGN_CONFIG.GetConfig().
+                        getList("xpSigns");
+            }
+        } else {
+            // Load the signs
+            signsToLoad = (List<AbstractXpSign>) XP_SIGN_CONFIG.GetConfig().
+                    getList("xpSigns");
+        }
+
+        List<Map<?, ?>> failedSigns = (List<Map<?, ?>>) XP_SIGN_CONFIG.
+                GetConfig().getMapList("failedSigns");
+        if (failedSigns == null) {
+            failedSigns = new ArrayList<>();
+        }
+
+        if (signsToLoad == null) {
+            signsToLoad = new ArrayList<>();
+        }
+
+        // Go over the signs to see if they all have been loaded properly
+        for (AbstractXpSign xpSign : signsToLoad) {
+            // SIGNS HAVE TO BE INITIALIZED.
+            // It it is not, then there is somthing wrong in the file or code,
+            // report imidialty
+            if (xpSign == null) {
+                logger.log(Level.SEVERE,
+                        "\u001B[31m"
+                        + "Could not parse sign. THIS IS A SEVERE ERROR."
+                        + " This plugin will disable itself to prevent it from"
+                        + " destroying itself."
+                        + " Please read the console to find out what caused "
+                        + "this bug.\u001b[m");
+
+                try {
+                    // Proper unloading of the plugin
+                    XPStorage.getPluginUtil().unloadPlugin();
+                } catch (NoSuchFieldException | IllegalAccessException
+                        | NullPointerException ex) {
+
+                    // Backup if something fails
+                    Bukkit.getPluginManager().disablePlugin(XPStorage.
+                            getPluginUtil().getPlugin());
+
+                    Logger.getLogger(AbstractXpSign.class.getName()).log(
+                            Level.SEVERE, null, ex);
+                }
+                return;
+            }
+            // Get the error
+            LoadError failed = xpSign.getError();
+            // Check the errors and print out relevent information
+            switch (failed) {
+                case NONE:
+                    // No error found, add to list
+                    signsList.add(xpSign);
+                    break;
+                case NO_SIGN:
+                    // No sign found on location, report location
+                    Location location = xpSign.getLocation();
+                    logger.log(Level.WARNING,
+                            "Sign does not exist anymore at:"
+                            + " x={0}, y={1}, z={2}", new Object[]{
+                                location.getX(), location.getY(),
+                                location.getZ()
+                            });
+
+                    Map<String, Object> loadInformation_noSign
+                            = xpSign.getLoadInformation();
+
+                    loadInformation_noSign.put("Reason",
+                            "Sign does not exists on location");
+
+                    failedSigns.add(loadInformation_noSign);
+                    dirty = true;
+                    break;
+                case NO_GROUP:
+                    // No group found on uuid
+                    logger.log(Level.WARNING,
+                            "Sign contains a group that does not exsists");
+
+                    Map<String, Object> loadInformation_noGroup
+                            = xpSign.getLoadInformation();
+
+                    loadInformation_noGroup.put("Reason",
+                            "Sign contained a group that does "
+                            + "not exists anymore");
+
+                    failedSigns.add(loadInformation_noGroup);
+                    dirty = true;
+                    break;
+                case BAD_LOCATION:
+                    // The location could not be found 
+                    // (is the proper world loaded?)
+                    Map<String, Object> loadInformation
+                            = xpSign.getLoadInformation();
+
+                    logger.log(Level.WARNING,
+                            "Could not generate a location from file:"
+                            + " world={0}, x={1}, y={2}, z={3}",
+                            new Object[]{
+                                (String) loadInformation.get("world"),
+                                (int) loadInformation.get("x"),
+                                (int) loadInformation.get("y"),
+                                (int) loadInformation.get("z")
+                            });
+
+                    Map<String, Object> loadInformation_badLocation
+                            = xpSign.getLoadInformation();
+
+                    loadInformation_badLocation.put("Reason",
+                            "Could not find world for location");
+
+                    failedSigns.add(loadInformation_badLocation);
+                    dirty = true;
+                    break;
+                case NO_PLAYER:
+                    // Could not assign player, it does not exsist anymore?
+                    Map<String, Object> sign = xpSign.serialize();
+                    logger.log(Level.WARNING,
+                            "Could not retrive player: uuid={0}", new Object[]{
+                                (String) sign.get("ownerUuid")});
+                    Map<String, Object> loadInformation_noPlayer
+                            = xpSign.getLoadInformation();
+
+                    loadInformation_noPlayer.put("Reason",
+                            "Could not retrive player with the given uuid");
+
+                    failedSigns.add(loadInformation_noPlayer);
+                    dirty = true;
+                    break;
+                default:
+                    logger.log(Level.WARNING, "Could not generate sign");
+                    Map<String, Object> loadInformation_nothing
+                            = xpSign.getLoadInformation();
+
+                    loadInformation_nothing.put("Reason",
+                            "Could not generate sign");
+
+                    failedSigns.add(loadInformation_nothing);
+                    dirty = true;
+                    break;
+            }
+        }
+
+        if (dirty) {
+            if (!failedSigns.isEmpty()) {
+                XP_SIGN_CONFIG.GetConfig().set("failedSigns", failedSigns);
+                XP_SIGN_CONFIG.SaveConfig();
+            }
+            // Save signs if changes have been found
+            saveSigns(true);
+        }
     }
 
     /**
@@ -282,24 +465,17 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         saveSigns();
     }
 
-    /**
-     * Location of the sign block in the world
-     *
-     * @return The location
-     */
-    private Location getLocation() {
-        return location;
-    }
-
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
     /**
      * Save the signs, when initializing the signs will not be directly saved
      *
      * @param overrideInitCheck When initializing the signs are saved once, this
-     * boolean allows that, should not be used in normal saving
+     *                          boolean allows that, should not be used in
+     *                          normal saving
      */
     public static void saveSigns(boolean overrideInitCheck) {
-        if (!overrideInitCheck && XPStorage.getPluginUtil().getPlugin().isEnabled()) {
+        if (!overrideInitCheck
+                && XPStorage.getPluginUtil().getPlugin().isEnabled()) {
             return;
         }
         if (overrideInitCheck) {
@@ -319,346 +495,135 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     }
 
     /**
-     * Load signs from config. Should only be done while initializing the plugin
+     * Enum for load errors
      */
-    public static void loadSigns() {
-        Logger logger = XPStorage.getPluginUtil().getLogger();
-        // Boolean to keep track if all signs have been converted
-        boolean dirty = false;
-
-        // Check if there is a signs file (old format)
-        if (XPStorage.getSignConfig().GetConfig().contains("Signs")) {
-
-            if (!XP_SIGN_CONFIG.GetConfig().contains("xpSigns")) {
-                // Update to new format
-                new Update(XPStorage.getSignConfig().GetConfig());
-                XPStorage.getSignConfig().SaveConfig();
-                // Save file after completion
-                dirty = true;
-            } else {
-                List<?> oldSigns = XPStorage.getSignConfig().GetConfig().getList("Signs");
-                if (oldSigns != null && !oldSigns.isEmpty()) {
-                    XPStorage.getSignConfig().GetConfig().set("skiped", oldSigns);
-                }
-                // Unset the old signs file
-                XPStorage.getSignConfig().GetConfig().set("Signs", null);
-                // Load the signs
-                signsList = (List<AbstractXpSign>) XP_SIGN_CONFIG.GetConfig().getList("xpSigns");
-            }
-        } else {
-            // Load the signs
-            signsList = (List<AbstractXpSign>) XP_SIGN_CONFIG.GetConfig().getList("xpSigns");
-        }
-
-        List<Map<?, ?>> failedSigns = (List<Map<?, ?>>) XP_SIGN_CONFIG.GetConfig().getMapList("failedSigns");
-        if (failedSigns == null) {
-            failedSigns = new ArrayList<>();
-        }
-
-        if (signsList == null) {
-            signsList = new ArrayList<>();
-        }
-        // Go over the signs to see if they all have been loaded properly
-        for (Iterator<AbstractXpSign> it = signsList.iterator(); it.hasNext();) {
-            AbstractXpSign xpSign = it.next();
-            // SIGNS HAVE TO BE INITIALIZED.
-            // It it is not, then there is somthing wrong in the file or code,
-            // report imidialty
-            if (xpSign == null) {
-                logger.log(Level.SEVERE, "\u001B[31mCould not parse sign. THIS IS A SEVERE ERROR. This plugin will disable itself to prevent it from destroying itself. Pleas read the console to find out what caused this bug.\u001b[m");
-                try {
-                    // Proper unloading of the plugin
-                    XPStorage.getPluginUtil().unloadPlugin();
-                } catch (NoSuchFieldException | IllegalAccessException | NullPointerException ex) {
-                    // Backup if something fails
-                    Bukkit.getPluginManager().disablePlugin(XPStorage.getPluginUtil().getPlugin());
-                    Logger.getLogger(AbstractXpSign.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                return;
-            }
-            // Get the error
-            LoadError failed = xpSign.getError();
-            // Check the errors and print out relevent information
-            switch (failed) {
-                default:
-                case NONE:
-                    // No error found, break
-                    break;
-                case NO_SIGN:
-                    // No sign found on location, report location
-                    Location location = xpSign.getLocation();
-                    logger.log(Level.WARNING, "Sign does not exsist anymore at: x={0}, y={1}, z={2}", new Object[]{location.getX(), location.getY(), location.getZ()});
-                    it.remove();
-                    failedSigns.add(xpSign.getLoadInformation());
-                    dirty = true;
-                    break;
-                case NO_GROUP:
-                    // No group found on uuid
-                    logger.log(Level.WARNING, "Sign contains a group that does not exsists");
-                    it.remove();
-                    failedSigns.add(xpSign.getLoadInformation());
-                    dirty = true;
-                    break;
-                case BAD_LOCATION:
-                    // The location could not be found (is the proper world loaded?)
-                    Map<String, Object> loadInformation = xpSign.getLoadInformation();
-                    logger.log(Level.WARNING, "Could not generate a location from file: world={0}, x={1}, y={2}, z={3}", new Object[]{(String) loadInformation.get("world"), (int) loadInformation.get("x"), (int) loadInformation.get("y"), (int) loadInformation.get("z")});
-                    it.remove();
-                    failedSigns.add(xpSign.getLoadInformation());
-                    dirty = true;
-                    break;
-                case NO_PLAYER:
-                    // Could not assign player, it does not exsist anymore?
-                    Map<String, Object> sign = xpSign.serialize();
-                    logger.log(Level.WARNING, "Could not retrive player: uuid={0}", new Object[]{(String) sign.get("ownerUuid")});
-                    it.remove();
-                    failedSigns.add(xpSign.getLoadInformation());
-                    dirty = true;
-                    break;
-            }
-        }
-
-        if (dirty) {
-            if (!failedSigns.isEmpty()) {
-                XP_SIGN_CONFIG.GetConfig().set("failedSigns", failedSigns);
-                XP_SIGN_CONFIG.SaveConfig();
-            }
-            // Save signs if changes have been found
-            saveSigns(true);
-        }
+    public enum LoadError {
+        NONE,
+        NO_SIGN,
+        BAD_LOCATION,
+        NO_PLAYER,
+        NO_GROUP;
     }
+    /**
+     * Load information, only used for debug purposes when sign could not be
+     * loaded
+     */
+    private final Map<String, Object> loadInformation;
+    /**
+     * Location of the sign in the world
+     */
+    private Location location;
 
     /**
-     * Get the name for the signs, max length is 15.
+     * Current sign
+     */
+    private final Sign sign;
+
+    /**
+     * Current sign
+     */
+    private final XpSignFacingBlock signFacingBlock;
+    /**
+     * Storing load error state
+     */
+    protected LoadError loadError;
+
+    @SuppressWarnings("LeakingThisInConstructor")
+    /**
+     * Creating a sign from scratch
      *
-     * @param player The player to get the name from
-     * @return The signs ready name
+     * @param sign The sign block that has been created
      */
-    public static String getSaveName(Player player) {
-        return getSaveName(player.getName());
-    }
+    public AbstractXpSign(Sign sign) {
 
-    /**
-     * Get the name for the signs, max length is 15.
-     *
-     * @param name
-     * @return
-     */
-    public static String getSaveName(String name) {
-        if (name == null) {
-            name = "";
-        }
-        if (name.length() > 15) {
-            return name.substring(0, 15);
-        } else {
-            return name;
-        }
-    }
-
-    /**
-     * Returns if a material is a sign
-     *
-     * @param material
-     * @return True if it is a sign
-     */
-    public static boolean isSign(Material material) {
-        return material == Material.WALL_SIGN
-                || material == Material.SIGN_POST
-                || material == Material.SIGN;
-    }
-
-    public static void destroyMetaDatas() {
-        for (AbstractXpSign abstractXpSign : signsList) {
-            if (abstractXpSign.getSign().getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
-            }
-            if (abstractXpSign.getSignFacingBlock().getFacingBlock().hasMetadata("XP_STORAGE_XPSIGNFACEBLOCK")) {
-                abstractXpSign.getSign().getBlock().removeMetadata("XP_STORAGE_XPSIGNFACEBLOCK", XPStorage.getPluginUtil().getPlugin());
-            }
-        }
-    }
-
-    /**
-     * Function to save this class to YAML
-     *
-     * @return
-     */
-    @Override
-    public Map<String, Object> serialize() {
-        HashMap<String, Object> serialized = new HashMap<>();
-        serialized.put("x", sign.getX());
-        serialized.put("y", sign.getY());
-        serialized.put("z", sign.getZ());
-        serialized.put("world", sign.getWorld().getUID().toString());
-        serialized.put("ownerUuid", getOwner().toString());
-        return serialized;
-    }
-
-    /**
-     * This function should be implemented to save the amount of xp on the sign
-     *
-     * @param xpInStorage The new XP amount it has to be set to
-     */
-    protected abstract void setNewXp(int xpInStorage);
-
-    /**
-     * The function should return the total amount of XP on the sign
-     *
-     * @return The amount of XP
-     */
-    public abstract int getCurrentXp();
-
-    /**
-     * Retrieves the text second line of text for the sign
-     *
-     * @return The text to display on the sign
-     */
-    protected String getSecondLine() {
-        return "";
-    }
-
-    ;
-
-    /**
-     * Retrieves the text for the sign
-     * 
-     * @return The text to display on the sign
-     */
-    protected abstract String getSignText();
-
-    /**
-     * A human readable name for the sign.
-     *
-     * @return
-     */
-    public abstract String signType();
-
-    /**
-     * Checks if the given player can add/remove xp from the sign
-     *
-     * @param player
-     * @return
-     */
-    public abstract boolean hasAccess(UUID player);
-
-    /**
-     * Returns the owner of the sign
-     *
-     * @return The uuid of the owner
-     */
-    public abstract UUID getOwner();
-
-    /**
-     * Sets the owner of the sign
-     *
-     * @param newOwner
-     */
-    public abstract void setOwner(UUID newOwner);
-
-    /**
-     * Whether or not this is a group sign. This is so the AbstractGroupSign can
-     * add additional functions
-     *
-     * @return
-     */
-    public boolean isGroupSign() {
-        return false;
-    }
-
-    /**
-     * Updates a destroyed XP sign to this sign.
-     */
-    public void changeSign() {
-        updateSign();
-    }
-
-    /**
-     * Increases the XP on the sign with the current selected amount
-     *
-     * @param player The current player increasing the XP of the sign
-     */
-    public void increaseXp(Player player) {
-        increaseXp(player, 1);
-    }
-
-    /**
-     * Increases the XP on the sign with the current selected amount
-     *
-     * @param player The current player increasing the XP of the sign
-     * @param levelsToIncrease The amount of levels to increase
-     */
-    public void increaseXp(Player player, int levelsToIncrease) {
-        ExperienceManager experienceManager = new ExperienceManager(player);
-        boolean levelCheck = experienceManager.getCurrentExp() == experienceManager.getXpForLevel(player.getLevel());
-
-        int levelToCompare = player.getLevel();
-        if (levelCheck && levelToCompare > 0) {
-            levelToCompare--;
-        }
-
-        levelToCompare -= levelsToIncrease - 1;
-
-        if (levelToCompare < 0) {
-            levelToCompare = 0;
-        }
-
-        int xpToIncrease = experienceManager.getCurrentExp() - experienceManager.getXpForLevel(levelToCompare);
-
-        increaseXpSign(player, xpToIncrease);
-    }
-
-    /**
-     * Increases the XP on the sign with the current selected amount
-     *
-     * @param player The current player increasing the XP of the sign
-     * @param xpToIncrease The amount of player levels to increase the sign with
-     */
-    private void increaseXpSign(Player player, int xpToIncrease) {
-        // Use the experience manager to accuratly update the amount of XP
-        ExperienceManager experienceManager = new ExperienceManager(player);
-        int currentXp = getCurrentXp();
-        if (experienceManager.getCurrentExp() < xpToIncrease) {
-            setNewXp(currentXp + experienceManager.getCurrentExp());
-            experienceManager.setExp(0);
-        } else if (currentXp + xpToIncrease > 210000000) {
-            player.sendMessage(XPStorage.getGuiSettings().getText("maximumStorageMessage"));
+        this.sign = sign;
+        this.loadInformation = null;
+        // Check if the sign is real
+        if (sign == null) {
+            loadError = LoadError.NO_SIGN;
+            this.signFacingBlock = null;
             return;
-        } else {
-            setNewXp(currentXp + xpToIncrease);
-            experienceManager.changeExp(0 - xpToIncrease);
         }
-        // Update the text on the sign
-        updateSign();
+        BlockFace facingDirection = ((org.bukkit.material.Sign) sign.getData()).
+                getAttachedFace();
+        this.signFacingBlock = new XpSignFacingBlock(sign.getBlock().
+                getRelative(facingDirection), this);
+
+        loadError = LoadError.NONE;
+        // Dubble check if the block has not already initiated a XPSign that 
+        // has not been removed properly
+        if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
+            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.
+                    getPluginUtil().getPlugin());
+        }
+        // Set metadata of the sign
+        sign.getBlock().setMetadata("XP_STORAGE_XPSIGN", new FixedMetadataValue(
+                XPStorage.getPluginUtil().getPlugin(), this));
+
+        // Add sign to list of signs
+        addSign(this);
     }
 
     /**
-     * Decreases the XP on the sign with the current selected amount
+     * Initiate sign from storage file
      *
-     * @param player The current player decreasing the XP of the sign
+     * Not for creating new signs!
+     *
+     * @param sign The sign information
      */
-    public void decreaseXp(Player player) {
-        decreaseXp(player, 1);
+    public AbstractXpSign(Map<String, Object> sign) {
+        // Try to get world
+        World world = Bukkit.getWorld(UUID.
+                fromString((String) sign.get("world")));
+        PluginUtil pluginUtil = XPStorage.getPluginUtil();
+        this.loadInformation = sign;
+        if (world == null) {
+            this.loadError = LoadError.BAD_LOCATION;
+            this.sign = null;
+            this.signFacingBlock = null;
+            return;
+        }
+        // Try to get location
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
+        Location location = new Location(world, (int) sign.get("x"), (int) sign.
+                get("y"), (int) sign.get("z"));
+        if (location.getBlock() == null
+                || !isSign(location.getBlock().getType())) {
+            if (location.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
+                location.getBlock().removeMetadata("XP_STORAGE_XPSIGN",
+                        pluginUtil.getPlugin());
+            }
+            this.loadError = LoadError.NO_SIGN;
+            this.sign = null;
+            this.location = location;
+            this.signFacingBlock = null;
+            return;
+        }
+        // Try to get player and sign
+        Sign signBlock = (Sign) location.getBlock().getState();
+
+        BlockFace facingDirection = ((org.bukkit.material.Sign) signBlock.
+                getData()).getAttachedFace();
+        this.signFacingBlock = new XpSignFacingBlock(signBlock.getBlock().
+                getRelative(facingDirection), this);
+
+        this.sign = signBlock;
+        this.loadError = LoadError.NONE;
+        // Dubble check if the block has not already initiated a XPSign that 
+        // has not been removed properly
+        if (signBlock.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
+            signBlock.getBlock().removeMetadata("XP_STORAGE_XPSIGN", pluginUtil.
+                    getPlugin());
+        }
+        // Set metadata of the sign
+        signBlock.getBlock().setMetadata("XP_STORAGE_XPSIGN",
+                new FixedMetadataValue(pluginUtil.getPlugin(), this));
     }
 
     /**
      * Decreases the XP on the sign with the current selected amount
      *
-     * @param player The current player decreasing the XP of the sign
-     * @param levelsToDecrease The amount of player levels to decrease the sign
-     * with
-     */
-    public void decreaseXp(Player player, int levelsToDecrease) {
-
-        ExperienceManager experienceManager = new ExperienceManager(player);
-        int xpToDecrease = experienceManager.getXpForLevel(player.getLevel() + levelsToDecrease) - experienceManager.getCurrentExp();
-
-        decreaseXpSign(player, xpToDecrease);
-    }
-
-    /**
-     * Decreases the XP on the sign with the current selected amount
-     *
-     * @param player The current player decreasing the XP of the sign
+     * @param player       The current player decreasing the XP of the sign
      * @param xpToDecrease The amount of xp to decrease
      */
     private void decreaseXpSign(Player player, int xpToDecrease) {
@@ -677,12 +642,37 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     }
 
     /**
-     * Remove all the experience from the sign
+     * Location of the sign block in the world
      *
-     * @param player
+     * @return The location
      */
-    public void allXpOut(Player player) {
-        decreaseXpSign(player, getCurrentXp());
+    private Location getLocation() {
+        return location;
+    }
+
+    /**
+     * Increases the XP on the sign with the current selected amount
+     *
+     * @param player       The current player increasing the XP of the sign
+     * @param xpToIncrease The amount of player levels to increase the sign with
+     */
+    private void increaseXpSign(Player player, int xpToIncrease) {
+        // Use the experience manager to accuratly update the amount of XP
+        ExperienceManager experienceManager = new ExperienceManager(player);
+        int currentXp = getCurrentXp();
+        if (experienceManager.getCurrentExp() < xpToIncrease) {
+            setNewXp(currentXp + experienceManager.getCurrentExp());
+            experienceManager.setExp(0);
+        } else if (currentXp + xpToIncrease > 210000000) {
+            player.sendMessage(XPStorage.getGuiSettings().getText(
+                    "maximumStorageMessage"));
+            return;
+        } else {
+            setNewXp(currentXp + xpToIncrease);
+            experienceManager.changeExp(0 - xpToIncrease);
+        }
+        // Update the text on the sign
+        updateSign();
     }
 
     /**
@@ -694,6 +684,116 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         ExperienceManager experienceManager = new ExperienceManager(player);
         increaseXpSign(player, experienceManager.getCurrentExp());
     }
+
+    /**
+     * Remove all the experience from the sign
+     *
+     * @param player
+     */
+    public void allXpOut(Player player) {
+        decreaseXpSign(player, getCurrentXp());
+    }
+
+    /**
+     * Check if can be removed form the list
+     *
+     * @param playerWhoDestroys The player who is destroying the sign
+     *
+     * @return
+     */
+    public boolean canDestroySign(Player playerWhoDestroys) {
+        if (playerWhoDestroys == null) {
+            return false;
+        }
+        return playerWhoDestroys.getUniqueId().equals(getOwner());
+    }
+
+    /**
+     * Updates a destroyed XP sign to this sign.
+     */
+    public void changeSign() {
+        updateSign();
+    }
+
+    /**
+     * Decreases the XP on the sign with the current selected amount
+     *
+     * @param player The current player decreasing the XP of the sign
+     */
+    public void decreaseXp(Player player) {
+        decreaseXp(player, 1);
+    }
+
+    /**
+     * Decreases the XP on the sign with the current selected amount
+     *
+     * @param player           The current player decreasing the XP of the sign
+     * @param levelsToDecrease The amount of player levels to decrease the sign
+     *                         with
+     */
+    public void decreaseXp(Player player, int levelsToDecrease) {
+
+        ExperienceManager experienceManager = new ExperienceManager(player);
+        int xpToDecrease = experienceManager.getXpForLevel(player.getLevel()
+                + levelsToDecrease) - experienceManager.getCurrentExp();
+
+        decreaseXpSign(player, xpToDecrease);
+    }
+
+    /**
+     * Remove the sign form the list
+     *
+     * @param playerWhoDestroys The player destroying the sign
+     *
+     * @return True if the sign is destroyed, false otherwise
+     */
+    public boolean destroySign(Player playerWhoDestroys) {
+
+        if (!canDestroySign(playerWhoDestroys)) {
+            return false;
+        }
+        removeSign(this);
+        if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
+            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.
+                    getPluginUtil().getPlugin());
+        }
+        XpSignFacingBlock.removeFacingBlock(signFacingBlock);
+        return true;
+    }
+
+    public ArrayList<GuiElement> getAdditionalGuiElements(Player player) {
+        return new ArrayList<>(0);
+    }
+
+    /**
+     * The function should return the total amount of XP on the sign
+     *
+     * @return The amount of XP
+     */
+    public abstract int getCurrentXp();
+
+    /**
+     * The load error for this sign
+     *
+     * @return
+     */
+    public final LoadError getError() {
+        return loadError;
+    }
+
+    /**
+     * Returns the owner of the sign
+     *
+     * @return The uuid of the owner
+     */
+    public abstract UUID getOwner();
+
+    /**
+     * Sets the owner of the sign
+     *
+     * @param newOwner
+     */
+    public abstract void setOwner(UUID newOwner);
 
     /**
      * Get the sign block
@@ -714,6 +814,84 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     }
 
     /**
+     * Checks if the given player can add/remove xp from the sign
+     *
+     * @param player
+     *
+     * @return
+     */
+    public abstract boolean hasAccess(UUID player);
+
+    /**
+     * Increases the XP on the sign with the current selected amount
+     *
+     * @param player The current player increasing the XP of the sign
+     */
+    public void increaseXp(Player player) {
+        increaseXp(player, 1);
+    }
+
+    /**
+     * Increases the XP on the sign with the current selected amount
+     *
+     * @param player           The current player increasing the XP of the sign
+     * @param levelsToIncrease The amount of levels to increase
+     */
+    public void increaseXp(Player player, int levelsToIncrease) {
+        ExperienceManager experienceManager = new ExperienceManager(player);
+
+        boolean levelCheck = experienceManager.getCurrentExp()
+                == experienceManager.getXpForLevel(player.getLevel());
+
+        int levelToCompare = player.getLevel();
+        if (levelCheck && levelToCompare > 0) {
+            levelToCompare--;
+        }
+
+        levelToCompare -= levelsToIncrease - 1;
+
+        if (levelToCompare < 0) {
+            levelToCompare = 0;
+        }
+
+        int xpToIncrease = experienceManager.getCurrentExp()
+                - experienceManager.getXpForLevel(levelToCompare);
+
+        increaseXpSign(player, xpToIncrease);
+    }
+
+    /**
+     * Whether or not this is a group sign. This is so the AbstractGroupSign can
+     * add additional functions
+     *
+     * @return True if this is a group sign, false otherwise
+     */
+    public boolean isGroupSign() {
+        return false;
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Object> serialize() {
+        HashMap<String, Object> serialized = new HashMap<>();
+        serialized.put("x", location.getX());
+        serialized.put("y", location.getY());
+        serialized.put("z", location.getZ());
+        serialized.put("world", location.getWorld().getUID().toString());
+        serialized.put("ownerUuid", getOwner().toString());
+        return serialized;
+    }
+
+    /**
+     * A human readable name for the sign.
+     *
+     * @return The sign type
+     */
+    public abstract String signType();
+
+    /**
      * Update the amount of XP displayed
      */
     public final void updateSign() {
@@ -725,57 +903,35 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
     }
 
     /**
-     * The load error for this sign
+     * This function should be implemented to save the amount of xp on the sign
      *
-     * @return
+     * @param xpInStorage The new XP amount it has to be set to
      */
-    public final LoadError getError() {
-        return loadError;
+    protected abstract void setNewXp(int xpInStorage);
+
+    /**
+     * Retrieves the text second line of text for the sign
+     *
+     * @return The text to display on the sign
+     */
+    protected String getSecondLine() {
+        return "";
     }
 
     /**
-     * Remove the sign form the list
+     * Retrieves the text for the sign
      *
-     * @param playerWhoDestroys The player destroying the sign
-     * @return
+     * @return The text to display on the sign
      */
-    public boolean destroySign(Player playerWhoDestroys) {
-
-        if (!canDestroySign(playerWhoDestroys)) {
-            return false;
-        }
-        removeSign(this);
-        if (sign.getBlock().hasMetadata("XP_STORAGE_XPSIGN")) {
-            sign.getBlock().removeMetadata("XP_STORAGE_XPSIGN", XPStorage.getPluginUtil().getPlugin());
-        }
-        XpSignFacingBlock.removeFacingBlock(signFacingBlock);
-        return true;
-    }
-
-    /**
-     * Check if can be removed form the list
-     *
-     * @param playerWhoDestroys The player who is destroying the sign
-     * @return
-     */
-    public boolean canDestroySign(Player playerWhoDestroys) {
-        if (playerWhoDestroys == null) {
-            return false;
-        }
-        return playerWhoDestroys.getUniqueId().equals(getOwner());
-    }
+    protected abstract String getSignText();
 
     /**
      * Return debug information, only for printing errors
      *
-     * @return
+     * @return The load information used to load it from file
      */
-    Map<String, Object> getLoadInformation() {
+    protected Map<String, Object> getLoadInformation() {
         return this.loadInformation;
-    }
-
-    public ArrayList<GuiElement> getAdditionalGuiElements(Player player) {
-        return new ArrayList<>(0);
     }
 
 }

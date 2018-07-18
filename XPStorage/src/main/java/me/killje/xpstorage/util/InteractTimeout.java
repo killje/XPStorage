@@ -26,7 +26,7 @@ public final class InteractTimeout {
      * Add a timeout for the player and current sign
      *
      * @param player The player interacting
-     * @param sign The sign being interact with
+     * @param sign   The sign being interact with
      */
     public static void addInteractTimeout(UUID player, Sign sign) {
 
@@ -46,7 +46,8 @@ public final class InteractTimeout {
      * Check if for the given player and sign there is a timeout running
      *
      * @param player The player to check
-     * @param sign The sign to check for
+     * @param sign   The sign to check for
+     *
      * @return True if there is a timeout running for the player and the sign
      */
     public static boolean hasInteractTimeout(UUID player, Sign sign) {

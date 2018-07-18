@@ -27,7 +27,7 @@ public class SetName extends KeyBoard implements GuiElement {
     /**
      * Icon and inventory for setting a name for a Ender group.
      *
-     * @param player The player editing the sign
+     * @param player         The player editing the sign
      * @param enderGroupSign The sign being edited
      */
     public SetName(Player player, EnderGroupSign enderGroupSign) {

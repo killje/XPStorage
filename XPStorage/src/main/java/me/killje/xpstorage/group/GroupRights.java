@@ -18,6 +18,36 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 public class GroupRights implements ConfigurationSerializable {
 
     /**
+     * Deserialize's the given map
+     *
+     * This is only used for loading from a config file
+     *
+     * @param groupRightsMap The group right information
+     *
+     * @return The constructed group right
+     */
+    public static GroupRights deserialize(Map<String, Object> groupRightsMap) {
+
+        UUID groupId
+                = UUID.fromString((String) groupRightsMap.get("uuidGroup"));
+
+        GroupRights groupRights = new GroupRights(groupId);
+
+        List<String> rights = (List<String>) groupRightsMap.get("rights");
+
+        for (String rightName : rights) {
+
+            Right right = Right.getRightsByName(rightName);
+
+            if (right != null) {
+                groupRights.addRight(right);
+            }
+        }
+
+        return groupRights;
+    }
+
+    /**
      * The permissions available
      */
     public enum Right {
@@ -95,51 +125,6 @@ public class GroupRights implements ConfigurationSerializable {
         this.groupId = groupId;
     }
 
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public Map<String, Object> serialize() {
-        HashMap<String, Object> returnMap = new HashMap<>();
-        returnMap.put("uuidGroup", groupId.toString());
-        ArrayList<String> rightStrings = new ArrayList<>();
-        for (Right right : rights) {
-            rightStrings.add(right.getStorageName());
-        }
-        returnMap.put("rights", rightStrings);
-        return returnMap;
-    }
-
-    /**
-     * Deserialize's the given map
-     *
-     * This is only used for loading from a config file
-     *
-     * @param groupRightsMap The group right information
-     *
-     * @return The constructed group right
-     */
-    public static GroupRights deserialize(Map<String, Object> groupRightsMap) {
-
-        UUID groupId
-                = UUID.fromString((String) groupRightsMap.get("uuidGroup"));
-
-        GroupRights groupRights = new GroupRights(groupId);
-
-        List<String> rights = (List<String>) groupRightsMap.get("rights");
-
-        for (String rightName : rights) {
-
-            Right right = Right.getRightsByName(rightName);
-
-            if (right != null) {
-                groupRights.addRight(right);
-            }
-        }
-
-        return groupRights;
-    }
-
     /**
      * Add a rigth to the group right
      *
@@ -150,6 +135,26 @@ public class GroupRights implements ConfigurationSerializable {
             return;
         }
         this.rights.add(right);
+    }
+
+    /**
+     * Gets the group UUID that these rights belong to
+     *
+     * @return The UUID
+     */
+    public UUID getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * Checks if this right is present
+     *
+     * @param right The right to check for
+     *
+     * @return True if this contains the right, false otherwise
+     */
+    public boolean hasRight(Right right) {
+        return this.rights.contains(right);
     }
 
     /**
@@ -164,22 +169,18 @@ public class GroupRights implements ConfigurationSerializable {
         this.rights.remove(right);
     }
 
+    @Override
     /**
-     * Checks if this right is present
-     *
-     * @param right The right to check for
-     * @return True if this contains the right, false otherwise
+     * {@inheritDoc}
      */
-    public boolean hasRight(Right right) {
-        return this.rights.contains(right);
-    }
-
-    /**
-     * Gets the group UUID that these rights belong to
-     *
-     * @return The UUID
-     */
-    public UUID getGroupId() {
-        return groupId;
+    public Map<String, Object> serialize() {
+        HashMap<String, Object> returnMap = new HashMap<>();
+        returnMap.put("uuidGroup", groupId.toString());
+        ArrayList<String> rightStrings = new ArrayList<>();
+        for (Right right : rights) {
+            rightStrings.add(right.getStorageName());
+        }
+        returnMap.put("rights", rightStrings);
+        return returnMap;
     }
 }

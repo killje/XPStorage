@@ -77,6 +77,7 @@ public enum Permission {
      * Check if the permissible entity has the permission
      *
      * @param permissible The entity to check
+     *
      * @return True if the permissible has the permission, false otherwise
      */
     public boolean hasPermission(Permissible permissible) {
@@ -91,8 +92,9 @@ public enum Permission {
      *
      * @param permissible The permissible to check the permissions for
      * @param permissions The permissions to check
+     *
      * @return True if any permission is true for the permissible, false
-     * otherwise
+     *         otherwise
      */
     public static boolean hasAnyPermission(Permissible permissible,
             Permission... permissions) {
@@ -110,8 +112,9 @@ public enum Permission {
      *
      * @param permissible The permissible to check the permissions for
      * @param permissions The permissions to check
+     *
      * @return False if any permission is false for the permissible, true
-     * otherwise
+     *         otherwise
      */
     public static boolean hasAllPermissions(Permissible permissible,
             Permission... permissions) {

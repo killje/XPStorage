@@ -44,23 +44,6 @@ public class Settings extends InventoryBase implements GuiElement {
     /**
      * {@inheritDoc}
      */
-    protected void initInventory() {
-        this
-                .setInventoryName(getGuiSettings().getText("settings"))
-                .addGuiElement(new SetMessage(player));
-        if (Permission.hasAnyPermission(player, CREATE_LOCAL_PLAYER, CREATE_ENDER_PLAYER, CREATE_LOCAL_GROUP)) {
-            this.addGuiElement(new DefaultSign(player));
-        }
-        if (Permission.CHANGE_OWNER.hasPermission(player)) {
-            this.addGuiElement(new ChangeOwnerList(player, xpSign));
-        }
-        this.addGuiElement(new Exit(), 8);
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("settings");
     }
@@ -69,8 +52,27 @@ public class Settings extends InventoryBase implements GuiElement {
     /**
      * {@inheritDoc}
      */
-    public void onInventoryClickEvent(InventoryBase currentInventoryBase, InventoryClickEvent event) {
+    public void onInventoryClickEvent(InventoryBase currentInventoryBase,
+            InventoryClickEvent event) {
         currentInventoryBase.openNewInventory(event.getWhoClicked(), this);
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    protected void initInventory() {
+        this
+                .setInventoryName(getGuiSettings().getText("settings"))
+                .addGuiElement(new SetMessage(player));
+        if (Permission.hasAnyPermission(player, CREATE_LOCAL_PLAYER,
+                CREATE_ENDER_PLAYER, CREATE_LOCAL_GROUP)) {
+            this.addGuiElement(new DefaultSign(player));
+        }
+        if (Permission.CHANGE_OWNER.hasPermission(player)) {
+            this.addGuiElement(new ChangeOwnerList(player, xpSign));
+        }
+        this.addGuiElement(new Exit(), 8);
     }
 
 }

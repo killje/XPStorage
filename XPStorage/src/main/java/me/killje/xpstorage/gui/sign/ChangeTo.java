@@ -17,28 +17,28 @@ import org.bukkit.inventory.ItemStack;
 public class ChangeTo implements GuiElement {
 
     /**
-     * The sign being edited
-     */
-    private AbstractXpSign xpSign;
-    /**
      * The setting name in the GUI.yml file for the text
      */
     private final String guiSettingsName;
+    /**
+     * The player editing the sign
+     */
+    private final Player player;
     /**
      * The type to set the sign to when clicked
      */
     private final Class<? extends AbstractXpSign> signClass;
     /**
-     * The player editing the sign
+     * The sign being edited
      */
-    private final Player player;
+    private AbstractXpSign xpSign;
 
     /**
      * Icon for changing the sign to a given type of sign
      *
-     * @param player The player editing the sign
-     * @param xpSign The sign being edited
-     * @param signClass The type to set the sign to
+     * @param player          The player editing the sign
+     * @param xpSign          The sign being edited
+     * @param signClass       The type to set the sign to
      * @param guiSettingsName The settings name in the GUI.yml for texts
      */
     public ChangeTo(Player player,

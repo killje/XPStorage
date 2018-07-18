@@ -29,7 +29,7 @@ public class DeleteGroup implements GuiElement {
      * Icon for deleting the entire group
      *
      * @param enderGroupSign The sign being edited
-     * @param player The player editing the sign
+     * @param player         The player editing the sign
      */
     public DeleteGroup(EnderGroupSign enderGroupSign, Player player) {
         this.enderGroupSign = enderGroupSign;

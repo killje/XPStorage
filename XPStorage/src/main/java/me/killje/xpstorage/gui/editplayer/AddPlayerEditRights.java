@@ -33,7 +33,7 @@ public class AddPlayerEditRights implements GuiElement {
      * players from the group
      *
      * @param player The player being edited
-     * @param sign The sign the player will be added to
+     * @param sign   The sign the player will be added to
      */
     public AddPlayerEditRights(UUID player, AbstractGroupSign sign) {
         this.player = player;

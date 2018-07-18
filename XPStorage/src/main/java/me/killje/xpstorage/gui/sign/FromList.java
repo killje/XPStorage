@@ -37,6 +37,14 @@ public class FromList implements GuiElement, PlayerListElementFetcher {
     /**
      * {@inheritDoc}
      */
+    public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
+        return new AddPlayer(offlinePlayer, sign);
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
     public ItemStack getItemStack(GuiSetting guiSettings) {
         return guiSettings.getItemStack("fromList");
     }
@@ -59,14 +67,6 @@ public class FromList implements GuiElement, PlayerListElementFetcher {
 
         currentInventoryBase.openNewInventory(player, playerList);
 
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public GuiElement getGuiElement(OfflinePlayer offlinePlayer) {
-        return new AddPlayer(offlinePlayer, sign);
     }
 
 }

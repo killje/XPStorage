@@ -1,7 +1,10 @@
 package me.killje.xpstorage.eventListeners;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
 import me.desht.dhutils.ExperienceManager;
+import me.killje.spigotgui.util.GuiSetting;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
 import me.killje.xpstorage.permission.Permission;
@@ -16,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
 
 /**
  * Listener for players interacting events
@@ -36,8 +40,19 @@ public class OnPlayerInteract implements Listener {
             return;
         }
 
-        Object signObject = event.getClickedBlock()
-                .getMetadata("XP_STORAGE_XPSIGN").get(0).value();
+        List<MetadataValue> metadataList = event.getClickedBlock()
+                .getMetadata("XP_STORAGE_XPSIGN");
+
+        if (metadataList.size() > 1) {
+            event.getPlayer().sendMessage(
+                    XPStorage.getGuiSettings().getText("metadataProblem")
+            );
+            XPStorage.getPluginUtil().getLogger().log(Level.SEVERE,
+                    XPStorage.getGuiSettings().getText("metadataProblemAdmin"));
+            return;
+        }
+
+        Object signObject = metadataList.get(0).value();
 
         AbstractXpSign xpSign = (AbstractXpSign) signObject;
 

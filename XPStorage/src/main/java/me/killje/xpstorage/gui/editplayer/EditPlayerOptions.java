@@ -22,24 +22,24 @@ import org.bukkit.Bukkit;
 public class EditPlayerOptions extends InventoryBase {
 
     /**
-     * The sign that this player is being edited from
+     * The player editing
      */
-    private final AbstractGroupSign sign;
+    private final UUID playerEditing;
     /**
      * The player to edit
      */
     private final UUID playerToEdit;
     /**
-     * The player editing
+     * The sign that this player is being edited from
      */
-    private final UUID playerEditing;
+    private final AbstractGroupSign sign;
 
     /**
      * Creates a inventory that shows a list of actions to take on the selected
      * player
      *
-     * @param sign The sign that the player is being edited from
-     * @param playerToEdit The player being edited
+     * @param sign          The sign that the player is being edited from
+     * @param playerToEdit  The player being edited
      * @param playerEditing The player doing the editing
      */
     public EditPlayerOptions(

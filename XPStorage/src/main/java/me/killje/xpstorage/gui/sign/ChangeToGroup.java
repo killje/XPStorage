@@ -21,22 +21,22 @@ import org.bukkit.inventory.ItemStack;
 public class ChangeToGroup implements GuiElement, GroupListGuiElement {
 
     /**
-     * The sign being changed
-     */
-    private AbstractXpSign xpSign;
-    /**
-     * Check if this option is already selected
-     */
-    private final boolean isSelected;
-    /**
      * Check if this is changed from the group elements, not the default row of
      * items
      */
     private final boolean fromGroup;
     /**
+     * Check if this option is already selected
+     */
+    private final boolean isSelected;
+    /**
      * The player editing the sign
      */
     private final Player player;
+    /**
+     * The sign being changed
+     */
+    private AbstractXpSign xpSign;
 
     /**
      * Icon for changing the sign to a ender group sign This will assume it is
@@ -53,16 +53,24 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
     /**
      * Icon for changing the sign to a different Ender group sign.
      *
-     * @param player The player editing the sign
-     * @param xpSign The sign being edited
+     * @param player    The player editing the sign
+     * @param xpSign    The sign being edited
      * @param fromGroup When true this can be selected even if the sign is
-     * already of a ender group type
+     *                  already of a ender group type
      */
     public ChangeToGroup(Player player, AbstractXpSign xpSign, boolean fromGroup) {
         this.xpSign = xpSign;
         this.isSelected = xpSign instanceof EnderGroupSign;
         this.fromGroup = fromGroup;
         this.player = player;
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public GuiElement getGuiElement(UUID groupUUID, AbstractXpSign sign) {
+        return new ChooseGroup(groupUUID, sign, player);
     }
 
     @Override
@@ -97,14 +105,6 @@ public class ChangeToGroup implements GuiElement, GroupListGuiElement {
         InventoryBase groupList = new GroupList(player, this, xpSign);
 
         currentInventoryBase.openNewInventory(player, groupList);
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public GuiElement getGuiElement(UUID groupUUID, AbstractXpSign sign) {
-        return new ChooseGroup(groupUUID, sign, player);
     }
 
 }

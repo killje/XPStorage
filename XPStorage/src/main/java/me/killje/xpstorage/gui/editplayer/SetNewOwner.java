@@ -31,7 +31,7 @@ public class SetNewOwner implements GuiElement {
      * Icon fro setting the selected player as the owner of the group
      *
      * @param player The player being edited
-     * @param sign The sign being edited
+     * @param sign   The sign being edited
      */
     public SetNewOwner(UUID player, AbstractGroupSign sign) {
         this.player = player;

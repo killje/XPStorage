@@ -25,6 +25,19 @@ import org.bukkit.entity.HumanEntity;
 public class PlayerInformation implements ConfigurationSerializable {
 
     /**
+     * Map containing the player information by uuid.toString()
+     */
+    private static final HashMap<String, PlayerInformation> PLAYER_INFORMATION
+            = new HashMap<>();
+
+    /**
+     * Config file where player information is saved
+     */
+    private static final clsConfiguration PLAYER_INFORMATION_CONFIG
+            = new clsConfiguration(XPStorage.getPluginUtil().getPlugin(),
+                    "playerInformation.yml");
+
+    /**
      * Create a periodic back save of the player information
      */
     static {
@@ -58,25 +71,13 @@ public class PlayerInformation implements ConfigurationSerializable {
     }
 
     /**
-     * Map containing the player information by uuid.toString()
-     */
-    private static final HashMap<String, PlayerInformation> PLAYER_INFORMATION
-            = new HashMap<>();
-
-    /**
-     * Config file where player information is saved
-     */
-    private static final clsConfiguration PLAYER_INFORMATION_CONFIG
-            = new clsConfiguration(XPStorage.getPluginUtil().getPlugin(),
-                    "playerInformation.yml");
-
-    /**
      * Creates a new player information from file
      *
      * This should only be used as deserialization from file and never be called
      * from code
      *
      * @param player The playerinformation object
+     *
      * @return The created player information
      */
     public static PlayerInformation deserialize(Map<String, Object> player) {
@@ -125,6 +126,7 @@ public class PlayerInformation implements ConfigurationSerializable {
      * Get a player information object from a entity
      *
      * @param player The player to retrieve the information from
+     *
      * @return The player information for the player
      */
     public static PlayerInformation getPlayerInformation(HumanEntity player) {
@@ -135,6 +137,7 @@ public class PlayerInformation implements ConfigurationSerializable {
      * Get a player information object from a uuid
      *
      * @param player The uuid of the player to retrieve the information from
+     *
      * @return The player information for the player
      */
     public static PlayerInformation getPlayerInformation(UUID player) {
@@ -165,7 +168,23 @@ public class PlayerInformation implements ConfigurationSerializable {
                 new ArrayList<>(PLAYER_INFORMATION.values()));
         PLAYER_INFORMATION_CONFIG.SaveConfig();
     }
-
+    /**
+     * The default sign class when creating new signs
+     */
+    private Class<? extends AbstractXpSign> defaultSign = LocalPlayerSign.class;
+    /**
+     * Whether or not to receive a message when creating a sign or interacting
+     * with zero xp
+     */
+    private boolean getMessage = true;
+    /**
+     * The rights the player has in different groups
+     */
+    private final HashMap<UUID, GroupRights> groupRights = new HashMap<>();
+    /**
+     * The groups the player is part of
+     */
+    private final ArrayList<Group> groups = new ArrayList<>();
     /**
      * The uuid of the player
      */
@@ -174,23 +193,6 @@ public class PlayerInformation implements ConfigurationSerializable {
      * The xp stored in the players Ender player signs
      */
     private int xp = 0;
-    /**
-     * The groups the player is part of
-     */
-    private final ArrayList<Group> groups = new ArrayList<>();
-    /**
-     * The rights the player has in different groups
-     */
-    private final HashMap<UUID, GroupRights> groupRights = new HashMap<>();
-    /**
-     * Whether or not to receive a message when creating a sign or interacting
-     * with zero xp
-     */
-    private boolean getMessage = true;
-    /**
-     * The default sign class when creating new signs
-     */
-    private Class<? extends AbstractXpSign> defaultSign = LocalPlayerSign.class;
 
     /**
      * Creates a new player information for the player
@@ -202,56 +204,23 @@ public class PlayerInformation implements ConfigurationSerializable {
         PLAYER_INFORMATION.put(player.toString(), this);
     }
 
-    @Override
     /**
-     * {@inheritDoc}
+     * Add a group to the player
+     *
+     * @param group The group to add
      */
-    public Map<String, Object> serialize() {
-        HashMap<String, Object> playerInformation = new HashMap<>();
-        playerInformation.put("xp", xp);
-        playerInformation.put("player", this.player.toString());
-        playerInformation.put("groupRights",
-                new ArrayList<>(groupRights.values()));
-        playerInformation.put("getMessage", getMessage);
-        playerInformation.put("defaultSign", defaultSign.getCanonicalName());
-        return playerInformation;
+    public void addGroup(Group group) {
+        groups.add(group);
     }
 
     /**
-     * Set the xp of the Ender player storage to the given amount
+     * Adds a right to the player for the given group
      *
-     * @param xp The xp to set the Ender player storage to
+     * @param groupId     The group you want to add rights to
+     * @param groupRights The rights to add
      */
-    public void setPlayerXpAmount(int xp) {
-        this.xp = xp;
-    }
-
-    /**
-     * The Ender player xp currently stored
-     *
-     * @return The amount of xp stored
-     */
-    public int getPlayerXpAmount() {
-        return xp;
-    }
-
-    /**
-     * Gives back whether or not the player wants to receive messages
-     *
-     * @return True if the player want to receive message, false otherwise
-     */
-    public boolean isMessage() {
-        return getMessage;
-    }
-
-    /**
-     * Set whether or not the player wants to receive messages.
-     *
-     * @param getMessage True if the player wants to receive messages, false
-     * otherwise
-     */
-    public void isMessage(boolean getMessage) {
-        this.getMessage = getMessage;
+    public void addGroupRights(UUID groupId, GroupRights groupRights) {
+        this.groupRights.put(groupId, groupRights);
     }
 
     /**
@@ -277,27 +246,10 @@ public class PlayerInformation implements ConfigurationSerializable {
     }
 
     /**
-     * Gets the player uuid as string
-     *
-     * @return The uuid as string
-     */
-    public String getUUIDAsString() {
-        return player.toString();
-    }
-
-    /**
-     * Gets the player uuid
-     *
-     * @return The uuid of the player
-     */
-    public UUID getUUID() {
-        return player;
-    }
-
-    /**
      * Gets the rights the player has for the given group
      *
      * @param groupId The group you want to check the player rights for
+     *
      * @return The rights the player has for the group
      */
     public GroupRights getGroupRights(UUID groupId) {
@@ -308,39 +260,10 @@ public class PlayerInformation implements ConfigurationSerializable {
     }
 
     /**
-     * Adds a right to the player for the given group
-     *
-     * @param groupId The group you want to add rights to
-     * @param groupRights The rights to add
-     */
-    public void addGroupRights(UUID groupId, GroupRights groupRights) {
-        this.groupRights.put(groupId, groupRights);
-    }
-
-    /**
-     * Removes group rights to a group
-     *
-     * @param groupId The group you want to remove rights to
-     */
-    public void removeGroupRights(UUID groupId) {
-        if (groupRights.containsKey(groupId)) {
-            groupRights.remove(groupId);
-        }
-    }
-
-    /**
-     * Add a group to the player
-     *
-     * @param group The group to add
-     */
-    public void addGroup(Group group) {
-        groups.add(group);
-    }
-
-    /**
      * Gets the groups the player has the given right in
      *
      * @param Right The right to check for in the groups
+     *
      * @return The groups with the given right
      */
     public ArrayList<Group> getGroups(Right Right) {
@@ -363,6 +286,87 @@ public class PlayerInformation implements ConfigurationSerializable {
      */
     public ArrayList<Group> getGroups() {
         return groups;
+    }
+
+    /**
+     * The Ender player xp currently stored
+     *
+     * @return The amount of xp stored
+     */
+    public int getPlayerXpAmount() {
+        return xp;
+    }
+
+    /**
+     * Set the xp of the Ender player storage to the given amount
+     *
+     * @param xp The xp to set the Ender player storage to
+     */
+    public void setPlayerXpAmount(int xp) {
+        this.xp = xp;
+    }
+
+    /**
+     * Gets the player uuid
+     *
+     * @return The uuid of the player
+     */
+    public UUID getUUID() {
+        return player;
+    }
+
+    /**
+     * Gets the player uuid as string
+     *
+     * @return The uuid as string
+     */
+    public String getUUIDAsString() {
+        return player.toString();
+    }
+
+    /**
+     * Gives back whether or not the player wants to receive messages
+     *
+     * @return True if the player want to receive message, false otherwise
+     */
+    public boolean isMessage() {
+        return getMessage;
+    }
+
+    /**
+     * Set whether or not the player wants to receive messages.
+     *
+     * @param getMessage True if the player wants to receive messages, false
+     *                   otherwise
+     */
+    public void isMessage(boolean getMessage) {
+        this.getMessage = getMessage;
+    }
+
+    /**
+     * Removes group rights to a group
+     *
+     * @param groupId The group you want to remove rights to
+     */
+    public void removeGroupRights(UUID groupId) {
+        if (groupRights.containsKey(groupId)) {
+            groupRights.remove(groupId);
+        }
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Object> serialize() {
+        HashMap<String, Object> playerInformation = new HashMap<>();
+        playerInformation.put("xp", xp);
+        playerInformation.put("player", this.player.toString());
+        playerInformation.put("groupRights",
+                new ArrayList<>(groupRights.values()));
+        playerInformation.put("getMessage", getMessage);
+        playerInformation.put("defaultSign", defaultSign.getCanonicalName());
+        return playerInformation;
     }
 
 }

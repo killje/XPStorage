@@ -25,6 +25,11 @@ import org.bukkit.entity.Player;
 public class SignInventory extends InventoryBase {
 
     /**
+     * The material used to interact with XPStorage signs
+     */
+    public final static Material INTERACT_MATERIAL;
+
+    /**
      * Getting the material type to interact with from the config file
      */
     static {
@@ -33,20 +38,15 @@ public class SignInventory extends InventoryBase {
                         .getString("interactMaterial")
         );
     }
-
     /**
-     * The material used to interact with XPStorage signs
+     * The player that clicked on the sign
      */
-    public final static Material INTERACT_MATERIAL;
+    private final Player player;
 
     /**
      * The sign clicked on
      */
     private final AbstractXpSign xpSign;
-    /**
-     * The player that clicked on the sign
-     */
-    private final Player player;
 
     /**
      * Inventory for a sign

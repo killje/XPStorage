@@ -23,6 +23,11 @@ import org.bukkit.entity.Player;
 public class GroupList extends GuiElementList {
 
     /**
+     * Map of groups available
+     */
+    private final Map<String, GuiElement> groups = new HashMap<>();
+
+    /**
      * The player being edited
      */
     private final Player player;
@@ -30,18 +35,14 @@ public class GroupList extends GuiElementList {
      * The sign being edited
      */
     private final AbstractXpSign xpSign;
-    /**
-     * Map of groups available
-     */
-    private final Map<String, GuiElement> groups = new HashMap<>();
 
     /**
      * Inventory list of groups available
      *
-     * @param player The player editing
+     * @param player              The player editing
      * @param groupListGuiElement Class for creating the icon depending on the
-     * group
-     * @param xpSign The sign being edited
+     *                            group
+     * @param xpSign              The sign being edited
      */
     public GroupList(Player player, GroupListGuiElement groupListGuiElement,
             AbstractXpSign xpSign) {
@@ -66,6 +67,22 @@ public class GroupList extends GuiElementList {
     /**
      * {@inheritDoc}
      */
+    public Map<String, ? extends GuiElement> getElementMap() {
+        return groups;
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    protected String getInventoryName() {
+        return XPStorage.getGuiSettings().getText("choseGroup");
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
     protected int initInventory(
             int startIndex, int stopIndex, int maxItemsOnPage) {
 
@@ -83,22 +100,6 @@ public class GroupList extends GuiElementList {
 
         return initInventory;
 
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public Map<String, ? extends GuiElement> getElementMap() {
-        return groups;
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    protected String getInventoryName() {
-        return XPStorage.getGuiSettings().getText("choseGroup");
     }
 
 }

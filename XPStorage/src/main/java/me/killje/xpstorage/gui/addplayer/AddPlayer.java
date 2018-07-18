@@ -33,7 +33,7 @@ public class AddPlayer implements GuiElement {
      * Create a new icon element for adding a player to a group
      *
      * @param player The player this icon represents
-     * @param sign The sign the player will be added to when clicked on
+     * @param sign   The sign the player will be added to when clicked on
      */
     public AddPlayer(OfflinePlayer player, AbstractXpSign sign) {
         this.player = player;

@@ -40,22 +40,6 @@ public class SetNameButton extends SetStringButton {
     /**
      * {@inheritDoc}
      */
-    protected ItemStack noNameYetItem(GuiSetting guiSettings) {
-        return guiSettings.getItemStack("setName.noNameYet");
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    protected String textForEmpty(GuiSetting guiSettings) {
-        return guiSettings.getText("setName.empty");
-    }
-
-    @Override
-    /**
-     * {@inheritDoc}
-     */
     protected void executeSet(
             InventoryBase currentInventoryBase, InventoryClickEvent event) {
 
@@ -69,6 +53,22 @@ public class SetNameButton extends SetStringButton {
         );
 
         enderGroupSign.updateSign();
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    protected ItemStack noNameYetItem(GuiSetting guiSettings) {
+        return guiSettings.getItemStack("setName.noNameYet");
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    protected String textForEmpty(GuiSetting guiSettings) {
+        return guiSettings.getText("setName.empty");
     }
 
 }

@@ -799,3 +799,5 @@ texts:
     signCreated: 'XP sign has been created, you can edit sign settings by using "%SIGN_INTERACT_MATERIAL" on this sign. There you can also disable this message.'
     noXPLeft: 'You don''t have any experience left. If you want to access the sign, interact with a "%SIGN_INTERACT_MATERIAL" to open the GUI'
     noCreatePermmissions: 'You don''t have any permmisions to create XPStorage signs.'
+    metadataProblem: 'Could not open sign. A console message has been logged. please contact a admin'
+    metadataProblemAdmin: 'Multiple definitions of metadata found on a sign block. This is a servere problem. This often occures after a impropper shutdown of the plugin. Please do a full restart to fix this problem'
