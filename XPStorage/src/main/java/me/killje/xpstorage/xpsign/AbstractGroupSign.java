@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import me.killje.spigotgui.guielement.GuiElement;
+import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.group.Group;
 import me.killje.xpstorage.group.GroupRights;
 import me.killje.xpstorage.gui.editplayer.EditPlayerOptions;
@@ -88,10 +90,10 @@ public abstract class AbstractGroupSign extends AbstractXpSign {
                 .hasRight(GroupRights.Right.CAN_CREATE_GROUP_SIGNS);
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean destroySign(Player playerWhoDestroys) {
         if (!super.destroySign(playerWhoDestroys)) {
             return false;
@@ -101,10 +103,10 @@ public abstract class AbstractGroupSign extends AbstractXpSign {
         return true;
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public ArrayList<GuiElement> getAdditionalGuiElements(Player player) {
         ArrayList<GuiElement> guiElements = new ArrayList<>();
         if (getOwner().equals(player.getUniqueId())
@@ -119,10 +121,10 @@ public abstract class AbstractGroupSign extends AbstractXpSign {
         return guiElements;
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getCurrentXp() {
         return group.getXp();
     }
@@ -144,56 +146,81 @@ public abstract class AbstractGroupSign extends AbstractXpSign {
         return group;
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public UUID getOwner() {
         return group.getOwner();
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setOwner(UUID newOwner) {
         group.setOwner(newOwner);
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasAccess(UUID player) {
         return group.hasPlayer(player);
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isGroupSign() {
         return true;
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Object> serialize() {
-        HashMap<String, Object> returnMap = new HashMap<>();
-        returnMap.put("x", getSign().getX());
-        returnMap.put("y", getSign().getY());
-        returnMap.put("z", getSign().getZ());
-        returnMap.put("world", getSign().getWorld().getUID().toString());
-        returnMap.put("uuidGroup", group.getGroupUuid().toString());
+        Map<String, Object> returnMap = new HashMap<>();
+
+        if (getSign() == null) {
+            XPStorage.getPluginUtil().getLogger().log(Level.SEVERE,
+                    "Location of sign was initialized to null");
+            if (getLoadInformation() != null) {
+                returnMap = getLoadInformation();
+                XPStorage.getPluginUtil().getLogger().log(
+                        Level.SEVERE,
+                        "Load information: {0}",
+                        getLoadInformation()
+                );
+            }
+        } else if (getGroup() == null) {
+            XPStorage.getPluginUtil().getLogger().log(Level.SEVERE,
+                    "Group of sign was initialized to null");
+            if (getLoadInformation() != null) {
+                returnMap = getLoadInformation();
+                XPStorage.getPluginUtil().getLogger().log(
+                        Level.SEVERE,
+                        "Load information: {0}",
+                        getLoadInformation()
+                );
+            }
+        } else {
+            returnMap.put("x", getSign().getX());
+            returnMap.put("y", getSign().getY());
+            returnMap.put("z", getSign().getZ());
+            returnMap.put("world", getSign().getWorld().getUID().toString());
+            returnMap.put("uuidGroup", getGroup().getGroupUuid().toString());
+        }
         return returnMap;
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setNewXp(int xpInStorage) {
         group.setXp(xpInStorage);
         updateSign();

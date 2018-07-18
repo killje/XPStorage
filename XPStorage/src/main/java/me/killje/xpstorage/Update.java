@@ -43,9 +43,10 @@ public class Update {
         for (SignSaver signSaver : signsList) {
             serialize = signSaver.serialize();
             if (signSaver.getWorld() == null) {
-                serialize.put("Reason", "World not found");
                 worldNotFound++;
-                failed.add(serialize);
+                failed.add(getFailedSign(
+                        serialize, "World not found"
+                ));
                 pluginUtil.getLogger().log(Level.WARNING,
                         "World not found: world uuid: {0}", new Object[]{
                             serialize.get("world")});
@@ -55,9 +56,10 @@ public class Update {
             if (location != null) {
                 Block block = location.getBlock();
                 if (block == null || !AbstractXpSign.isSign(block.getType())) {
-                    serialize.put("Reason", "Sign does not exist anymore");
                     signDoesntExist++;
-                    failed.add(serialize);
+                    failed.add(getFailedSign(
+                            serialize, "Sign does not exist anymore"
+                    ));
                     pluginUtil.getLogger().log(Level.WARNING,
                             "Sign does not exist anymore at:"
                             + " world={0}, x={1}, y={2}, z={3}",
@@ -67,10 +69,10 @@ public class Update {
                     continue;
                 }
                 if (block.hasMetadata("XP_STORAGE_XPSIGN")) {
-                    serialize.put("Reason",
-                            "XPSign was already created. Skipping");
                     xpSignAlreadyExists++;
-                    failed.add(serialize);
+                    failed.add(getFailedSign(
+                            serialize, "XPSign was already created. Skipping"
+                    ));
                     pluginUtil.getLogger().log(Level.WARNING,
                             "XPSign was already created. Skipping");
                     continue;
@@ -85,18 +87,19 @@ public class Update {
                     localPlayerSign.setXP(xpInStorage);
                 } catch (NumberFormatException ex) {
                     failedToParse++;
-                    serialize.put("Reason",
-                            "Could not parse the xp amount on the sign");
-                    failed.add(serialize);
+                    failed.add(getFailedSign(
+                            serialize,
+                            "Could not parse the xp amount on the sign"
+                    ));
                     pluginUtil.getLogger().log(Level.WARNING,
                             "Could not parse the xp amount on the sign");
                 }
 
             } else {
-                serialize.put("Reason",
-                        "Could not generate a location from file");
                 locationFailed++;
-                failed.add(serialize);
+                failed.add(getFailedSign(
+                        serialize, "Could not generate a location from file"
+                ));
                 pluginUtil.getLogger().log(Level.WARNING,
                         "Could not generate a location from file:"
                         + " world={0}, x={1}, y={2}, z={3}",
@@ -126,6 +129,15 @@ public class Update {
         if (!failed.isEmpty()) {
             config.set("Failed", failed);
         }
+    }
+
+    private Map<String, Object> getFailedSign(Map<String, Object> signMap,
+            String reason) {
+
+        signMap.put("type", signMap.remove("=="));
+        signMap.put("Reason", reason);
+
+        return signMap;
     }
 
 }

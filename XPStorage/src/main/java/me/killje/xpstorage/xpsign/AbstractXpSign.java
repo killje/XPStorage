@@ -42,6 +42,12 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      */
     private static final clsConfiguration XP_SIGN_CONFIG = new clsConfiguration(
             XPStorage.getPluginUtil().getPlugin(), "xpSigns.yml");
+
+    /**
+     * If this is true no signs should be saved to config. This is only every
+     * used when unloading the plugin from failing to load a sign
+     */
+    private static boolean failedToload = false;
     /**
      * List of all signs for saving purposes
      */
@@ -64,10 +70,10 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
          */
         private static BukkitTask lastTask = null;
 
-        @SuppressWarnings("LeakingThisInConstructor")
         /**
          * Making sure only one task is running
          */
+        @SuppressWarnings("LeakingThisInConstructor")
         public AbstractXpSignSaver() {
             if (lastTask != null) {
                 lastTask.cancel();
@@ -151,6 +157,22 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
             }
         }
         return signClass;
+    }
+
+    /**
+     * Gets a map for failed signs
+     *
+     * @param loadInformation The load information for the sign
+     * @param reason          The reason it failed to load
+     *
+     * @return Map with failed sign ready to be put in failed signs
+     */
+    private static Map<String, Object> getFailedSignMap(
+            Map<String, Object> loadInformation, String reason) {
+
+        loadInformation.put("type", loadInformation.remove("=="));
+        loadInformation.put("Reason", reason);
+        return loadInformation;
     }
 
     /**
@@ -332,6 +354,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                         + " destroying itself."
                         + " Please read the console to find out what caused "
                         + "this bug.\u001b[m");
+                failedToload = true;
 
                 try {
                     // Proper unloading of the plugin
@@ -366,13 +389,11 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                                 location.getZ()
                             });
 
-                    Map<String, Object> loadInformation_noSign
-                            = xpSign.getLoadInformation();
+                    failedSigns.add(getFailedSignMap(
+                            xpSign.getLoadInformation(),
+                            "Sign does not exists on location"
+                    ));
 
-                    loadInformation_noSign.put("Reason",
-                            "Sign does not exists on location");
-
-                    failedSigns.add(loadInformation_noSign);
                     dirty = true;
                     break;
                 case NO_GROUP:
@@ -380,14 +401,12 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                     logger.log(Level.WARNING,
                             "Sign contains a group that does not exsists");
 
-                    Map<String, Object> loadInformation_noGroup
-                            = xpSign.getLoadInformation();
-
-                    loadInformation_noGroup.put("Reason",
+                    failedSigns.add(getFailedSignMap(
+                            xpSign.getLoadInformation(),
                             "Sign contained a group that does "
-                            + "not exists anymore");
+                            + "not exists anymore"
+                    ));
 
-                    failedSigns.add(loadInformation_noGroup);
                     dirty = true;
                     break;
                 case BAD_LOCATION:
@@ -405,14 +424,11 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                                 (int) loadInformation.get("y"),
                                 (int) loadInformation.get("z")
                             });
+                    failedSigns.add(getFailedSignMap(
+                            xpSign.getLoadInformation(),
+                            "Could not find world for location"
+                    ));
 
-                    Map<String, Object> loadInformation_badLocation
-                            = xpSign.getLoadInformation();
-
-                    loadInformation_badLocation.put("Reason",
-                            "Could not find world for location");
-
-                    failedSigns.add(loadInformation_badLocation);
                     dirty = true;
                     break;
                 case NO_PLAYER:
@@ -421,24 +437,21 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
                     logger.log(Level.WARNING,
                             "Could not retrive player: uuid={0}", new Object[]{
                                 (String) sign.get("ownerUuid")});
-                    Map<String, Object> loadInformation_noPlayer
-                            = xpSign.getLoadInformation();
 
-                    loadInformation_noPlayer.put("Reason",
-                            "Could not retrive player with the given uuid");
+                    failedSigns.add(getFailedSignMap(
+                            xpSign.getLoadInformation(),
+                            "Could not retrive player with the given uuid"
+                    ));
 
-                    failedSigns.add(loadInformation_noPlayer);
                     dirty = true;
                     break;
                 default:
                     logger.log(Level.WARNING, "Could not generate sign");
-                    Map<String, Object> loadInformation_nothing
-                            = xpSign.getLoadInformation();
+                    failedSigns.add(getFailedSignMap(
+                            xpSign.getLoadInformation(),
+                            "Could not generate sign"
+                    ));
 
-                    loadInformation_nothing.put("Reason",
-                            "Could not generate sign");
-
-                    failedSigns.add(loadInformation_nothing);
                     dirty = true;
                     break;
             }
@@ -465,7 +478,6 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         saveSigns();
     }
 
-    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     /**
      * Save the signs, when initializing the signs will not be directly saved
      *
@@ -473,7 +485,11 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      *                          boolean allows that, should not be used in
      *                          normal saving
      */
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public static void saveSigns(boolean overrideInitCheck) {
+        if (failedToload) {
+            return;
+        }
         if (!overrideInitCheck
                 && XPStorage.getPluginUtil().getPlugin().isEnabled()) {
             return;
@@ -528,12 +544,12 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      */
     protected LoadError loadError;
 
-    @SuppressWarnings("LeakingThisInConstructor")
     /**
      * Creating a sign from scratch
      *
      * @param sign The sign block that has been created
      */
+    @SuppressWarnings("LeakingThisInConstructor")
     public AbstractXpSign(Sign sign) {
 
         this.sign = sign;
@@ -572,6 +588,7 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @param sign The sign information
      */
     public AbstractXpSign(Map<String, Object> sign) {
+
         // Try to get world
         World world = Bukkit.getWorld(UUID.
                 fromString((String) sign.get("world")));
@@ -602,8 +619,11 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         // Try to get player and sign
         Sign signBlock = (Sign) location.getBlock().getState();
 
+        this.location = signBlock.getLocation();
+
         BlockFace facingDirection = ((org.bukkit.material.Sign) signBlock.
                 getData()).getAttachedFace();
+
         this.signFacingBlock = new XpSignFacingBlock(signBlock.getBlock().
                 getRelative(facingDirection), this);
 
@@ -870,17 +890,30 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         return false;
     }
 
-    @Override
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Object> serialize() {
-        HashMap<String, Object> serialized = new HashMap<>();
-        serialized.put("x", location.getX());
-        serialized.put("y", location.getY());
-        serialized.put("z", location.getZ());
-        serialized.put("world", location.getWorld().getUID().toString());
-        serialized.put("ownerUuid", getOwner().toString());
+        Map<String, Object> serialized = new HashMap<>();
+        if (getSign() == null) {
+            XPStorage.getPluginUtil().getLogger().log(Level.SEVERE,
+                    "Sign was initialized to null");
+            if (loadInformation != null) {
+                serialized = loadInformation;
+                XPStorage.getPluginUtil().getLogger().log(
+                        Level.SEVERE,
+                        "Load information: {0}",
+                        loadInformation
+                );
+            }
+        } else {
+            serialized.put("x", getSign().getX());
+            serialized.put("y", getSign().getY());
+            serialized.put("z", getSign().getZ());
+            serialized.put("world", getSign().getWorld().getUID().toString());
+            serialized.put("ownerUuid", getOwner().toString());
+        }
         return serialized;
     }
 
@@ -900,6 +933,15 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
         sign.setLine(2, getCurrentXp() + "");
         sign.setLine(3, getSignText());
         sign.update();
+    }
+
+    /**
+     * Return debug information, only for printing errors
+     *
+     * @return The load information used to load it from file
+     */
+    protected Map<String, Object> getLoadInformation() {
+        return this.loadInformation;
     }
 
     /**
@@ -924,14 +966,5 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @return The text to display on the sign
      */
     protected abstract String getSignText();
-
-    /**
-     * Return debug information, only for printing errors
-     *
-     * @return The load information used to load it from file
-     */
-    protected Map<String, Object> getLoadInformation() {
-        return this.loadInformation;
-    }
 
 }

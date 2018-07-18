@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.killje</groupId>
     <artifactId>XPStorage</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <properties>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>me.killje</groupId>
             <artifactId>SpigotGui</artifactId>
-            <version>4.0.3-SNAPSHOT</version>
+            <version>4.0.3</version>
         </dependency>
         
     </dependencies>
