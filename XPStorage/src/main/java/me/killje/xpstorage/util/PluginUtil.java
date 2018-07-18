@@ -16,60 +16,155 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
+ * A utility class for bukkit plugin to use some function with less input
  *
  * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
  */
 public class PluginUtil {
 
+    /**
+     * The plugin to reference
+     */
     private final Plugin plugin;
 
+    /**
+     * Creates a plugin util
+     *
+     * @param plugin The plugin to use
+     */
     public PluginUtil(Plugin plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Returns the plugin instance itself
+     *
+     * @return
+     */
     public Plugin getPlugin() {
         if (plugin == null) {
-            throw new NullPointerException("Plugin reference is not set. Please add a plugin before referencing the PluginUtils");
+            throw new NullPointerException(
+                    "Plugin reference is not set. "
+                    + "Please add a plugin before referencing the PluginUtils"
+            );
         }
         return plugin;
     }
 
+    /**
+     * Get the logger of the plugin
+     *
+     * @see Plugin#getLogger()
+     *
+     * @return The logger
+     */
     public Logger getLogger() {
         return getPlugin().getLogger();
     }
 
+    /**
+     * @see BukkitScheduler#runTask(Plugin, Runnable)
+     *
+     * @param runnable The runnable class to run
+     * @return The task created
+     */
     public BukkitTask runTask(Runnable runnable) {
         return Bukkit.getScheduler().runTask(getPlugin(), runnable);
     }
 
+    /**
+     * @see BukkitScheduler#runTaskAsynchronously(Plugin, Runnable)
+     *
+     * @param runnable The runnable class to run asynchronous
+     * @return The task created
+     */
     public BukkitTask runTaskAsynchronously(Runnable runnable) {
-        return Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), runnable);
+        return Bukkit.getScheduler()
+                .runTaskAsynchronously(getPlugin(), runnable);
     }
 
+    /**
+     * @see BukkitScheduler#runTaskLater(Plugin, Runnable, long)
+     *
+     * @param runnable The runnable class to run after a period
+     * @param delay The delay in server ticks. On normal tps a second is equal
+     * to 20 delay
+     * @return The task created
+     */
     public BukkitTask runTaskLater(Runnable runnable, long delay) {
         return Bukkit.getScheduler().runTaskLater(getPlugin(), runnable, delay);
     }
 
+    /**
+     * @see BukkitScheduler#runTaskTimer(Plugin, Runnable, long, long)
+     *
+     * @param runnable The runnable class to run after a period periodically
+     * @param delay The delay in server ticks. On normal tps a second is equal
+     * to 20 delay
+     * @param period The period to wait before running again. On a normal tps a
+     * second is to to a period of 20
+     * @return The task created
+     */
     public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {
-        return Bukkit.getScheduler().runTaskTimer(getPlugin(), runnable, delay, period);
+        return Bukkit.getScheduler()
+                .runTaskTimer(getPlugin(), runnable, delay, period);
     }
 
-    public BukkitTask runTaskTimerAsynchronously(Runnable runnable, long delay, long period) {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(getPlugin(), runnable, delay, period);
+    /**
+     * @see BukkitScheduler#runTaskTimerAsynchronously(Plugin, Runnable, long,
+     * long)
+     *
+     * @param runnable The runnable class to run after a period periodically
+     * asynchronously
+     * @param delay The delay in server ticks. On normal tps a second is equal
+     * to 20 delay
+     * @param period The period to wait before running again. On a normal tps a
+     * second is to to a period of 20
+     * @return The task created
+     */
+    public BukkitTask runTaskTimerAsynchronously(Runnable runnable, long delay,
+            long period) {
+        return Bukkit.getScheduler().runTaskTimerAsynchronously(getPlugin(),
+                runnable, delay, period);
     }
 
+    /**
+     * @see PluginManager#registerEvents(Listener, Plugin)
+     *
+     * Register the events in a class to the bukkit plugin manager
+     *
+     * @param listener The listener class to register
+     */
     public void registerEvents(Listener listener) {
-        getPlugin().getServer().getPluginManager().registerEvents(listener, getPlugin());
+        getPlugin().getServer().getPluginManager()
+                .registerEvents(listener, getPlugin());
     }
 
+    /**
+     * @see Plugin#getConfig()
+     *
+     * Returns the config file of the plugin.
+     *
+     * @return The config of the plugin
+     */
     public FileConfiguration getConfig() {
         return getPlugin().getConfig();
     }
 
-    public boolean unloadPlugin() throws NoSuchFieldException, IllegalAccessException, NullPointerException {
+    /**
+     * Unloads the plugin from the server.
+     *
+     * @return True if the unloading was successful
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     * @throws NullPointerException
+     */
+    public boolean unloadPlugin() throws NoSuchFieldException,
+            IllegalAccessException, NullPointerException {
 
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         SimpleCommandMap cmdMap = null;
@@ -82,27 +177,44 @@ public class PluginUtil {
             throw new NullPointerException("Could not find pluginManager");
         }
         try {
-            Field pluginsField = pluginManager.getClass().getDeclaredField("plugins");
+            Class<? extends PluginManager> pluginManagerClass
+                    = pluginManager.getClass();
+
+            Field pluginsField = pluginManagerClass.getDeclaredField("plugins");
+
             pluginsField.setAccessible(true);
             plugins = (List<Plugin>) pluginsField.get(pluginManager);
 
-            Field lookupNamesField = pluginManager.getClass().getDeclaredField("lookupNames");
+            Field lookupNamesField
+                    = pluginManagerClass.getDeclaredField("lookupNames");
+
             lookupNamesField.setAccessible(true);
             names = (Map<String, Plugin>) lookupNamesField.get(pluginManager);
 
             try {
-                Field listenersField = pluginManager.getClass().getDeclaredField("listeners");
+                Field listenersField
+                        = pluginManagerClass.getDeclaredField("listeners");
+
                 listenersField.setAccessible(true);
-                listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
-            } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException e) {
+                
+                Object field = listenersField.get(pluginManager);
+                
+                listeners = (Map<Event, SortedSet<RegisteredListener>>) field;
+                
+            } catch (IllegalAccessException | IllegalArgumentException
+                    | NoSuchFieldException | SecurityException e) {
                 reloadlisteners = false;
             }
 
-            Field commandMapField = pluginManager.getClass().getDeclaredField("commandMap");
+            Field commandMapField
+                    = pluginManagerClass.getDeclaredField("commandMap");
+
             commandMapField.setAccessible(true);
             cmdMap = (SimpleCommandMap) commandMapField.get(pluginManager);
 
-            Field knownCommandsField = cmdMap.getClass().getDeclaredField("knownCommands");
+            Field knownCommandsField
+                    = cmdMap.getClass().getDeclaredField("knownCommands");
+
             knownCommandsField.setAccessible(true);
             commands = (Map<String, Command>) knownCommandsField.get(cmdMap);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -115,13 +227,16 @@ public class PluginUtil {
             plugins.remove(plugin);
         }
 
-        if (names != null && names.containsKey(plugin.getDescription().getName())) {
+        if (names != null
+                && names.containsKey(plugin.getDescription().getName())) {
             names.remove(plugin.getDescription().getName());
         }
 
         if (listeners != null && reloadlisteners) {
             for (SortedSet<RegisteredListener> set : listeners.values()) {
-                for (Iterator<RegisteredListener> it = set.iterator(); it.hasNext();) {
+                for (Iterator<RegisteredListener> it
+                        = set.iterator(); it.hasNext();) {
+
                     RegisteredListener value = it.next();
 
                     if (value.getPlugin() == plugin) {
@@ -131,7 +246,9 @@ public class PluginUtil {
             }
         }
 
-        for (Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator(); it.hasNext();) {
+        for (Iterator<Map.Entry<String, Command>> it
+                = commands.entrySet().iterator(); it.hasNext();) {
+
             Map.Entry<String, Command> entry = it.next();
             if (entry.getValue() instanceof PluginCommand) {
                 PluginCommand command = (PluginCommand) entry.getValue();
