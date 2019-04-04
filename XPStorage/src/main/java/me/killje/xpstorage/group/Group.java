@@ -13,7 +13,6 @@ import me.killje.xpstorage.util.PlayerInformation;
 import me.killje.xpstorage.xpsign.AbstractGroupSign;
 import me.killje.xpstorage.xpsign.AbstractXpSign;
 import me.killje.xpstorage.xpsign.XpSignFacingBlock;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -28,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
  * players connected to the group and the permissions as well as the xp, group
  * name and signs
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class Group implements ConfigurationSerializable {
 
@@ -128,7 +127,7 @@ public class Group implements ConfigurationSerializable {
      *
      * This mainly for Ender group storage
      */
-    private Material groupIcon;
+    private ItemStack groupIcon;
 
     /**
      * The UUID of the group
@@ -185,7 +184,7 @@ public class Group implements ConfigurationSerializable {
     /**
      * Constructs a group with a group name
      *
-     * @param owner     The owner of the group
+     * @param owner The owner of the group
      * @param groupName The group name for the group
      */
     public Group(UUID owner, String groupName) {
@@ -223,8 +222,8 @@ public class Group implements ConfigurationSerializable {
             this.groupName = (String) group.get("groupName");
         }
         if (group.containsKey("groupIcon")) {
-            this.groupIcon
-                    = Material.getMaterial((String) group.get("groupIcon"));
+            this.groupIcon = (ItemStack) group.get("groupIcon");
+            this.groupIcon.setAmount(1);
         }
         this.owner = UUID.fromString((String) group.get("ownerUuid"));
         GROUPS.put(groupId.toString(), this);
@@ -325,12 +324,15 @@ public class Group implements ConfigurationSerializable {
         Map<String, String> replaceMap = new HashMap<>();
         replaceMap.put("GROUP_NAME", getGroupName());
 
-        ItemStack parsedIcon = XPStorage.getGuiSettings()
-                .getItemStack("groupDefault", replaceMap);
+        ItemStack parsedIcon;
 
         if (groupIcon != null) {
-            parsedIcon.setType(groupIcon);
+            parsedIcon = groupIcon;
+        } else {
+            parsedIcon = XPStorage.getGuiSettings()
+                    .getItemStack("groupDefault", replaceMap);
         }
+
         return parsedIcon;
     }
 
@@ -339,7 +341,7 @@ public class Group implements ConfigurationSerializable {
      *
      * @param groupIcon The group icon for the group
      */
-    public void setGroupIcon(Material groupIcon) {
+    public void setGroupIcon(ItemStack groupIcon) {
         this.groupIcon = groupIcon;
     }
 
@@ -474,7 +476,7 @@ public class Group implements ConfigurationSerializable {
             returnMap.put("groupName", this.groupName);
         }
         if (this.groupIcon != null) {
-            returnMap.put("groupIcon", groupIcon.name());
+            returnMap.put("groupIcon", groupIcon);
         }
         return returnMap;
     }

@@ -6,7 +6,7 @@ import org.bukkit.event.block.BlockIgniteEvent;
 /**
  * Listener for block ignite events
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class OnBlockIgnite extends OnBlockDestory {
 
@@ -19,6 +19,7 @@ public class OnBlockIgnite extends OnBlockDestory {
      */
     @EventHandler
     public void onBlockIgnite(BlockIgniteEvent event) {
-        event.setCancelled(!isDestroyable(event.getBlock(), event.getPlayer()));
+        event.setCancelled(event.isCancelled() 
+                || !isDestroyable(event.getBlock(), event.getPlayer()));
     }
 }

@@ -6,7 +6,7 @@ import org.bukkit.event.block.BlockBurnEvent;
 /**
  * Listener to block burning events
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class OnBlockBurn extends OnBlockDestory {
 
@@ -19,6 +19,7 @@ public class OnBlockBurn extends OnBlockDestory {
      */
     @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
-        event.setCancelled(!isDestroyable(event.getBlock(), null));
+        event.setCancelled(event.isCancelled() 
+                || !isDestroyable(event.getBlock(), null));
     }
 }

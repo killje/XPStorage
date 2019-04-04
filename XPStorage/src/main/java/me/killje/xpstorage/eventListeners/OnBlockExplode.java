@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 /**
  * Listener to block burning events
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class OnBlockExplode extends OnBlockDestory {
 
@@ -22,7 +22,8 @@ public class OnBlockExplode extends OnBlockDestory {
      */
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
-        event.setCancelled(!isDestroyable(event.blockList(), null));
+        event.setCancelled(event.isCancelled()
+                || !isDestroyable(event.blockList(), null));
     }
 
     /**
@@ -36,11 +37,15 @@ public class OnBlockExplode extends OnBlockDestory {
     public void onEntityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
-            event.setCancelled(!isDestroyable(event.blockList(),
-                    (Player) event.getEntity()
-            ));
+            event.setCancelled(event.isCancelled()
+                    || !isDestroyable(
+                            event.blockList(),
+                            (Player) event.getEntity()
+                    )
+            );
         } else {
-            event.setCancelled(!isDestroyable(event.blockList(), null));
+            event.setCancelled(event.isCancelled()
+                    || !isDestroyable(event.blockList(), null));
         }
     }
 }

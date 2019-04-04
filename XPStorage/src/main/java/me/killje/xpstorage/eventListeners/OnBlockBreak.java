@@ -6,7 +6,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 /**
  * Listener for block breaking events
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class OnBlockBreak extends OnBlockDestory {
 
@@ -19,6 +19,9 @@ public class OnBlockBreak extends OnBlockDestory {
      */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        event.setCancelled(!isDestroyable(event.getBlock(), event.getPlayer()));
+        event.setCancelled(
+                event.isCancelled() 
+                || !isDestroyable(event.getBlock(), event.getPlayer())
+        );
     }
 }

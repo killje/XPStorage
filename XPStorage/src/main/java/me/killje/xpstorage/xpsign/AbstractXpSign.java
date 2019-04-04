@@ -33,7 +33,7 @@ import org.bukkit.scheduler.BukkitTask;
 @SuppressWarnings("ResultOfObjectAllocationIgnored")
 /**
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public abstract class AbstractXpSign implements ConfigurationSerializable {
 
@@ -286,9 +286,12 @@ public abstract class AbstractXpSign implements ConfigurationSerializable {
      * @return True if it is a sign, false otherwise
      */
     public static boolean isSign(Material material) {
-        return material == Material.WALL_SIGN
-                || material == Material.SIGN_POST
+        boolean isSign = material == Material.WALL_SIGN
                 || material == Material.SIGN;
+        if (XPStorage.IS_LEGACY) {
+            isSign = isSign || material == Material.getMaterial("SIGN_POST");
+        }
+        return isSign;
     }
 
     /**

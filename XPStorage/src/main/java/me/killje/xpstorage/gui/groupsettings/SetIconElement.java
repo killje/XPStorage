@@ -4,14 +4,13 @@ import java.util.UUID;
 import me.killje.spigotgui.guielement.InventoryElement;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.group.Group;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * Icon spot used for setting the icon of a group
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class SetIconElement implements InventoryElement {
 
@@ -35,7 +34,7 @@ public class SetIconElement implements InventoryElement {
      *
      * @param groupIcon The material to set the icon to
      */
-    private void setIcon(Material groupIcon) {
+    private void setIcon(ItemStack groupIcon) {
         Group group = Group.getGroupFromUUID(groupUUID);
         if (group == null) {
             return;
@@ -76,7 +75,7 @@ public class SetIconElement implements InventoryElement {
             return;
         }
 
-        setIcon(chosenIcon.getType());
+        setIcon(chosenIcon);
         event.getWhoClicked().sendMessage(
                 currentInventoryBase.getGuiSettings().getText("iconSet")
         );

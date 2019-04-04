@@ -7,15 +7,13 @@ import me.killje.spigotgui.guielement.SimpleGuiElement;
 import me.killje.spigotgui.util.GuiSetting;
 import me.killje.spigotgui.util.InventoryBase;
 import me.killje.xpstorage.XPStorage;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * Icon and inventory to set a icon as the ender group icon
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class SetIcon extends InventoryBase implements GuiElement {
 
@@ -56,19 +54,16 @@ public class SetIcon extends InventoryBase implements GuiElement {
      * {@inheritDoc}
      */
     protected void initInventory() {
-
-        String iconInMiddle = getGuiSettings().getText("iconInMiddle");
-
-        ItemStack fillerItem = new ItemStack(
-                Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getWoolData());
+        
+        ItemStack fillerItem = getGuiSettings().getItemStack("setIconFiller");
 
         this
                 .setInventoryName(guiSettings.getText("setIcon"))
                 .isIgnorePlayerInventory(false)
-                .addGuiElement(new SimpleGuiElement(fillerItem, iconInMiddle))
-                .addGuiElement(new SimpleGuiElement(fillerItem, iconInMiddle))
+                .addGuiElement(new SimpleGuiElement(fillerItem))
+                .addGuiElement(new SimpleGuiElement(fillerItem))
                 .addInventoryElement(new SetIconElement(groupUUID))
-                .addGuiElement(new SimpleGuiElement(fillerItem, iconInMiddle))
+                .addGuiElement(new SimpleGuiElement(fillerItem))
                 .addGuiElement(new Exit());
     }
 

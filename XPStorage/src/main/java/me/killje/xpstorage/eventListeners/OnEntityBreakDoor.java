@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityBreakDoorEvent;
 /**
  * Listener for entities breaking door events
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class OnEntityBreakDoor extends OnBlockBreak {
 
@@ -21,11 +21,18 @@ public class OnEntityBreakDoor extends OnBlockBreak {
     @EventHandler
     public void onEntityBreakDoor(EntityBreakDoorEvent event) {
         if (event.getEntity() instanceof Player) {
-            event.setCancelled(!isDestroyable(event.getBlock(),
-                    (Player) event.getEntity()
-            ));
+            event.setCancelled(
+                    event.isCancelled()
+                    || !isDestroyable(
+                            event.getBlock(),
+                            (Player) event.getEntity()
+                    )
+            );
         } else {
-            event.setCancelled(!isDestroyable(event.getBlock(), null));
+            event.setCancelled(
+                    event.isCancelled()
+                    || !isDestroyable(event.getBlock(), null)
+            );
         }
     }
 

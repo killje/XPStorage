@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 /**
  * Listener for entities changing blocks events
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class OnEntityChangeBlock extends OnBlockDestory {
 
@@ -21,9 +21,10 @@ public class OnEntityChangeBlock extends OnBlockDestory {
     @EventHandler
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         Player player = null;
-        if (event.getEntity() instanceof Player) {
-            player = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player)) {
+            return;
         }
+        player = (Player) event.getEntity();
         if (!isDestroyable(event.getBlock(), player)) {
             event.setCancelled(true);
             event.getBlock().getState().update();

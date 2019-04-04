@@ -3,6 +3,7 @@ authors: ${project.authors}
 version: ${major.version}.b${buildNumber}
 main: ${project.main}
 load: POSTWORLD
+api-version: 1.13
 softdepend: [Multiverse-Core]
 permissions:
     xpstorage.create.*:

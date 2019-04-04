@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import me.desht.dhutils.ExperienceManager;
-import me.killje.spigotgui.util.GuiSetting;
 import me.killje.xpstorage.XPStorage;
 import me.killje.xpstorage.gui.sign.SignInventory;
 import me.killje.xpstorage.permission.Permission;
@@ -24,7 +23,7 @@ import org.bukkit.metadata.MetadataValue;
 /**
  * Listener for players interacting events
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class OnPlayerInteract implements Listener {
 
@@ -82,7 +81,7 @@ public class OnPlayerInteract implements Listener {
         }
 
         ItemStack interactItem = event.getItem();
-
+        
         if (interactItem != null && interactItem.getType()
                 .equals(SignInventory.INTERACT_MATERIAL)) {
 
