@@ -35,9 +35,18 @@ import org.bukkit.plugin.PluginManager;
 /**
  * The main file. This loads and unloads the plugin
  *
- * @author Patrick Beuks (killje) <patrick.beuks@gmail.com>
+ * @author Patrick Beuks (killje) <code@beuks.net>
  */
 public class XPStorage extends JavaPlugin {
+    
+    public static final boolean IS_LEGACY;
+    
+    static {
+        String versionString = Bukkit.getServer().getClass().getPackage()
+                .getName().replaceAll("\\D", "");
+        
+        IS_LEGACY = Integer.parseInt(versionString) < 1130;
+    }
 
     /**
      * Pattern for uuids
